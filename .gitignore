@@ -1,0 +1,13 @@
+/.classpath
+/.project
+/.settings
+/node_modules
+/node
+/package
+.idea/
+*.iml
+*.ipr
+target
+report.*
+src/main/resources/javascript/app
+yarn-error.log
