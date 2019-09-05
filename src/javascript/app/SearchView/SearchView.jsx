@@ -6,9 +6,33 @@ import {
     PagingInfo,
     Result,
     ResultsPerPage,
-    SearchBox
+    SearchBox,
+    Sorting
 } from '@elastic/react-search-ui/es/containers';
 import {Layout} from '@elastic/react-search-ui-views/es/layouts';
+
+const SORT_OPTIONS = [
+    {
+        name: 'Created',
+        value: 'jcr:created',
+        direction: 'desc'
+    },
+    {
+        name: 'Modified',
+        value: 'jcr:lastModified',
+        direction: 'desc'
+    },
+    {
+        name: 'Relevance',
+        value: '',
+        direction: ''
+    },
+    {
+        name: 'Title',
+        value: 'jcr:title',
+        direction: 'asc'
+    }
+];
 
 const SearchView = ({wasSearched, results}) => (
     <div>
@@ -45,6 +69,12 @@ const SearchView = ({wasSearched, results}) => (
                     </>
                 }
                 bodyFooter={<Paging/>}
+                sideContent={
+                    <div>
+                        {wasSearched && (
+                            <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
+                        )}
+                    </div>}
             />
         </ErrorBoundary>
     </div>
