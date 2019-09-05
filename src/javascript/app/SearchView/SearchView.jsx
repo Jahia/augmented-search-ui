@@ -10,6 +10,7 @@ import {
     Sorting
 } from '@elastic/react-search-ui/es/containers';
 import {Layout} from '@elastic/react-search-ui-views/es/layouts';
+import ViewWrapper from './ViewWrapper';
 
 const SORT_OPTIONS = [
     {
@@ -55,25 +56,26 @@ const SearchView = ({wasSearched, results}) => (
                         debounceLength={0}
                     />
                 }
-                bodyContent={results.map(result => (
-                    <Result key={result.id.raw}
-                            result={result}
-                            titleField="title"
-                            urlField="link"
+                bodyContent={<ViewWrapper wasSearched={wasSearched}
+                                          results={results}
+                                          fallbackView="Nothing was found"
+                                          view={results.map(result => (
+                                              <Result key={result.id.raw}
+                                                      result={result}
+                                                      titleField="title"
+                                                      urlField="link"
                     />
-                ))}
+                ))}/>}
                 bodyHeader={
                     <>
-                        {wasSearched && <PagingInfo/>}
-                        {wasSearched && <ResultsPerPage/>}
+                        {<ViewWrapper wasSearched={wasSearched} results={results} view={<PagingInfo/>} fallbackView=""/>}
+                        {<ViewWrapper wasSearched={wasSearched} results={results} view={<ResultsPerPage/>} fallbackView=""/>}
                     </>
                 }
-                bodyFooter={<Paging/>}
+                bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
                 sideContent={
                     <div>
-                        {wasSearched && (
-                            <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
-                        )}
+                        <ViewWrapper wasSearched={wasSearched} results={results} view={<Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>} fallbackView=""/>
                     </div>}
             />
         </ErrorBoundary>
