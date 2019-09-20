@@ -7,7 +7,8 @@ import {
     Result,
     ResultsPerPage,
     SearchBox,
-    Sorting
+    Sorting,
+    Facet
 } from '@elastic/react-search-ui/es/containers';
 import {Layout} from '@elastic/react-search-ui-views/es/layouts';
 import ViewWrapper from './ViewWrapper';
@@ -64,18 +65,39 @@ const SearchView = ({wasSearched, results}) => (
                                                       result={result}
                                                       titleField="title"
                                                       urlField="link"
-                    />
-                ))}/>}
+                                              />
+                                          ))}/>}
                 bodyHeader={
                     <>
-                        {<ViewWrapper wasSearched={wasSearched} results={results} view={<PagingInfo/>} fallbackView=""/>}
-                        {<ViewWrapper wasSearched={wasSearched} results={results} view={<ResultsPerPage/>} fallbackView=""/>}
+                        {<ViewWrapper wasSearched={wasSearched}
+                                      results={results}
+                                      view={<PagingInfo/>}
+                                      fallbackView=""/>}
+                        {<ViewWrapper wasSearched={wasSearched}
+                                      results={results}
+                                      view={<ResultsPerPage/>}
+                                      fallbackView=""/>}
                     </>
                 }
                 bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
                 sideContent={
                     <div>
-                        <ViewWrapper wasSearched={wasSearched} results={results} view={<Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>} fallbackView=""/>
+                        <ViewWrapper wasSearched={wasSearched}
+                                     results={results}
+                                     fallbackView=""
+                                     view={
+                                         <div>
+                                             <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
+                                             <Facet
+                                                 field="jfs:tags"
+                                                 label="Tags"
+                                             />
+                                             <Facet
+                                                 field="jfs:keywords"
+                                                 label="Keywords"
+                                             />
+                                         </div>
+                                     }/>
                     </div>}
             />
         </ErrorBoundary>
