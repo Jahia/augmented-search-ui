@@ -11,6 +11,7 @@ import {
 } from '@elastic/react-search-ui/es/containers';
 import {Layout} from '@elastic/react-search-ui-views/es/layouts';
 import ViewWrapper from './ViewWrapper';
+import ResultView from './ResultView';
 
 const SORT_OPTIONS = [
     {
@@ -61,6 +62,7 @@ const SearchView = ({wasSearched, results}) => (
                                           fallbackView="Nothing was found"
                                           view={results.map(result => (
                                               <Result key={result.id.raw}
+                                                      view={ResultView}
                                                       result={result}
                                                       titleField="title"
                                                       urlField="link"
