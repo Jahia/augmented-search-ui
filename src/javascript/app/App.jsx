@@ -12,6 +12,7 @@ let fields = [
     new Field(FieldType.HIT, 'score'),
     new Field(FieldType.HIT, 'lastModified'),
     new Field(FieldType.HIT, 'lastModifiedBy'),
+    new Field(FieldType.HIT, 'createdBy'),
     new Field(FieldType.NODE, 'jcr:created', 'created')
 ];
 

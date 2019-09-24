@@ -44,12 +44,41 @@ function getEscapedFields(result) {
     }, {});
 }
 
+// Inner date component
+const DateComponent = ({result}) => {
+    const lastModifiedBy = getEscapedField(result, 'lastModifiedBy');
+    const lastModifiedDate = getEscapedField(result, 'lastModified');
+    const createdBy = getEscapedField(result, 'createdBy');
+    const createdDate = getEscapedField(result, 'created');
+
+    if (lastModifiedBy && lastModifiedDate) {
+        return (
+            <li>
+                <h5 style={{color: '#8b9bad'}}>Modified by <i>{lastModifiedBy}</i> on <i>{moment(lastModifiedDate).format('LLL')}</i> </h5>
+            </li>
+        );
+    }
+
+    if (createdBy && createdDate) {
+        return (
+            <li>
+                <h5 style={{color: '#8b9bad'}}>Modified by <i>{createdBy}</i> on <i>{moment(createdDate).format('LLL')}</i> </h5>
+            </li>
+        );
+    }
+
+    return null;
+};
+
+DateComponent.propTypes = {
+    result: PropTypes.object
+};
+
 const ResultView = ({key, titleField, urlField, result}) => {
     const fields = getEscapedFields(result);
     const title = getEscapedField(result, titleField);
-    const lastModifiedBy = getEscapedField(result, 'lastModifiedBy');
-    const lastModifiedDate = getEscapedField(result, 'lastModified');
     const url = getRaw(result, urlField);
+
     return (
         <div key={key}
              className="sui-result"
@@ -78,14 +107,10 @@ const ResultView = ({key, titleField, urlField, result}) => {
                         <ul className="sui-result__details">
                             <li>
                                 <span
-                                  dangerouslySetInnerHTML={{__html: '...' + fields.excerpt}}
+                                  dangerouslySetInnerHTML={{__html: fields.excerpt}}
                                   className="sui-result__value"/>
                             </li>
-                            {lastModifiedBy && lastModifiedDate && (
-                                <li>
-                                    <h5 style={{color: '#8b9bad'}}>Modified by <i>{lastModifiedBy}</i> on <i>{moment(lastModifiedDate).format('LLL')}</i> </h5>
-                                </li>
-                            )}
+                            <DateComponent result={result}/>
                         </ul>
                     </div>
                 </li>
