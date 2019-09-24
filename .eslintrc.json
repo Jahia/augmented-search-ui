@@ -1,0 +1,6 @@
+{
+    "extends": "@jahia",
+    "rules": {
+        "react/no-danger": "off"
+    }
+}
