@@ -28,7 +28,17 @@ function configureConnector(dxContext) {
     return {
         searchQuery: {
             // eslint-disable-next-line camelcase
-            result_fields: fields
+            result_fields: fields,
+            facets: {
+                'jfs:tags': {
+                    type: 'value',
+                    disjunctive: true
+                },
+                'jfs:keywords': {
+                    type: 'value',
+                    disjunctive: true
+                }
+            }
         },
         autocompleteQuery: {
             results: {
