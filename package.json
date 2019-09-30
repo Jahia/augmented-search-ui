@@ -60,7 +60,7 @@
     "@elastic/search-ui": "1.0.0",
     "@elastic/search-ui-app-search-connector": "1.0.0",
     "@jahia/i18next": "^1.0.0-beta.20180628145923",
-    "@jahia/search-ui-jahia-connector": "/Users/alex/jahia/dx/search-ui-jahia-connector/",
+    "@jahia/search-ui-jahia-connector": "^1.0.0",
     "@jahia/test-framework": "^1.0.0-beta.20190329150204",
     "classnames": "^2.2.6",
     "cryptiles": ">=4.1.2",
