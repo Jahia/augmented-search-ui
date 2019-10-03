@@ -30,14 +30,71 @@ function configureConnector(dxContext) {
             // eslint-disable-next-line camelcase
             result_fields: fields,
             facets: {
+                // Term Facet
                 'jfs:tags': {
                     type: 'value',
                     disjunctive: true
                 },
+                // Term Facet
                 'jfs:keywords': {
                     type: 'value',
                     disjunctive: true
+                },
+                // Date Range Facet
+                'jfs:lastModified': {
+                    type: 'date_range',
+                    disjunctive: true,
+                    ranges: [
+                        {
+                            from: 'now-1w',
+                            to: 'now',
+                            name: 'Last Week'
+                        },
+                        {
+                            from: 'now-1M',
+                            to: 'now',
+                            name: 'Last month'
+                        },
+                        {
+                            from: 'now-6M',
+                            to: 'now',
+                            name: 'Last 6 months'
+                        },
+                        {
+                            from: 'now-1y',
+                            to: 'now',
+                            name: 'Last year'
+                        }
+                    ]
                 }
+                // Example for Number Range Facet
+                // ,
+                // 'jfs:nodes.docRating': {
+                //     type: 'range',
+                //     disjunctive: true,
+                //     ranges: [
+                //         {
+                //             from: '0',
+                //             to: '5.0',
+                //             name: '0 - 5'
+                //         },
+                //         {
+                //             from: '5.0',
+                //             to: '10.0',
+                //             name: '5 - 10'
+                //         },
+                //         {
+                //             from: '10.0',
+                //             to: '15.0',
+                //             name: '10 - 15'
+                //         },
+                //         {
+                //             from: '15.0',
+                //             to: '20.0',
+                //             name: '15 - 20'
+                //         }
+                //     ]
+                // }
             }
         },
         autocompleteQuery: {

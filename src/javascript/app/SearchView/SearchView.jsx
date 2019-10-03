@@ -98,6 +98,15 @@ const SearchView = ({wasSearched, results}) => (
                                                  field="jfs:keywords"
                                                  label="Keywords"
                                              />
+                                             <Facet
+                                                 field="jfs:lastModified"
+                                                 label="Last modified"
+                                             />
+                                             {/* Example of Number range facet */}
+                                             {/* <Facet */}
+                                             {/*    field="jfs:nodes.docRating" */}
+                                             {/*    label="Document rating" */}
+                                             {/* /> */}
                                          </div>
                                      }/>
                     </div>}
