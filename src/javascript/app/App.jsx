@@ -31,19 +31,23 @@ function configureConnector(dxContext) {
             result_fields: fields,
             facets: {
                 // Term Facet
-                'jfs:tags': {
+                'jcr:lastModifiedBy': {
+                    type: 'value',
+                    disjunctive: true
+                }, // Term Facet
+                'jcr:tags': {
                     type: 'value',
                     disjunctive: true
                 },
                 // Term Facet
-                'jfs:keywords': {
+                'jcr:keywords': {
                     type: 'value',
                     disjunctive: true
                 },
                 // Date Range Facet
-                'jfs:lastModified': {
+                'jcr:lastModified': {
                     type: 'date_range',
-                    disjunctive: true,
+                    disjunctive: false,
                     ranges: [
                         {
                             from: 'now-1w',
@@ -64,10 +68,15 @@ function configureConnector(dxContext) {
                             from: 'now-1y',
                             to: 'now',
                             name: 'Last year'
+                        },
+                        {
+                            from: 'now-5y',
+                            to: 'now',
+                            name: 'Last 5 years'
                         }
                     ]
                 }
-                // Example for Number Range Facet
+                // Example for Number Range Facet, note that nested docs no longer work
                 // ,
                 // 'jfs:nodes.docRating': {
                 //     type: 'range',
