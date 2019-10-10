@@ -91,15 +91,19 @@ const SearchView = ({wasSearched, results}) => (
                                          <div>
                                              <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                                              <Facet
-                                                 field="jfs:tags"
+                                                 field="jcr:lastModifiedBy"
+                                                 label="Author"
+                                             />
+                                             <Facet
+                                                 field="jcr:tags"
                                                  label="Tags"
                                              />
                                              <Facet
-                                                 field="jfs:keywords"
+                                                 field="jcr:keywords"
                                                  label="Keywords"
                                              />
                                              <Facet
-                                                 field="jfs:lastModified"
+                                                 field="jcr:lastModified"
                                                  label="Last modified"
                                              />
                                              {/* Example of Number range facet */}
