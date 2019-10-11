@@ -56,22 +56,22 @@ function configureConnector(dxContext) {
                         },
                         {
                             from: 'now-1M',
-                            to: 'now',
+                            to: 'now-1w',
                             name: 'Last month'
                         },
                         {
                             from: 'now-6M',
-                            to: 'now',
+                            to: 'now-1M',
                             name: 'Last 6 months'
                         },
                         {
                             from: 'now-1y',
-                            to: 'now',
+                            to: 'now-6M',
                             name: 'Last year'
                         },
                         {
                             from: 'now-5y',
-                            to: 'now',
+                            to: 'now-1y',
                             name: 'Last 5 years'
                         }
                     ]
