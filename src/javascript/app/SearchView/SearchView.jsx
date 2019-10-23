@@ -17,12 +17,12 @@ import ResultView from './ResultView';
 const SORT_OPTIONS = [
     {
         name: 'Created',
-        value: 'jcr:created',
+        value: 'jgql:created',
         direction: 'desc'
     },
     {
         name: 'Modified',
-        value: 'jcr:lastModified',
+        value: 'jgql:lastModified',
         direction: 'desc'
     },
     {
@@ -32,7 +32,7 @@ const SORT_OPTIONS = [
     },
     {
         name: 'Title',
-        value: 'jcr:title',
+        value: 'jgql:title',
         direction: 'asc'
     }
 ];
@@ -91,19 +91,19 @@ const SearchView = ({wasSearched, results}) => (
                                          <div>
                                              <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                                              <Facet
-                                                 field="jcr:lastModifiedBy"
+                                                 field="jgql:lastModifiedBy"
                                                  label="Author"
                                              />
                                              <Facet
-                                                 field="jcr:tags"
+                                                 field="jgql:tags"
                                                  label="Tags"
                                              />
                                              <Facet
-                                                 field="jcr:keywords"
+                                                 field="jgql:keywords"
                                                  label="Keywords"
                                              />
                                              <Facet
-                                                 field="jcr:lastModified"
+                                                 field="jgql:lastModified"
                                                  label="Last modified"
                                              />
                                              {/* Example of Number range facet */}

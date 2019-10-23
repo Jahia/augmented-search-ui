@@ -31,21 +31,21 @@ function configureConnector(dxContext) {
             result_fields: fields,
             facets: {
                 // Term Facet
-                'jcr:lastModifiedBy': {
+                'jgql:lastModifiedBy': {
                     type: 'value',
                     disjunctive: true
                 }, // Term Facet
-                'jcr:tags': {
+                'jgql:tags': {
                     type: 'value',
                     disjunctive: true
                 },
                 // Term Facet
-                'jcr:keywords': {
+                'jgql:keywords': {
                     type: 'value',
                     disjunctive: true
                 },
                 // Date Range Facet
-                'jcr:lastModified': {
+                'jgql:lastModified': {
                     type: 'date_range',
                     disjunctive: false,
                     ranges: [
