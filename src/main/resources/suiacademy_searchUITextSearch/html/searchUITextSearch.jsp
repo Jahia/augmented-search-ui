@@ -23,6 +23,7 @@
 <template:addResources type="javascript" resources="app/searchUIAcademyApp.js"/>
 
 <c:set var="appId" value="searchUIAcademyApp_${currentNode.identifier}"/>
+<c:url value="${url.server}" var="entryPoint"/>
 
 <div id="${appId}">Loading...</div>
 <script>
@@ -34,7 +35,7 @@
             siteUUID: "${renderContext.site.identifier}",
             siteName: "${renderContext.site.name}",
             siteKey: "${renderContext.site.siteKey}",
-            baseURL: "${url.server}"
+            baseURL: "${entryPoint}"
         };
         window.searchUIAcademyApp("${appId}", context);
     })();
