@@ -35,7 +35,7 @@
             siteUUID: "${renderContext.site.identifier}",
             siteName: "${renderContext.site.name}",
             siteKey: "${renderContext.site.siteKey}",
-            baseURL: "${entryPoint}"
+            baseURL: "${entryPoint}".replace(/http[s]{0,1}:/, '')
         };
         window.searchUIAcademyApp("${appId}", context);
     })();
