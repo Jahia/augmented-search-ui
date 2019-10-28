@@ -13,7 +13,7 @@ let fields = [
     new Field(FieldType.HIT, 'lastModified'),
     new Field(FieldType.HIT, 'lastModifiedBy'),
     new Field(FieldType.HIT, 'createdBy'),
-    new Field(FieldType.NODE, 'jcr:created', 'created')
+    new Field(FieldType.HIT, 'created')
 ];
 
 function configureConnector(dxContext) {
