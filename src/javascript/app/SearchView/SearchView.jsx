@@ -37,7 +37,7 @@ const SORT_OPTIONS = [
     }
 ];
 
-const SearchView = ({wasSearched, results}) => (
+const SearchView = ({wasSearched, results, searchTerm}) => (
     <div>
         <ErrorBoundary>
             <Layout
@@ -83,37 +83,31 @@ const SearchView = ({wasSearched, results}) => (
                 }
                 bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
                 sideContent={
-                    <div>
-                        <ViewWrapper wasSearched={wasSearched}
-                                     results={results}
-                                     fallbackView=""
-                                     view={
-                                         <div>
-                                             <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
-                                             <Facet
-                                                 field="jcr:lastModifiedBy"
-                                                 label="Author"
-                                             />
-                                             <Facet
-                                                 field="jcr:tags"
-                                                 label="Tags"
-                                             />
-                                             <Facet
-                                                 field="jcr:keywords"
-                                                 label="Keywords"
-                                             />
-                                             <Facet
-                                                 field="jcr:lastModified"
-                                                 label="Last modified"
-                                             />
-                                             {/* Example of Number range facet */}
-                                             {/* <Facet */}
-                                             {/*    field="jfs:nodes.docRating" */}
-                                             {/*    label="Document rating" */}
-                                             {/* /> */}
-                                         </div>
-                                     }/>
-                    </div>}
+                    searchTerm !== '' &&
+                    <>
+                        <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
+                        <Facet
+                            field="jcr:lastModifiedBy"
+                            label="Author"
+                        />
+                        <Facet
+                            field="jcr:tags"
+                            label="Tags"
+                        />
+                        <Facet
+                            field="jcr:keywords"
+                            label="Keywords"
+                        />
+                        <Facet
+                            field="jcr:lastModified"
+                            label="Last modified"
+                        />
+                        {/* Example of Number range facet */}
+                        {/* <Facet */}
+                        {/*    field="jfs:nodes.docRating" */}
+                        {/*    label="Document rating" */}
+                        {/* /> */}
+                    </>}
             />
         </ErrorBoundary>
     </div>
@@ -121,7 +115,8 @@ const SearchView = ({wasSearched, results}) => (
 
 SearchView.propTypes = {
     wasSearched: PropTypes.bool,
-    results: PropTypes.array
+    results: PropTypes.array,
+    searchTerm: PropTypes.string
 };
 
 export default SearchView;

@@ -121,7 +121,7 @@ function configureConnector(dxContext) {
 const App = ({dxContext}) => {
     return (
         <SearchProvider config={configureConnector(dxContext)}>
-            <WithSearch mapContextToProps={({wasSearched, results}) => ({wasSearched, results})}>
+            <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
                 {SearchView}
             </WithSearch>
         </SearchProvider>
