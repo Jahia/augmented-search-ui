@@ -1,6 +1,6 @@
 {
   "noVersionPrefix": true,
-  "onlyPublishWithReleaseLabel": true,
+  "onlyPublishWithReleaseLabel": false,
   "labels": {
     "major": "Auto: Major",
     "minor": "Auto: Minor",
