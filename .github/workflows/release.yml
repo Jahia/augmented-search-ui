@@ -17,4 +17,4 @@ jobs:
     - name: Install
       run: yarn install --frozen-lockfile
     - name: Ship the release
-      run: yarn auto shipit
+      run: GH_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn auto shipit
