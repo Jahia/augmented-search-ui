@@ -10,8 +10,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
+    steps:      
     - uses: actions/checkout@v1
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Install
       run: yarn install --frozen-lockfile
     - name: Ship the release
