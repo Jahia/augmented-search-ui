@@ -1,6 +1,6 @@
 {
   "name": "search-ui-academy",
-  "version": "1.0.0-SNAPSHOT",
+  "version": "0.0.1",
   "description": "Jahia module that provides integration with ES Search UI for Academy",
   "main": "main.js",
   "husky": {
@@ -19,7 +19,10 @@
     "clean:all": "yarn clean && rimraf node_modules node",
     "test": "jest",
     "lint": "eslint --ext js,jsx .",
-    "lint:fix": "eslint --ext js,jsx --fix ."
+    "lint:fix": "eslint --ext js,jsx --fix .",
+    "version": "npm version `auto version` -m 'Bump version to: %s [skip ci]'",
+    "publish": "npm publish && git push --follow-tags --set-upstream origin $branch",
+    "release": "./scripts/release.sh"
   },
   "author": "Jahia Team",
   "repository": "git+https://github.com/Jahia/search-ui-academy.git",
@@ -36,6 +39,7 @@
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
     "@jahia/eslint-config": "^1.0.0-beta.20190920132338",
+    "auto": "^7.12.4",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-lodash": "^3.3.4",

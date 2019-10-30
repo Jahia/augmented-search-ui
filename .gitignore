@@ -11,3 +11,4 @@ target
 report.*
 src/main/resources/javascript/app
 yarn-error.log
+/.env
