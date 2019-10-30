@@ -1,0 +1,8 @@
+{
+  "noVersionPrefix": true,
+  "onlyPublishWithReleaseLabel": true,
+  "labels": {
+    "skip-release": {},
+    "release": {}
+  }
+}
