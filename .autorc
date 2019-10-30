@@ -2,11 +2,7 @@
   "noVersionPrefix": true,
   "onlyPublishWithReleaseLabel": true,
   "labels": {
-    "major": "Auto: Major",
-    "minor": "Auto: Minor",
-    "patch": "Auto: Patch",
-    "skip-release": "Auto: No Release",
-    "release": "Auto: Release!",
-    "prerelease": "Auto: beta"
+    "skip-release": {},
+    "release": {}
   }
 }
