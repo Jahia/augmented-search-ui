@@ -12,5 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Install
+      run: yarn install --frozen-lockfile
     - name: Ship the release
       run: yarn auto shipit
