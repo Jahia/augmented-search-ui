@@ -22,7 +22,7 @@ function configureConnector(dxContext) {
         baseURL: dxContext.baseURL + dxContext.ctx,
         siteKey: dxContext.siteKey,
         language: dxContext.language,
-        workspace: 'LIVE',
+        workspace: dxContext.workspace === 'default' ? 'EDIT' : 'LIVE',
         nodeType: 'jnt:page'
     });
     return {
