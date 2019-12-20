@@ -5,8 +5,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = (env, argv) => {
     const config = {
         entry: {
-            'search-ui-academy-polyfills': [path.resolve(__dirname, 'src/javascript/app', 'polyfills.js')],
-            'searchUIAcademyApp': [path.resolve(__dirname, 'src/javascript/app', 'index.js')]
+            'augmented-search-ui-polyfills': [path.resolve(__dirname, 'src/javascript/app', 'polyfills.js')],
+            'augmentedSearchUIApp': [path.resolve(__dirname, 'src/javascript/app', 'index.js')]
         },
 
         output: {
@@ -55,7 +55,7 @@ module.exports = (env, argv) => {
                 cacheGroups: {
                     commons: {
                         test: /[\\/]node_modules[\\/]/,
-                        name: 'search-ui-academy-vendors',
+                        name: 'advancedSearch-ui-vendors',
                         chunks: 'all'
                     }
                 }
@@ -86,4 +86,4 @@ module.exports = (env, argv) => {
     }
 
     return config;
-}
+};

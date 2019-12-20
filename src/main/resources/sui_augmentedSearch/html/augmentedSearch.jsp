@@ -18,11 +18,11 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <%--@elvariable id="workspace" type="java.lang.String"--%>
 
-<template:addResources type="javascript" resources="app/search-ui-academy-polyfills.js"/>
-<template:addResources type="javascript" resources="app/search-ui-academy-vendors.js"/>
-<template:addResources type="javascript" resources="app/searchUIAcademyApp.js"/>
+<template:addResources type="javascript" resources="app/advancedSearch-polyfills.js"/>
+<template:addResources type="javascript" resources="app/advancedSearch-ui-vendors.js"/>
+<template:addResources type="javascript" resources="app/advancedSearchApp.js"/>
 
-<c:set var="appId" value="searchUIAcademyApp_${currentNode.identifier}"/>
+<c:set var="appId" value="advancedSearchApp_${currentNode.identifier}"/>
 
 <div id="${appId}">Loading...</div>
 <script>
@@ -37,6 +37,6 @@
             workspace: "${renderContext.workspace}",
             baseURL: window.location.protocol + '//' + window.location.host
         };
-        window.searchUIAcademyApp("${appId}", context);
+        window.advancedSearchApp("${appId}", context);
     })();
 </script>

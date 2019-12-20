@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     ErrorBoundary,
+    Facet,
     Paging,
     PagingInfo,
     Result,
     ResultsPerPage,
     SearchBox,
-    Sorting,
-    Facet
+    Sorting
 } from '@elastic/react-search-ui/es/containers';
 import {Layout} from '@elastic/react-search-ui-views/es/layouts';
 import ViewWrapper from './ViewWrapper';
@@ -107,7 +107,8 @@ const SearchView = ({wasSearched, results, searchTerm}) => (
                         {/*    field="jfs:nodes.docRating" */}
                         {/*    label="Document rating" */}
                         {/* /> */}
-                    </>}
+                    </>
+                }
             />
         </ErrorBoundary>
     </div>

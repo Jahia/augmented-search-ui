@@ -1,7 +1,7 @@
 {
-  "name": "search-ui-academy",
+  "name": "augmented-search-ui",
   "version": "0.0.1",
-  "description": "Jahia module that provides integration with ES Search UI for Academy",
+  "description": "Jahia module that provides integration with ES Search UI on top of Jahia Augmented Search API",
   "main": "main.js",
   "husky": {
     "hooks": {
@@ -54,7 +54,7 @@
     "style-loader": "^0.23.1",
     "webpack": "4.20.2",
     "webpack-bundle-analyzer": "^3.0.3",
-    "webpack-cli": "^3.3.9",
+    "webpack-cli": "^3.3.10",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {

@@ -6,4 +6,4 @@ const bootstrap = function (target, context) {
     ReactDOM.render(<App dxContext={context}/>, document.getElementById(target));
 };
 
-window.searchUIAcademyApp = bootstrap;
+window.augmentedSearchUIApp = bootstrap;
