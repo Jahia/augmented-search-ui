@@ -55,7 +55,7 @@ module.exports = (env, argv) => {
                 cacheGroups: {
                     commons: {
                         test: /[\\/]node_modules[\\/]/,
-                        name: 'advancedSearch-ui-vendors',
+                        name: 'augmented-search-ui-vendors',
                         chunks: 'all'
                     }
                 }
