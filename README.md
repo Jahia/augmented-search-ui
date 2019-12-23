@@ -1,6 +1,6 @@
-# Search UI Academy
+# Augmented Search UI
 
-This modules provides a search-ui component with an elastic search connector to be able to search Academy using elastic search.
+This module provide a Search UI implementation using Augmented Search Connector for Jahia Augmented Search
 
 ## Set up (development)
 
@@ -14,4 +14,4 @@ This modules provides a search-ui component with an elastic search connector to 
 
 ## Set up (production)
 
-TODO
+Downlaod the module from store.jahia.com and deploy it on your platform
