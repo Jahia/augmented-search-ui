@@ -37,4 +37,4 @@ Augmented Search is available on [Jahia App Store](https://store.jahia.com/conte
 
 ## Production
 
-Downlaod the module from store.jahia.com and deploy it on your platform
+Download the module from store.jahia.com and deploy it on your platform
