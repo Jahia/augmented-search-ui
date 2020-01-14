@@ -12,7 +12,7 @@ Augmented Search UI
 ## Table of content
 
 - [Presentation](#presentation)
-- [Dev Environment](#development)
+- [Development](#development)
 - [Production](#production)
 
 ## Presentation
