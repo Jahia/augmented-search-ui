@@ -1,6 +1,11 @@
-# Augmented Search UI
+<a href="https://www.jahia.com/">
+    <img src="https://www.jahia.com/modules/jahiacom-templates/images/jahia-3x.png" alt="Jahia logo" title="Jahia" align="right" height="60" />
+</a>
 
-This module provide a Search UI implementation using Augmented Search Connector for Jahia Augmented Search
+Augmented Search UI sample
+==========================
+
+<p align="center">This repository is a sample UI module to integrate Jahia Augmented Search in your site. You can use it as the starting point to customize your search experience.</p>
 
 ## Set up (development)
 
