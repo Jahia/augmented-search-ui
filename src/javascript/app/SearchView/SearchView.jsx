@@ -87,6 +87,10 @@ const SearchView = ({wasSearched, results, searchTerm}) => (
                     <>
                         <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                         <Facet
+                            field="jcr:categories.keyword"
+                            label="Categories"
+                        />
+                        <Facet
                             field="jcr:lastModifiedBy"
                             label="Author"
                         />
