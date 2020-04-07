@@ -30,7 +30,10 @@ function configureConnector(dxContext) {
             // eslint-disable-next-line camelcase
             result_fields: fields,
             facets: {
-                // Term Facet
+                'jcr:categories.keyword': {
+                    type: 'value',
+                    disjunctive: true
+                },
                 'jcr:lastModifiedBy': {
                     type: 'value',
                     disjunctive: true
