@@ -58,8 +58,8 @@
     <description>This module provides integration with ES Search UI</description>
 
     <scm>
-        <connection>scm:git:git@github.com:Jahia/search-ui-academy.git</connection>
-        <developerConnection>scm:git:git@github.com:Jahia/search-ui-academy.git</developerConnection>
+        <connection>scm:git:git@github.com:Jahia/augmented-search-ui.git</connection>
+        <developerConnection>scm:git:git@github.com:Jahia/augmented-search-ui.git</developerConnection>
       <tag>HEAD</tag>
   </scm>
 
