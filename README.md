@@ -12,7 +12,7 @@
 
 Augmented Search UI
 ==========================
-
+Some test
 <p align="center">This repository is a sample UI module to integrate Jahia Augmented Search in your site. You can use it as the starting point to customize your search experience.</p>
 
 ![screenshot](./img/augmented-ui-example.jpg)
