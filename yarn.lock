@@ -952,8 +952,10 @@
     i18next-chained-backend "^0.1.2"
     i18next-xhr-backend "^1.5.1"
 
-"@jahia/search-ui-jahia-connector@../search-ui-jahia-connector":
+"@jahia/search-ui-jahia-connector@^1.0.0":
   version "1.0.0"
+  resolved "https://npm.jahia.com/@jahia%2fsearch-ui-jahia-connector/-/search-ui-jahia-connector-1.0.0.tgz#400c02f5f44c1b3fdb306242398b4e8446165f7f"
+  integrity sha512-SA9fRPjC5gWnGkKzmL8WKyfkulkVAAyh5zLJ3rYVpV8D8PWcyZHvtP1kFN4EKWBJK9Zs1g3hYB1tpRTPZEh99Q==
   dependencies:
     graphql "^14.5.4"
 

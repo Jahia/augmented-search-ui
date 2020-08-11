@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '@elastic/react-search-ui-views/lib/styles/styles.css';
-import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-connector/src';
+import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-connector';
 import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 
