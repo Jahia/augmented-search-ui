@@ -107,6 +107,9 @@ function configureConnector(dxContext) {
                 //         }
                 //     ]
                 // }
+            },
+            conditionalFacets: {
+                'jcr:lastModifiedBy': filters => filters.filters.some(filter => filter.field === 'jcr:lastModified')
             }
         },
         autocompleteQuery: {
