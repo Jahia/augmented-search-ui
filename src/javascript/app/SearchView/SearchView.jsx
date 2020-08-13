@@ -32,7 +32,7 @@ const SORT_OPTIONS = [
     },
     {
         name: 'Title',
-        value: 'jcr:title',
+        value: 'jcr:title.keyword',
         direction: 'asc'
     }
 ];

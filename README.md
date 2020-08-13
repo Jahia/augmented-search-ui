@@ -19,9 +19,9 @@ Augmented Search UI
 
 This module provides an easy way to quickly integrate Augmented Search in your project and provides a reference implementation to base your integration upon.
 
-You can find more details on how to integrate this module in your site on [Jahia Academy](https://academy.jahia.com/documentation/enduser/dx/7.3/using-jahia/about-augmented-search).
+You can find more details on how to integrate this module in your site on [Jahia Academy](https://academy.jahia.com/documentation/developer#augmented-search).
 
-If you want to customize the module, more details about our GraphQL API for augmented search is [available here](https://academy.jahia.com/documentation/developer/dx/7.3/headless-development-with-jahia/using-the-augmented-search-graphql-api).
+If you want to customize the module, more details about our GraphQL API for augmented search is [available here](https://academy.jahia.com/documentation/developer/augmented-search/2.1/querying/writing-a-query#top).
 
 Augmented Search is available on [Jahia App Store](https://store.jahia.com/contents/modules-repository/packages/Augmented%20Search.html)
 
