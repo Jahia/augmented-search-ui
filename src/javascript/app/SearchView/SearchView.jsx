@@ -37,7 +37,7 @@ const SORT_OPTIONS = [
     }
 ];
 
-const SearchView = ({wasSearched, results, searchTerm}) => (
+const SearchView = ({wasSearched, results}) => (
     <div>
         <ErrorBoundary>
             <Layout
@@ -83,7 +83,6 @@ const SearchView = ({wasSearched, results, searchTerm}) => (
                 }
                 bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
                 sideContent={
-                    searchTerm !== '' &&
                     <>
                         <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                         <Facet
@@ -120,8 +119,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => (
 
 SearchView.propTypes = {
     wasSearched: PropTypes.bool,
-    results: PropTypes.array,
-    searchTerm: PropTypes.string
+    results: PropTypes.array
 };
 
 export default SearchView;
