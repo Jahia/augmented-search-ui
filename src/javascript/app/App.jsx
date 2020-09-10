@@ -120,7 +120,8 @@ function configureConnector(dxContext) {
             }
         },
         apiConnector: connector,
-        hasA11yNotifications: true
+        hasA11yNotifications: true,
+        alwaysSearchOnInitialLoad: true
     };
 }
 
