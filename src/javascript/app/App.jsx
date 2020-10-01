@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '@elastic/react-search-ui-views/lib/styles/styles.css';
-import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-connector';
+import JahiaSearchAPIConnector, {Field, FieldType} from '../../../../search-ui-jahia-connector/src';
 import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 
@@ -31,6 +31,10 @@ function configureConnector(dxContext) {
             result_fields: fields,
             facets: {
                 'jcr:categories.keyword': {
+                    type: 'value',
+                    disjunctive: true
+                },
+                'jgql:categories_path.facet': {
                     type: 'value',
                     disjunctive: true
                 },
