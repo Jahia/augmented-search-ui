@@ -34,6 +34,10 @@ function configureConnector(dxContext) {
                     type: 'value',
                     disjunctive: true
                 },
+                'jgql:categories_path.facet': {
+                    type: 'value',
+                    disjunctive: true
+                },
                 'jcr:lastModifiedBy': {
                     type: 'value',
                     disjunctive: true

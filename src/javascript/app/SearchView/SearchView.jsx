@@ -13,6 +13,7 @@ import {
 import {Layout} from '@elastic/react-search-ui-views/es/layouts';
 import ViewWrapper from './ViewWrapper';
 import ResultView from './ResultView';
+import TreeFacet from './TreeFacet/TreeFacet';
 
 const SORT_OPTIONS = [
     {
@@ -86,8 +87,11 @@ const SearchView = ({wasSearched, results}) => (
                     <>
                         <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                         <Facet
-                            field="jcr:categories.keyword"
+                            s
+                            field="jgql:categories_path.facet"
                             label="Categories"
+                            view={TreeFacet}
+                            show={50}
                         />
                         <Facet
                             field="jcr:lastModifiedBy"
