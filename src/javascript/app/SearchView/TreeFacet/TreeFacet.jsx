@@ -9,7 +9,6 @@ function TreeFacet({
     className,
     label,
     onMoreClick,
-    onSelect,
     options,
     showMore
 }) {
@@ -18,7 +17,7 @@ function TreeFacet({
             <legend className="sui-facet__title">{label}</legend>
             <div className="sui-multi-checkbox-facet">
                 {options.length < 1 && <div>No matching options</div>}
-                <Tree options={options} onSelect={onSelect}/>
+                <Tree options={options}/>
             </div>
 
             {showMore && (
@@ -38,7 +37,6 @@ function TreeFacet({
 TreeFacet.propTypes = {
     label: PropTypes.string.isRequired,
     onMoreClick: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(FacetValue).isRequired,
     showMore: PropTypes.bool.isRequired,
     className: PropTypes.string

@@ -36,8 +36,7 @@ const TitleSpan = styled.span`
 `;
 
 const TreeNode = props => {
-    const {node, getChildNodes, level, onToggle, onNodeSelect} = props;
-    console.log(props, 'TreeNode props');
+    const {node, getChildNodes, level, onToggle} = props;
 
     return (
         <React.Fragment>
@@ -50,7 +49,7 @@ const TreeNode = props => {
                     {node.children.length > 0 && (node.isOpen ? <FaChevronDown/> : <FaChevronRight/>)}
                 </NodeIcon>
 
-                <TitleSpan role="button" onClick={() => onNodeSelect(node)}>
+                <TitleSpan role="button">
                     {node.title}
                 </TitleSpan>
 
@@ -75,8 +74,7 @@ TreeNode.propTypes = {
     node: PropTypes.object.isRequired,
     getChildNodes: PropTypes.func.isRequired,
     level: PropTypes.number.isRequired,
-    onToggle: PropTypes.func.isRequired,
-    onNodeSelect: PropTypes.func.isRequired
+    onToggle: PropTypes.func.isRequired
 };
 
 export default TreeNode;

@@ -1,21 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import TreeNode from './TreeNode/TreeNode';
 
-export const Tree = ({options, onSelect}) => {
+export const Tree = ({options}) => {
     const [optionsState, setOptions] = useState(options);
+    useEffect(() => {
+        console.log(optionsState);
+        console.log('Use effect', options);
+    });
 
     const onToggle = node => {
-        console.log('Options before flag', options);
         const toggledOptions = [...optionsState];
         toggledOptions.find(option => option.value === node.value).isOpen = !node.isOpen;
         setOptions(toggledOptions);
-        console.log('Options after flag change', toggledOptions);
     };
 
     const getChildNodes = node => {
-        console.log('Childnodes', node);
         if (!node.children) {
             return [];
         }
@@ -33,14 +34,12 @@ export const Tree = ({options, onSelect}) => {
                     node={node}
                     getChildNodes={getChildNodes}
                     level={0}
-                    onToggle={onToggle}
-                    onNodeSelect={onSelect}/>
+                    onToggle={onToggle}/>
             ))}
         </div>
     );
 };
 
 Tree.propTypes = {
-    options: PropTypes.array.isRequired,
-    onSelect: PropTypes.func.isRequired
+    options: PropTypes.array.isRequired
 };
