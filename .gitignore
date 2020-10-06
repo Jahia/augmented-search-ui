@@ -12,3 +12,4 @@ report.*
 src/main/resources/javascript/app
 yarn-error.log
 /.env
+/yalc.lock
