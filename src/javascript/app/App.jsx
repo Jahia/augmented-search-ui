@@ -31,11 +31,13 @@ function configureConnector(dxContext) {
             facets: {
                 'jcr:categories.keyword': {
                     type: 'value',
-                    disjunctive: true
+                    disjunctive: true,
+                    max: 50
                 },
                 'jgql:categories_path.facet': {
                     type: 'value',
-                    disjunctive: true
+                    disjunctive: true,
+                    max: 50
                 },
                 'jcr:lastModifiedBy': {
                     type: 'value',

@@ -87,7 +87,6 @@ const SearchView = ({wasSearched, results}) => (
                     <>
                         <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                         <Facet
-                            s
                             field="jgql:categories_path.facet"
                             label="Categories"
                             view={TreeFacet}

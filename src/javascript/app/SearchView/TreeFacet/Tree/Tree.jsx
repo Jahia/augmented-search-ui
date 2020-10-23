@@ -3,12 +3,20 @@ import PropTypes from 'prop-types';
 
 import TreeNode from './TreeNode/TreeNode';
 
-export const Tree = ({options}) => {
+export const Tree = ({options, onSelect, onRemove}) => {
     const [optionsState, setOptions] = useState(options);
+
     useEffect(() => {
-        console.log(optionsState);
-        console.log('Use effect', options);
-    });
+        const mappedOptions = options.reduce((accumulator, currentOption) => {
+            const correspondingOptionFromState = optionsState.find(option => option.value === currentOption.value);
+            if (correspondingOptionFromState) {
+                return [...accumulator, {...currentOption, isOpen: correspondingOptionFromState.isOpen}];
+            }
+
+            return [...accumulator, {...currentOption, isOpen: false}];
+        }, []);
+        setOptions(mappedOptions);
+    }, [options]);
 
     const onToggle = node => {
         const toggledOptions = [...optionsState];
@@ -21,9 +29,7 @@ export const Tree = ({options}) => {
             return [];
         }
 
-        const childNodes = node.children.map(path => options.find(option => path === option.path));
-        console.log(childNodes);
-        return childNodes;
+        return node.children.map(path => optionsState.find(option => path === option.path));
     };
 
     return (
@@ -34,12 +40,16 @@ export const Tree = ({options}) => {
                     node={node}
                     getChildNodes={getChildNodes}
                     level={0}
-                    onToggle={onToggle}/>
+                    onToggle={onToggle}
+                    onSelect={onSelect}
+                    onRemove={onRemove}/>
             ))}
         </div>
     );
 };
 
 Tree.propTypes = {
-    options: PropTypes.array.isRequired
+    options: PropTypes.array.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired
 };
