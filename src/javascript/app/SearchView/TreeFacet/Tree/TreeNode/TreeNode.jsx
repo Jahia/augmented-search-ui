@@ -21,7 +21,7 @@ const StyledTreeNode = styled.div`
 const NodeIcon = styled.div`
   font-size: 12px;
   font-weight: 700;
-  margin-right: ${props => props.marginRight ? props.marginRight : 5}px;
+  margin-right: 5px;
 `;
 
 const CountSpan = styled.span`
@@ -33,10 +33,11 @@ const CountSpan = styled.span`
 const TitleSpan = styled.span`
   font-size: 13px;
   font-weight: 700;
+  text-decoration: ${props => props.selected ? 'underline' : 'none'} !important;
 `;
 
 const TreeNode = props => {
-    const {node, getChildNodes, level, onToggle} = props;
+    const {node, getChildNodes, level, onToggle, onSelect, onRemove} = props;
 
     return (
         <React.Fragment>
@@ -49,7 +50,17 @@ const TreeNode = props => {
                     {node.children.length > 0 && (node.isOpen ? <FaChevronDown/> : <FaChevronRight/>)}
                 </NodeIcon>
 
-                <TitleSpan role="button">
+                <TitleSpan selected={node.selected}
+                           role="button"
+                           onClick={e => {
+                               e.preventDefault();
+                               if (node.selected) {
+                                   onRemove(node.value);
+                               } else {
+                                  onSelect(node.value);
+                               }
+                           }}
+                >
                     {node.title}
                 </TitleSpan>
 
@@ -74,7 +85,9 @@ TreeNode.propTypes = {
     node: PropTypes.object.isRequired,
     getChildNodes: PropTypes.func.isRequired,
     level: PropTypes.number.isRequired,
-    onToggle: PropTypes.func.isRequired
+    onToggle: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired
 };
 
 export default TreeNode;
