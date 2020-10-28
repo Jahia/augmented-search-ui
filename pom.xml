@@ -158,16 +158,6 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>yarn install</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>yarn</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
                                 <id>yarn build</id>
                                 <phase>generate-resources</phase>
                                 <goals>
