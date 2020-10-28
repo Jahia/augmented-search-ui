@@ -134,7 +134,27 @@
                                 </goals>
                                 <configuration>
                                     <nodeVersion>v15.0.1</nodeVersion>
-                                    <yarnVersion>v2.3.3</yarnVersion>
+                                    <yarnVersion>v1.22.10</yarnVersion>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>yarn berry</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>set version berry</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>yarn latest</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>set version latest</arguments>
                                 </configuration>
                             </execution>
                             <execution>
