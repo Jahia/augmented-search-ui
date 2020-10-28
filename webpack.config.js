@@ -27,11 +27,13 @@ module.exports = (env, argv) => {
                 {
                     test: /\.jsx?$/,
                     include: [path.join(__dirname, "src")],
-                    loader: 'babel-loader',
-                    query: {
-                        plugins: [
-                            '@babel/plugin-transform-classes'
-                        ]
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: [
+                                '@babel/plugin-transform-classes'
+                            ]
+                        }
                     }
                 },
                 {
@@ -60,9 +62,8 @@ module.exports = (env, argv) => {
                     }
                 }
             }
-        },
-        mode: 'development'
-    };
+        }
+    }
 
     config.devtool = (argv.mode === 'production') ? 'source-map' : 'eval-source-map';
 
