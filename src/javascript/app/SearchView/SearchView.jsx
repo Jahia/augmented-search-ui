@@ -87,10 +87,12 @@ const SearchView = ({wasSearched, results}) => (
                     <>
                         <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                         <Facet
-                            field="jgql:categories_path.facet"
+                            field="jgql:categories_path"
                             label="Categories"
                             view={TreeFacet}
                             show={50}
+                            filterType="any"
+                            treeField="jgql:categories_path"
                         />
                         <Facet
                             field="jcr:lastModifiedBy"
@@ -108,11 +110,6 @@ const SearchView = ({wasSearched, results}) => (
                             field="jcr:lastModified"
                             label="Last modified"
                         />
-                        {/* Example of Number range facet */}
-                        {/* <Facet */}
-                        {/*    field="jfs:nodes.docRating" */}
-                        {/*    label="Document rating" */}
-                        {/* /> */}
                     </>
                 }
             />

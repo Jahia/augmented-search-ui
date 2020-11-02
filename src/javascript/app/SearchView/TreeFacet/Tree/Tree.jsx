@@ -1,48 +1,119 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-
+import {SearchContext} from '@elastic/react-search-ui';
 import TreeNode from './TreeNode/TreeNode';
 
-export const Tree = ({options, onSelect, onRemove}) => {
-    const [optionsState, setOptions] = useState(options);
+function filterSearchParameters({
+    current,
+    filters,
+    resultsPerPage,
+    searchTerm,
+    sortDirection,
+    sortField
+}) {
+    return {
+        current,
+        filters,
+        resultsPerPage,
+        searchTerm,
+        sortDirection,
+        sortField
+    };
+}
 
+function filterFacets(facets, node, field) {
+    const treeFacets = {};
+    treeFacets[field] = {...facets[field], rootPath: node.rootPath};
+    return treeFacets;
+}
+
+const Tree = ({options, onSelect, onRemove, field}) => {
+    const [optionsState, setOptions] = useState(options);
+    const context = useContext(SearchContext);
     useEffect(() => {
         const mappedOptions = options.reduce((accumulator, currentOption) => {
-            const correspondingOptionFromState = optionsState.find(option => option.value === currentOption.value);
+            const correspondingOptionFromState = optionsState.find(option => option.key === currentOption.key);
             if (correspondingOptionFromState) {
-                return [...accumulator, {...currentOption, isOpen: correspondingOptionFromState.isOpen}];
+                return [...accumulator, {
+                    ...currentOption,
+                    isOpen: correspondingOptionFromState.isOpen,
+                    children: correspondingOptionFromState.children,
+                    selected: correspondingOptionFromState.selected
+                }];
             }
 
-            return [...accumulator, {...currentOption, isOpen: false}];
+            return [...accumulator, {...currentOption, isOpen: false, selected: false}];
         }, []);
         setOptions(mappedOptions);
     }, [options]);
 
     const onToggle = node => {
         const toggledOptions = [...optionsState];
-        toggledOptions.find(option => option.value === node.value).isOpen = !node.isOpen;
-        setOptions(toggledOptions);
+        const requestState = {
+            ...filterSearchParameters(context.driver.state),
+            filters: context.driver.state.filters.filter(filter => filter.field !== field)
+        };
+        const queryConfig = {
+            ...context.driver.searchQuery,
+            // eslint-disable-next-line camelcase
+            result_fields: [],
+            facets: filterFacets(
+                context.driver.searchQuery.facets,
+                node,
+                field
+            )
+        };
+        console.log('onToggle', context, requestState, queryConfig);
+        context.driver.events.search(requestState, queryConfig).then(response => {
+            node.children = response.facets[field][0].data;
+            node.isOpen = !node.isOpen;
+            let filteredField = context.driver.state.filters.find(filter => filter.field === field);
+            if (filteredField) {
+                node.children.forEach(children => {
+                    if (filteredField.values.find(value => value === children.filter)) {
+                        children.selected = true;
+                    }
+                }
+                );
+            }
+
+            setOptions(toggledOptions);
+        });
     };
 
     const getChildNodes = node => {
-        if (!node.children) {
+        if (!node.hasChildren || node.children === undefined) {
             return [];
         }
 
-        return node.children.map(path => optionsState.find(option => path === option.path));
+        return node.children;
+    };
+
+    const nodeOnSelect = node => {
+        const selectedOptions = [...optionsState];
+        onSelect(node.filter);
+        node.selected = true;
+        setOptions(selectedOptions);
+    };
+
+    const nodeOnRemove = node => {
+        const selectedOptions = [...optionsState];
+        onRemove(node.filter);
+        node.selected = false;
+        setOptions(selectedOptions);
     };
 
     return (
         <div>
-            { optionsState.filter(node => node.isRoot === true).map(node => (
+            {optionsState.map(node => (
                 <TreeNode
-                    key={node.value}
+                    key={node.key}
                     node={node}
                     getChildNodes={getChildNodes}
                     level={0}
                     onToggle={onToggle}
-                    onSelect={onSelect}
-                    onRemove={onRemove}/>
+                    onSelect={nodeOnSelect}
+                    onRemove={nodeOnRemove}/>
             ))}
         </div>
     );
@@ -51,5 +122,8 @@ export const Tree = ({options, onSelect, onRemove}) => {
 Tree.propTypes = {
     options: PropTypes.array.isRequired,
     onSelect: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired
+    onRemove: PropTypes.func.isRequired,
+    field: PropTypes.string.isRequired
 };
+
+export default Tree;

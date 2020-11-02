@@ -10,7 +10,7 @@ const StyledTreeNode = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 5px 8px;
-  padding-left: ${props => getPaddingLeft(props.level, props.type)}px;
+  padding-left: ${props => getPaddingLeft(props.level)}px;
   color: #999;
 
   &:hover {
@@ -47,7 +47,7 @@ const TreeNode = props => {
                     onToggle(node);
                 }}
                 >
-                    {node.children.length > 0 && (node.isOpen ? <FaChevronDown/> : <FaChevronRight/>)}
+                    {node.hasChildren && (node.isOpen ? <FaChevronDown/> : <FaChevronRight/>)}
                 </NodeIcon>
 
                 <TitleSpan selected={node.selected}
@@ -55,13 +55,13 @@ const TreeNode = props => {
                            onClick={e => {
                                e.preventDefault();
                                if (node.selected) {
-                                   onRemove(node.value);
+                                   onRemove(node);
                                } else {
-                                  onSelect(node.value);
+                                  onSelect(node);
                                }
                            }}
                 >
-                    {node.title}
+                    {node.value}
                 </TitleSpan>
 
                 <CountSpan>
@@ -71,7 +71,7 @@ const TreeNode = props => {
 
             {node.isOpen && getChildNodes(node).map(childNode => (
                 <TreeNode
-                    key={childNode.value}
+                    key={childNode.key}
                     {...props}
                     node={childNode}
                     level={level + 1}
