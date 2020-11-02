@@ -3,23 +3,24 @@ import React from 'react';
 
 import {FacetValue} from '@elastic/react-search-ui/es/types';
 import {appendClassName} from '@elastic/react-search-ui-views/es/view-helpers';
-import {Tree} from './Tree/Tree';
+import Tree from './Tree/Tree';
 
-function TreeFacet({
+const TreeFacet = ({
     className,
     label,
     onMoreClick,
     onSelect,
     onRemove,
     options,
-    showMore
-}) {
+    showMore,
+    treeField
+}) => {
     return (
         <fieldset className={appendClassName('sui-facet', className)}>
             <legend className="sui-facet__title">{label}</legend>
             <div className="sui-multi-checkbox-facet">
                 {options.length < 1 && <div>No matching options</div>}
-                <Tree options={options} onSelect={onSelect} onRemove={onRemove}/>
+                <Tree options={options} field={treeField} onSelect={onSelect} onRemove={onRemove}/>
             </div>
 
             {showMore && (
@@ -34,10 +35,11 @@ function TreeFacet({
             )}
         </fieldset>
     );
-}
+};
 
 TreeFacet.propTypes = {
     label: PropTypes.string.isRequired,
+    treeField: PropTypes.string.isRequired,
     onMoreClick: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(FacetValue).isRequired,
     showMore: PropTypes.bool.isRequired,

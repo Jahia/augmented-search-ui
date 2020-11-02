@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "build": "yarn lint && webpack",
+    "build": "yarn lint:fix && webpack",
     "build:nolint": "webpack",
     "build:analyze": "yarn build --analyze",
     "build:production": "yarn build -p",
@@ -59,11 +59,11 @@
   },
   "dependencies": {
     "@date-io/moment": "^1.3.5",
-    "@elastic/react-search-ui": "1.4.1",
-    "@elastic/react-search-ui-views": "1.4.1",
-    "@elastic/search-ui": "1.4.1",
+    "@elastic/react-search-ui": "1.5.0",
+    "@elastic/react-search-ui-views": "1.5.0",
+    "@elastic/search-ui": "1.5.0",
     "@jahia/i18next": "^1.0.0-beta.20180628145923",
-    "@jahia/search-ui-jahia-connector": "^2.0.5",
+    "@jahia/search-ui-jahia-connector": "^2.0.7",
     "@jahia/test-framework": "^1.0.0-beta.20190329150204",
     "classnames": "^2.2.6",
     "cryptiles": ">=4.1.2",
