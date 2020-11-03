@@ -103,6 +103,18 @@
             <name>Jahia Enterprise Repository</name>
             <url>https://devtools.jahia.com/nexus/content/groups/enterprise</url>
         </repository>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>augmented-search-snapshots</id>
+            <name>Jahia Augmented Search Snapshots</name>
+            <url>https://devtools.jahia.com/nexus/content/repositories/augmented-search-snapshots</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
