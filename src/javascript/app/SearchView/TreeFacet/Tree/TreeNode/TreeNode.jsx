@@ -42,7 +42,8 @@ const TreeNode = props => {
     return (
         <React.Fragment>
             <StyledTreeNode level={level} type={node.type}>
-                <NodeIcon onClick={e => {
+                <NodeIcon role="button"
+                          onClick={e => {
                     e.preventDefault();
                     onToggle(node);
                 }}
