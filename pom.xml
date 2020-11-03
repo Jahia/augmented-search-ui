@@ -49,11 +49,11 @@
     <parent>
         <artifactId>jahia-modules</artifactId>
         <groupId>org.jahia.modules</groupId>
-        <version>8.0.0.0</version>
+        <version>8.0.1.0</version>
     </parent>
     <artifactId>augmented-search-ui</artifactId>
     <name>Augmented Search UI</name>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This module provides integration with ES Search UI</description>
 
@@ -75,8 +75,7 @@
     </distributionManagement>
 
     <properties>
-        <jahia-module-signature>MCwCFHRU6+c+ujmK25qo7ojIq4ECCU2pAhRv84+aKzHk3hXmmGZp8PgzPKQY6w==
-        </jahia-module-signature>
+        <jahia-module-signature>MCwCFAR0vC0ZkHpmQS3xw/M+mlmU09RTAhQTEktgli22w8gkd1bR7dLsQJEzfA==</jahia-module-signature>
     </properties>
 
     <repositories>
@@ -104,12 +103,24 @@
             <name>Jahia Enterprise Repository</name>
             <url>https://devtools.jahia.com/nexus/content/groups/enterprise</url>
         </repository>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>augmented-search-snapshots</id>
+            <name>Jahia Augmented Search Snapshots</name>
+            <url>https://devtools.jahia.com/nexus/content/repositories/augmented-search-snapshots</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>augmented-search</artifactId>
-            <version>2.0.0</version>
+            <version>3.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

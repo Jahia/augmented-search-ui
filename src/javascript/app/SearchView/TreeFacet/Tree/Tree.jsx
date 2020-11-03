@@ -33,12 +33,17 @@ const Tree = ({options, onSelect, onRemove, field}) => {
     useEffect(() => {
         const mappedOptions = options.reduce((accumulator, currentOption) => {
             const correspondingOptionFromState = optionsState.find(option => option.key === currentOption.key);
+
+            function getSelected() {
+                let filteredField = context.driver.state.filters.find(filter => filter.field === field);
+                return Boolean(filteredField && filteredField.values.find(value => value === correspondingOptionFromState.filter));
+            }
+
             if (correspondingOptionFromState) {
                 return [...accumulator, {
                     ...currentOption,
                     isOpen: correspondingOptionFromState.isOpen,
-                    children: correspondingOptionFromState.children,
-                    selected: correspondingOptionFromState.selected
+                    selected: getSelected()
                 }];
             }
 
@@ -67,16 +72,11 @@ const Tree = ({options, onSelect, onRemove, field}) => {
         context.driver.events.search(requestState, queryConfig).then(response => {
             node.children = response.facets[field][0].data;
             node.isOpen = !node.isOpen;
-            let filteredField = context.driver.state.filters.find(filter => filter.field === field);
-            if (filteredField) {
-                node.children.forEach(children => {
-                    if (filteredField.values.find(value => value === children.filter)) {
-                        children.selected = true;
-                    }
-                }
-                );
-            }
 
+            let filteredField = context.driver.state.filters.find(filter => filter.field === field);
+            node.children.forEach(children => {
+                children.selected = Boolean(filteredField && filteredField.values.find(value => value === children.filter));
+            });
             setOptions(toggledOptions);
         });
     };
