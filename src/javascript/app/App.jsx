@@ -22,17 +22,19 @@ function configureConnector(dxContext) {
         baseURL: dxContext.baseURL + dxContext.ctx,
         siteKey: dxContext.siteKey,
         language: dxContext.language,
-        workspace: dxContext.workspace === 'default' ? 'EDIT' : 'LIVE',
-        nodeType: 'jnt:page'
+        workspace: dxContext.workspace === 'default' ? 'EDIT' : 'LIVE'
     });
     return {
         searchQuery: {
             // eslint-disable-next-line camelcase
             result_fields: fields,
             facets: {
-                'jcr:categories.keyword': {
+                'jgql:categories_path': {
                     type: 'value',
-                    disjunctive: true
+                    disjunctive: true,
+                    max: 50,
+                    hierarchical: true,
+                    rootPath: ''
                 },
                 'jcr:lastModifiedBy': {
                     type: 'value',
@@ -79,34 +81,6 @@ function configureConnector(dxContext) {
                         }
                     ]
                 }
-                // Example for Number Range Facet, note that nested docs no longer work
-                // ,
-                // 'jfs:nodes.docRating': {
-                //     type: 'range',
-                //     disjunctive: true,
-                //     ranges: [
-                //         {
-                //             from: '0',
-                //             to: '5.0',
-                //             name: '0 - 5'
-                //         },
-                //         {
-                //             from: '5.0',
-                //             to: '10.0',
-                //             name: '5 - 10'
-                //         },
-                //         {
-                //             from: '10.0',
-                //             to: '15.0',
-                //             name: '10 - 15'
-                //         },
-                //         {
-                //             from: '15.0',
-                //             to: '20.0',
-                //             name: '15 - 20'
-                //         }
-                //     ]
-                // }
             },
             conditionalFacets: {
                 'jcr:lastModifiedBy': filters => filters.filters.some(filter => filter.field === 'jcr:lastModified')
@@ -120,7 +94,8 @@ function configureConnector(dxContext) {
             }
         },
         apiConnector: connector,
-        hasA11yNotifications: true
+        hasA11yNotifications: true,
+        alwaysSearchOnInitialLoad: true
     };
 }
 

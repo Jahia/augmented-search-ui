@@ -13,6 +13,7 @@ import {
 import {Layout} from '@elastic/react-search-ui-views/es/layouts';
 import ViewWrapper from './ViewWrapper';
 import ResultView from './ResultView';
+import TreeFacet from './TreeFacet/TreeFacet';
 
 const SORT_OPTIONS = [
     {
@@ -37,7 +38,7 @@ const SORT_OPTIONS = [
     }
 ];
 
-const SearchView = ({wasSearched, results, searchTerm}) => (
+const SearchView = ({wasSearched, results}) => (
     <div>
         <ErrorBoundary>
             <Layout
@@ -83,12 +84,15 @@ const SearchView = ({wasSearched, results, searchTerm}) => (
                 }
                 bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
                 sideContent={
-                    searchTerm !== '' &&
                     <>
                         <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
                         <Facet
-                            field="jcr:categories.keyword"
+                            field="jgql:categories_path"
                             label="Categories"
+                            view={TreeFacet}
+                            show={50}
+                            filterType="any"
+                            treeField="jgql:categories_path"
                         />
                         <Facet
                             field="jcr:lastModifiedBy"
@@ -106,11 +110,6 @@ const SearchView = ({wasSearched, results, searchTerm}) => (
                             field="jcr:lastModified"
                             label="Last modified"
                         />
-                        {/* Example of Number range facet */}
-                        {/* <Facet */}
-                        {/*    field="jfs:nodes.docRating" */}
-                        {/*    label="Document rating" */}
-                        {/* /> */}
                     </>
                 }
             />
@@ -120,8 +119,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => (
 
 SearchView.propTypes = {
     wasSearched: PropTypes.bool,
-    results: PropTypes.array,
-    searchTerm: PropTypes.string
+    results: PropTypes.array
 };
 
 export default SearchView;
