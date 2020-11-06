@@ -53,14 +53,14 @@
     </parent>
     <artifactId>augmented-search-ui</artifactId>
     <name>Augmented Search UI</name>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This module provides integration with ES Search UI</description>
 
     <scm>
         <connection>scm:git:git@github.com:Jahia/augmented-search-ui.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/augmented-search-ui.git</developerConnection>
-        <tag>1_2_0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
