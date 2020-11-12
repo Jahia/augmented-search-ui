@@ -43,7 +43,8 @@ const Tree = ({options, onSelect, onRemove, field}) => {
                 return [...accumulator, {
                     ...currentOption,
                     isOpen: correspondingOptionFromState.isOpen,
-                    selected: getSelected()
+                    selected: getSelected(),
+                    children: correspondingOptionFromState.children
                 }];
             }
 
@@ -68,7 +69,6 @@ const Tree = ({options, onSelect, onRemove, field}) => {
                 field
             )
         };
-        console.log('onToggle', context, requestState, queryConfig);
         context.driver.events.search(requestState, queryConfig).then(response => {
             node.children = response.facets[field][0].data;
             node.isOpen = !node.isOpen;
