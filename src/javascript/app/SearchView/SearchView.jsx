@@ -95,6 +95,14 @@ const SearchView = ({wasSearched, results}) => (
                             treeField="jgql:categories_path"
                         />
                         <Facet
+                            field="industryCat_path"
+                            label="Companies"
+                            view={TreeFacet}
+                            show={50}
+                            filterType="any"
+                            treeField="industryCat_path"
+                        />
+                        <Facet
                             field="jcr:lastModifiedBy"
                             label="Author"
                         />

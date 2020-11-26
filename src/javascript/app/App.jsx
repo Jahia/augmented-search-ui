@@ -13,7 +13,15 @@ let fields = [
     new Field(FieldType.HIT, 'lastModified'),
     new Field(FieldType.HIT, 'lastModifiedBy'),
     new Field(FieldType.HIT, 'createdBy'),
-    new Field(FieldType.HIT, 'created')
+    new Field(FieldType.HIT, 'created'),
+    new Field(FieldType.HIT, 'nodeType'),
+    new Field(FieldType.NODE, 'poster_path'),
+    new Field(FieldType.NODE, 'tagline'),
+    new Field(FieldType.NODE, 'release_date'),
+    new Field(FieldType.NODE, 'vote_average'),
+    new Field(FieldType.NODE, 'vote_count'),
+    new Field(FieldType.NODE, 'popularity'),
+    new Field(FieldType.NODE, 'overview')
 ];
 
 function configureConnector(dxContext) {
@@ -35,6 +43,14 @@ function configureConnector(dxContext) {
                     max: 50,
                     hierarchical: true,
                     rootPath: ''
+                },
+                // eslint-disable-next-line camelcase
+                industryCat_path: {
+                    type: 'value',
+                    disjunctive: true,
+                    max: 50,
+                    hierarchical: true,
+                    rootPath: '/companies'
                 },
                 'jcr:lastModifiedBy': {
                     type: 'value',
