@@ -43,7 +43,13 @@ const doneTypingInterval = 3000; // Time in ms (3 seconds)
 const searchTermLength = 3;
 
 const buildAndFireSearchEvent = searchTerm => {
-    if (!window.wem) {
+    if (!window.wem ||
+        !window.wem.buildEvent ||
+        !window.wem.buildTarget ||
+        !window.wem.buildSourcePage ||
+        !window.wem.collectEvent
+    ) {
+        console.warn('[buildAndFireSearchEvent] window.wem or buildEvent or buildTarget or buildSourcePage or collectEvent is missing');
         return;
     }
 
@@ -77,6 +83,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
         // Console.debug('[handleKeyup] searchTerm : ', searchTerm, ' || typingTimer : ', typingTimer);
 
         if (!window.wem) {
+            console.warn('[handleKeyup] window.wem is missing');
             return;
         }
 
