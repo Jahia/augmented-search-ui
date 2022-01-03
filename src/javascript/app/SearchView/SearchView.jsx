@@ -40,7 +40,7 @@ const SORT_OPTIONS = [
 
 let typingTimer; // Timer identifier
 const doneTypingInterval = 3000; // Time in ms (3 seconds)
-const searchTermLength = 3; // Number of terms before to track
+const searchTermLength = 3; // Number of terms to type before to track
 
 const buildAndFireSearchEvent = searchTerm => {
     if (!window.wem ||
