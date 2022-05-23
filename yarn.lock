@@ -1158,10 +1158,10 @@
     i18next-chained-backend "^0.1.2"
     i18next-xhr-backend "^1.5.1"
 
-"@jahia/search-ui-jahia-connector@^2.0.8":
-  version "2.0.9"
-  resolved "https://npm.jahia.com/@jahia%2fsearch-ui-jahia-connector/-/search-ui-jahia-connector-2.0.9.tgz#08b2f9334f74ec01f3628c92251c6894c11180a9"
-  integrity sha512-eu+F9RjzvvIQUWXuHbQI2TeJXeNjE/6yYGZbYkZ/HCCHf4rIsVtuQndH96XzBae86zEBKu2X7zspKnJl64aQ7g==
+"@jahia/search-ui-jahia-connector@^2.0.12":
+  version "2.0.12"
+  resolved "https://npm.jahia.com/@jahia%2fsearch-ui-jahia-connector/-/search-ui-jahia-connector-2.0.12.tgz#903fe5b67a0ef898f91674beb5bd37799d890803"
+  integrity sha512-IHxHWuCFD/gPgxG3HyVnDscL74c+Y5hBI+W0RaX43yMxIgSWyszM2DJJjQNlLBSXJMoKN15LhTPc7vr7LKI/6Q==
   dependencies:
     eslint-plugin-react-hooks "^4.1.2"
     graphql "^14.5.4"
