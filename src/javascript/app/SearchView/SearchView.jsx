@@ -77,7 +77,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
         if (searchTerm && searchTerm.length >= searchTermLength) {
             buildAndFireSearchEvent(searchTerm);
         }
-    }, []);
+    }, [searchTerm]);
 
     const handleKeyup = () => {
         // Console.debug('[handleKeyup] searchTerm : ', searchTerm, ' || typingTimer : ', typingTimer);
