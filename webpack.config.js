@@ -1,6 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const {CycloneDxWebpackPlugin} = require('@cyclonedx/webpack-plugin');
+
+/** @type {import('@cyclonedx/webpack-plugin').CycloneDxWebpackPluginOptions} */
+const cycloneDxWebpackPluginOptions = {
+    specVersion: '1.4',
+    rootComponentType: 'library',
+    outputLocation: './bom'
+};
 
 module.exports = (env, argv) => {
     const config = {
@@ -61,6 +69,9 @@ module.exports = (env, argv) => {
                 }
             }
         },
+        plugins: [
+            new CycloneDxWebpackPlugin(cycloneDxWebpackPluginOptions)
+        ],
         mode: 'development'
     };
 

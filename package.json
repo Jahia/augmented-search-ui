@@ -1,6 +1,6 @@
 {
   "name": "augmented-search-ui",
-  "version": "3.0.0",
+  "version": "3.0.5-SNAPSHOT",
   "description": "Jahia module that provides integration with ES Search UI on top of Jahia Augmented Search API",
   "main": "main.js",
   "husky": {
@@ -39,6 +39,7 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "@cyclonedx/webpack-plugin": "^2.0.2",
     "@jahia/eslint-config": "^1.0.0-beta.20190920132338",
     "auto": "^7.12.4",
     "babel-eslint": "^10.0.1",

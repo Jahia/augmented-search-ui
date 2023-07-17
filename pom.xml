@@ -77,6 +77,7 @@
     <properties>
         <jahia-module-signature>MCwCFAR0vC0ZkHpmQS3xw/M+mlmU09RTAhQTEktgli22w8gkd1bR7dLsQJEzfA==</jahia-module-signature>
         <jahia-depends>augmented-search</jahia-depends>
+        <sonar.sources>src/javascript</sonar.sources>
     </properties>
 
     <repositories>
@@ -199,6 +200,33 @@
                 <configuration>
                     <preparationGoals>clean verify frontend:yarn@sync-pom scm:checkin@package-json</preparationGoals>
                     <completionGoals>frontend:yarn@sync-pom scm:checkin@package-json</completionGoals>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <version>2.7.9</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <projectType>library</projectType>
+                    <schemaVersion>1.4</schemaVersion>
+                    <includeBomSerialNumber>true</includeBomSerialNumber>
+                    <includeCompileScope>true</includeCompileScope>
+                    <includeProvidedScope>false</includeProvidedScope>
+                    <includeRuntimeScope>true</includeRuntimeScope>
+                    <includeSystemScope>false</includeSystemScope>
+                    <includeTestScope>false</includeTestScope>
+                    <includeLicenseText>false</includeLicenseText>
+                    <outputReactorProjects>true</outputReactorProjects>
+                    <outputFormat>json</outputFormat>
+                    <outputName>java-bom.cdx</outputName>
                 </configuration>
             </plugin>
         </plugins>
