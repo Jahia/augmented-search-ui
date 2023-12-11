@@ -51,7 +51,9 @@ const Tree = ({options, onSelect, onRemove, field}) => {
             return [...accumulator, {...currentOption, isOpen: false, selected: false}];
         }, []);
         setOptions(mappedOptions);
-    }, [options, context.driver.state.filters, field, optionsState]);
+        // Invalid dependency, infinite loop, must be refactored
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [options, context.driver.state.filters, field]);
 
     const onToggle = node => {
         const toggledOptions = [...optionsState];
