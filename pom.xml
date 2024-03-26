@@ -75,7 +75,7 @@
     </distributionManagement>
 
     <properties>
-        <jahia-module-signature>MCwCFAR0vC0ZkHpmQS3xw/M+mlmU09RTAhQTEktgli22w8gkd1bR7dLsQJEzfA==</jahia-module-signature>
+        <jahia-module-signature>MCwCFBGMW03aJzh+On6g2wtpist+PBjKAhRDrlgfGd6F1AC/A9io3BmIuOkmvg==</jahia-module-signature>
         <jahia-depends>augmented-search</jahia-depends>
         <sonar.sources>src/javascript</sonar.sources>
     </properties>
