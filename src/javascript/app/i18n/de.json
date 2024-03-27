@@ -1,0 +1,52 @@
+{
+  "config": {
+    "mimeTypes": {
+      "application/pdf": "PDF-Datei"
+    },
+    "nodeTypes": {
+      "ARTICLE": "Artikel",
+      "QUIZ": "Quiz",
+      "PAGE": "Webseite",
+      "FILE": "Datei",
+      "TRAINING": "Schulung",
+      "EVENT": "Ereignis",
+      "DEFAULT": "Inhalt"
+    }
+  },
+  "facet": {
+    "sortBy": "Sortieren nach",
+    "categories": "Kategorien",
+    "lastModifiedBy": "Autor",
+    "tags": "Tags",
+    "keywords": "Schlüsselwörter",
+    "lastModified": "Zuletzt geändert",
+    "eventType": "Ereignistyp",
+    "range": {
+      "lastWeek": "Letzte Woche",
+      "lastMonth": "Letzter Monat",
+      "last6Months": "Letzten 6 Monate",
+      "lastYear": "Letztes Jahr",
+      "last5Years": "Letzten 5 Jahre"
+    },
+    "sortOptions": {
+      "created": "Erstellungsdatum",
+      "modified": "Änderungsdatum",
+      "relevance": "Relevanz",
+      "title": "Titel"
+    }
+  },
+  "search": {
+    "ui": {
+      "inputPlaceholder": "Suchen",
+      "btn": "Suchen",
+      "showing": "Anzeigen",
+      "outOf": "von",
+      "for": "für",
+      "show": "Zeigen",
+      "btn": {
+        "search": "Suchen"
+      }
+    },
+    "fallbackMsg": "Es wurde nichts gefunden"
+  }
+}
