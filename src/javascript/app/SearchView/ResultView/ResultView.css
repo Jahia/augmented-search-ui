@@ -1,0 +1,110 @@
+:root{
+    --color-quiz:var(--pink);
+    --color-industrial-content:var(--cyan);
+    --color-content:var(--green);
+    --color-page:var(--yellow);
+    --color-file:var(--red);
+    --color-training:var(--purple);
+    --color-event:var(--orange);
+    --color-default:#1a0dab;
+}
+
+.result{
+    position: relative;
+    font-weight: normal;
+    font-size: small;
+    line-height: 1.58;
+    /*margin-bottom: 30px;*/
+    margin-top: 30px;
+}
+
+/*.result + .result {*/
+/*    margin-top: 30px;*/
+/*}*/
+
+.result a {
+    /*color: #1a0dab;*/
+    text-decoration: none;
+}
+
+.result .excerpt {
+    color: #4d5156;
+}
+
+.result .excerpt em{
+    font-weight: 700;
+    background-color: var(--color-search-highlight);
+}
+
+.result h3 {
+    color: #1a0dab;
+    margin-top:18px;
+    padding-top: 5px;
+    display: inline-block;
+    line-height: 1.3;
+    margin-bottom: 3px;
+    font-family: arial,sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.header {
+    display: flex;
+    padding: 0;
+    align-items: center;
+    padding-bottom: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.header > span{
+    background-color: #f1f3f4;
+    border: 1px solid #ecedef;
+    border-radius: 50%;
+    /*display: inline-flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    height: 26px;
+    width: 26px;
+    margin-right: 12px;
+}
+
+.header > span div{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 26px;
+    width: 26px;
+}
+
+.header > span img,
+.header > span svg{
+    height: 16px;
+    width: 16px;
+}
+
+.header .content > span{
+    color: #202124;
+    font-size: 14px;
+    display: block;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+.header .content cite {
+    color: #4d5156;
+    font-style: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+    line-height: 18px;
+    display: table-cell;
+}
+
+.element {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}

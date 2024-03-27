@@ -2,7 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import moment from 'moment';
-
+import {
+    BsBodyText,
+    BsLayoutTextWindowReverse,
+    BsFileEarmarkPdf,
+    BsFileEarmarkText,
+    BsFillQuestionDiamondFill, BsCalendar2Week, BsBank2, BsDashLg
+} from 'react-icons/bs';
+import './ResultView.css';
+import {nodeTypes, mimeTypes, nodeTypesColor} from '../../config';
+import {useTranslation} from 'react-i18next';
 function getFieldType(result, field, type) {
     if (result[field]) {
         return result[field][type];
@@ -45,25 +54,33 @@ function getEscapedFields(result) {
 }
 
 // Inner date component
-const DateComponent = ({result}) => {
+const DateComponent = ({result, t}) => {
     const lastModifiedBy = getEscapedField(result, 'lastModifiedBy');
     const lastModifiedDate = getEscapedField(result, 'lastModified');
     const createdBy = getEscapedField(result, 'createdBy');
     const createdDate = getEscapedField(result, 'created');
 
-    if (lastModifiedBy && lastModifiedDate) {
-        return (
-            <li>
-                <h5 style={{color: '#8b9bad'}}>Modified by <i>{lastModifiedBy}</i> on <i>{moment(lastModifiedDate).format('LLL')}</i> </h5>
-            </li>
-        );
-    }
+    const author = lastModifiedBy || createdBy;
+    const date = lastModifiedDate || createdDate;
 
-    if (createdBy && createdDate) {
+    if (author && date) {
         return (
-            <li>
-                <h5 style={{color: '#8b9bad'}}>Modified by <i>{createdBy}</i> on <i>{moment(createdDate).format('LLL')}</i> </h5>
-            </li>
+            <>
+                <span>
+                    {moment(date).format('lll')}
+                    {' '}
+                    {lastModifiedDate &&
+                        <small>{`(${t('result.createdAt')} ${moment(createdDate).format('ll')})`}</small>}
+                </span>
+                {' '}
+                <BsDashLg/>
+                {' '}
+                <span>{author}</span>
+                {' '}
+                <BsDashLg/>
+                {' '}
+            </>
+
         );
     }
 
@@ -71,56 +88,103 @@ const DateComponent = ({result}) => {
 };
 
 DateComponent.propTypes = {
-    result: PropTypes.object
+    result: PropTypes.object,
+    t: PropTypes.func
 };
 
-const ResultView = ({key, titleField, urlField, result}) => {
+const getFileIcon = mimeType => {
+    switch (mimeType) {
+        case mimeTypes.PDF: return <BsFileEarmarkPdf/>;
+        default: return <BsFileEarmarkText/>;
+    }
+};
+
+const getIcon = (nodeType, mimeType) => {
+    const nt = nodeTypes();
+    switch (nodeType) {
+        case nt.ARTICLE: return <BsBodyText/>;
+        case nt.QUIZ: return <BsFillQuestionDiamondFill/>;
+        case nt.PAGE: return <BsLayoutTextWindowReverse/>;
+        case nt.TRAINING: return <BsBank2/>;
+        case nt.EVENT: return <BsCalendar2Week/>;
+        case nt.FILE: return getFileIcon(mimeType);
+        default: return <BsFileEarmarkText/>;
+    }
+};
+
+const getNodeTypeKey = (nodeType, mimeType, i18n) => {
+    const nt = nodeTypes('J2S');
+    const key = nt[nodeType] || 'DEFAULT';
+
+    if (key === 'FILE' && i18n.exists(`config.mimeTypes.${mimeType}`)) {
+        return `config.mimeTypes.${mimeType}`;
+    }
+
+    return `config.nodeTypes.${key}`;
+};
+
+const getURLStream = url => {
+    return url.replace('.html', '').split('/').reduce((string, item, index) => {
+        if (!item) {
+            return string;
+        }
+
+        if (index === 1) {
+            return item;
+        }
+
+        return `${string} > ${item} `;
+    }, '');
+};
+
+const getNodeTypeColor = nodeType => {
+    return nodeTypesColor[nodeType] || 'var(--color-default)';
+};
+
+const ResultView = ({id, titleField, urlField, result}) => {
+    const {t, i18n} = useTranslation();
+
     const fields = getEscapedFields(result);
-    const title = getEscapedField(result, titleField);
+    const title = getRaw(result, titleField);
+    // Const title = getEscapedField(result, titleField);
     const url = getRaw(result, urlField);
+    const nodeType = getRaw(result, 'nodeType');
+    const mimeType = getRaw(result, 'mimeType');
 
     return (
-        <div key={key}
-             className="sui-result"
+        <div key={id}
+             className="result"
         >
-            <ul className="sui-result__details">
-                <li>
-                    <div className="sui-result__header">
-                        {title && !url && (
-                            <span
-                                dangerouslySetInnerHTML={{__html: title}}
-                                className="sui-result__title"
-                            />
-                        )}
-                        {title && url && (
-                            <a dangerouslySetInnerHTML={{__html: title}}
-                               className="sui-result__title sui-result__title-link"
-                               href={url}
-                               target="_blank"
-                               rel="noopener noreferrer"
-                            />
-                        )}
+            <a href={url || '#'} style={{color: getNodeTypeColor(nodeType)}}>
+                <br/>
+                <h3>{title}</h3>
+                <div className="excerpt">
+                    <DateComponent {...{result, t}}/>
+                    <span dangerouslySetInnerHTML={{__html: fields.excerpt}}/>
+                </div>
+                <div className="header">
+                    <span>
+                        <div>
+                            {getIcon(nodeType, mimeType)}
+                        </div>
+                    </span>
+                    <div className="content">
+                        <span>{t(getNodeTypeKey(nodeType, mimeType, i18n))}</span>
+                        <div className="element">
+                            <cite>
+                                {/* {window.location.origin} */}
+                                <span>{getURLStream(url)}</span>
+                            </cite>
+                        </div>
                     </div>
-                </li>
-                <li>
-                    <div className="sui-result__body">
-                        <ul className="sui-result__details">
-                            <li>
-                                <span
-                                  dangerouslySetInnerHTML={{__html: fields.excerpt}}
-                                  className="sui-result__value"/>
-                            </li>
-                            <DateComponent result={result}/>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+                </div>
+            </a>
         </div>
     );
 };
 
 ResultView.propTypes = {
-    key: PropTypes.string,
+    id: PropTypes.string,
     titleField: PropTypes.string,
     urlField: PropTypes.string,
     result: PropTypes.object

@@ -35,6 +35,10 @@
       "title" : "Title"
     }
   },
+  "result": {
+    "updatedAt" : "updated at",
+    "createdAt": "created at"
+  },
   "search": {
     "ui": {
       "inputPlaceholder" : "Search",
