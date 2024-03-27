@@ -14,25 +14,29 @@ import {Layout} from '@elastic/react-search-ui-views/lib/esm/layouts';
 import ViewWrapper from './ViewWrapper';
 import ResultView from './ResultView';
 import TreeFacet from './TreeFacet/TreeFacet';
+import {useTranslation} from 'react-i18next';
+import AsSearchInput from './Override/SearchInput';
+import AsPagingInfo from './Override/PagingInfo';
+import AsResultsPerPage from './Override/ResultsPerPage';
 
-const SORT_OPTIONS = [
+const getSortOptions = t => [
     {
-        name: 'Created',
+        name: t('facet.sortOptions.created'),
         value: 'jcr:created',
         direction: 'desc'
     },
     {
-        name: 'Modified',
+        name: t('facet.sortOptions.modified'),
         value: 'jcr:lastModified',
         direction: 'desc'
     },
     {
-        name: 'Relevance',
+        name: t('facet.sortOptions.relevance'),
         value: '',
         direction: ''
     },
     {
-        name: 'Title',
+        name: t('facet.sortOptions.title'),
         value: 'jcr:title.keyword',
         direction: 'asc'
     }
@@ -71,6 +75,7 @@ const buildAndFireSearchEvent = searchTerm => {
 };
 
 const SearchView = ({wasSearched, results, searchTerm}) => {
+    const {t} = useTranslation();
     // If searchTerm is already populated
     React.useEffect(() => {
         // Console.debug('[useEffect] searchTerm : ', searchTerm);
@@ -101,8 +106,10 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                         <SearchBox
                             searchAsYouType
                             inputProps={{
-                                onKeyUp: handleKeyup
+                                onKeyUp: handleKeyup,
+                                placeholder: t('search.ui.inputPlaceholder')
                             }}
+                            inputView={AsSearchInput}
                             useAutocomplete={false}
                             AutocompleteResults={{
                                 linkTarget: '_blank',
@@ -122,6 +129,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                               fallbackView="Nothing was found"
                                               view={results.map(result => (
                                                   <Result key={result.id.raw}
+                                                          id={result.id.raw}
                                                           view={ResultView}
                                                           result={result}
                                                           titleField="title"
@@ -132,21 +140,21 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                         <>
                             {<ViewWrapper wasSearched={wasSearched}
                                           results={results}
-                                          view={<PagingInfo/>}
+                                          view={<PagingInfo view={AsPagingInfo}/>}
                                           fallbackView=""/>}
                             {<ViewWrapper wasSearched={wasSearched}
                                           results={results}
-                                          view={<ResultsPerPage/>}
+                                          view={<ResultsPerPage view={AsResultsPerPage}/>}
                                           fallbackView=""/>}
                         </>
                     }
                     bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
                     sideContent={
                         <>
-                            <Sorting label="Sort by" sortOptions={SORT_OPTIONS}/>
+                            <Sorting label={t('facet.sortBy')} sortOptions={getSortOptions(t)}/>
                             <Facet
                                 field="jgql:categories_path"
-                                label="Categories"
+                                label={t('facet.categories')}
                                 view={TreeFacet}
                                 show={50}
                                 filterType="any"
@@ -154,19 +162,19 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                             />
                             <Facet
                                 field="jcr:lastModifiedBy"
-                                label="Author"
+                                label={t('facet.lastModifiedBy')}
                             />
                             <Facet
                                 field="jcr:tags"
-                                label="Tags"
+                                label={t('facet.tags')}
                             />
                             <Facet
                                 field="jcr:keywords"
-                                label="Keywords"
+                                label={t('facet.keywords')}
                             />
                             <Facet
                                 field="jcr:lastModified"
-                                label="Last modified"
+                                label={t('facet.lastModified')}
                             />
                         </>
                     }

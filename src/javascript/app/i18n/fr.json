@@ -1,0 +1,52 @@
+{
+  "config": {
+    "mimeTypes" : {
+      "application/pdf": "Fichier PDF"
+    },
+    "nodeTypes": {
+      "ARTICLE": "Article",
+      "QUIZ": "Quiz",
+      "PAGE": "Page web",
+      "FILE": "Fichier",
+      "TRAINING": "Formation",
+      "EVENT": "Evénement",
+      "DEFAULT": "Contenu"
+    }
+  },
+  "facet": {
+    "sortBy" : "Ordonner par",
+    "categories": "Catégories" ,
+    "lastModifiedBy": "Rédacteur",
+    "tags": "Tags",
+    "keywords": "Mots clés",
+    "lastModified": "Dernière modification",
+    "eventType": "Type d'événement",
+    "range": {
+      "lastWeek":"La semaine dernière",
+      "lastMonth":"Le mois dernier",
+      "last6Months":"Les 6 derniers mois",
+      "lastYear": "L'année dernière",
+      "last5Years": "Les 5 dernière années"
+    },
+    "sortOptions": {
+      "created" : "Date de création",
+      "modified" : "Date de mise à jour",
+      "relevance" : "Pertinence",
+      "title" : "Titre"
+    }
+  },
+  "search": {
+    "ui": {
+      "inputPlaceholder" : "Rechercher",
+      "btn" : "Rechercher",
+      "showing" : "Affiche",
+      "outOf": "sur",
+      "for": "pour",
+      "show": "Afficher",
+      "btn": {
+        "search": "Rechercher"
+      }
+    },
+    "fallbackMsg" : "Aucun résultat ne correspond à votre recherche"
+  }
+}
