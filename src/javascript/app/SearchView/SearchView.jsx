@@ -9,8 +9,8 @@ import {
     ResultsPerPage,
     SearchBox,
     Sorting
-} from '@elastic/react-search-ui/es/containers';
-import {Layout} from '@elastic/react-search-ui-views/es/layouts';
+} from '@elastic/react-search-ui/lib/esm/containers';
+import {Layout} from '@elastic/react-search-ui-views/lib/esm/layouts';
 import ViewWrapper from './ViewWrapper';
 import ResultView from './ResultView';
 import TreeFacet from './TreeFacet/TreeFacet';

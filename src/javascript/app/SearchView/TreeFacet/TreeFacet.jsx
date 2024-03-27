@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {FacetValue} from '@elastic/react-search-ui/es/types';
-import {appendClassName} from '@elastic/react-search-ui-views/es/view-helpers';
+// Import {FacetValue} from '@elastic/react-search-ui/lib/esm/types';
+import {appendClassName} from '@elastic/react-search-ui-views/lib/esm/view-helpers';
 import Tree from './Tree/Tree';
 
 const TreeFacet = ({
@@ -41,7 +41,7 @@ TreeFacet.propTypes = {
     label: PropTypes.string.isRequired,
     treeField: PropTypes.string.isRequired,
     onMoreClick: PropTypes.func.isRequired,
-    options: PropTypes.arrayOf(FacetValue).isRequired,
+    // Options: PropTypes.arrayOf(FacetValue).isRequired,
     showMore: PropTypes.bool.isRequired,
     className: PropTypes.string,
     onSelect: PropTypes.func.isRequired,
