@@ -28,13 +28,13 @@ Option.propTypes = {
     data: PropTypes.object
 };
 
-function AsResultsPerPage({
+const ResultsPerPage = ({
     className,
     onChange,
     options,
     value: selectedValue,
     ...rest
-}) {
+}) => {
     const {t} = useTranslation();
 
     let selectedOption = null;
@@ -70,13 +70,13 @@ function AsResultsPerPage({
             />
         </div>
     );
-}
+};
 
-AsResultsPerPage.propTypes = {
+ResultsPerPage.propTypes = {
     className: PropTypes.bool,
     onChange: PropTypes.func,
     options: PropTypes.array,
     value: PropTypes.number
 };
 
-export default AsResultsPerPage;
+export default ResultsPerPage;

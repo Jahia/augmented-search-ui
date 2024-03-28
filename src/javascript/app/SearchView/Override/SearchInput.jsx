@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useTranslation} from 'react-i18next';
 
-function AsSearchInput({
+const SearchInput = ({
     getAutocomplete,
     getButtonProps,
     getInputProps
-}) {
+}) => {
     const {t} = useTranslation();
     return (
         <>
@@ -17,12 +17,12 @@ function AsSearchInput({
             <input {...getButtonProps({value: t('search.ui.btn.search')})}/>
         </>
     );
-}
+};
 
-AsSearchInput.propTypes = {
+SearchInput.propTypes = {
     getAutocomplete: PropTypes.func,
     getButtonProps: PropTypes.func,
     getInputProps: PropTypes.func
 };
 
-export default AsSearchInput;
+export default SearchInput;

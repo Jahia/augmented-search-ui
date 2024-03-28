@@ -15,9 +15,9 @@ import ViewWrapper from './ViewWrapper';
 import ResultView from './ResultView';
 import TreeFacet from './TreeFacet/TreeFacet';
 import {useTranslation} from 'react-i18next';
-import AsSearchInput from './Override/SearchInput';
-import AsPagingInfo from './Override/PagingInfo';
-import AsResultsPerPage from './Override/ResultsPerPage';
+import SearchInputView from './Override/SearchInput';
+import PagingInfoView from './Override/PagingInfo';
+import ResultsPerPageView from './Override/ResultsPerPage';
 
 const getSortOptions = t => [
     {
@@ -109,7 +109,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                 onKeyUp: handleKeyup,
                                 placeholder: t('search.ui.inputPlaceholder')
                             }}
-                            inputView={AsSearchInput}
+                            inputView={SearchInputView}
                             useAutocomplete={false}
                             AutocompleteResults={{
                                 linkTarget: '_blank',
@@ -140,11 +140,11 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                         <>
                             {<ViewWrapper wasSearched={wasSearched}
                                           results={results}
-                                          view={<PagingInfo view={AsPagingInfo}/>}
+                                          view={<PagingInfo view={PagingInfoView}/>}
                                           fallbackView=""/>}
                             {<ViewWrapper wasSearched={wasSearched}
                                           results={results}
-                                          view={<ResultsPerPage view={AsResultsPerPage}/>}
+                                          view={<ResultsPerPage view={ResultsPerPageView}/>}
                                           fallbackView=""/>}
                         </>
                     }

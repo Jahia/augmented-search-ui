@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import {appendClassName} from '@elastic/react-search-ui-views/lib/esm/view-helpers';
 import {useTranslation} from 'react-i18next';
 
-function AsPagingInfo({
+const PagingInfo = ({
     className,
     end,
     searchTerm,
     start,
     totalResults,
     ...rest
-}) {
+}) => {
     const {t} = useTranslation();
     return (
         <div className={appendClassName('sui-paging-info', className)} {...rest}>
@@ -27,13 +27,13 @@ function AsPagingInfo({
             )}
         </div>
     );
-}
+};
 
-AsPagingInfo.propTypes = {
+PagingInfo.propTypes = {
     className: PropTypes.bool,
     end: PropTypes.number,
     searchTerm: PropTypes.string,
     start: PropTypes.number,
     totalResults: PropTypes.number
 };
-export default AsPagingInfo;
+export default PagingInfo;
