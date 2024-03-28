@@ -21,9 +21,9 @@ const setDefaultStyle = {
 
 const wrapOption = option => ({label: option, value: option});
 
-function Option(props) {
+const Option = props => {
     return <components.Option {...props}>{props.data.label}</components.Option>;
-}
+};
 
 Option.propTypes = {
     data: PropTypes.object

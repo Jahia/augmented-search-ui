@@ -16,6 +16,7 @@
     line-height: 1.58;
     /*margin-bottom: 30px;*/
     margin-top: 30px;
+    font-family: var(--search-result-font-family);
 }
 
 /*.result + .result {*/
@@ -33,7 +34,7 @@
 
 .result .excerpt em{
     font-weight: 700;
-    background-color: var(--color-search-highlight);
+    background-color: var(--search-highlight-color);
 }
 
 .result h3 {

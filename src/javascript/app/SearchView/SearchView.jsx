@@ -138,14 +138,14 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                               ))}/>}
                     bodyHeader={
                         <>
-                            {<ViewWrapper wasSearched={wasSearched}
-                                          results={results}
-                                          view={<PagingInfo view={PagingInfoView}/>}
-                                          fallbackView=""/>}
-                            {<ViewWrapper wasSearched={wasSearched}
-                                          results={results}
-                                          view={<ResultsPerPage view={ResultsPerPageView}/>}
-                                          fallbackView=""/>}
+                            <ViewWrapper wasSearched={wasSearched}
+                                         results={results}
+                                         view={<PagingInfo view={PagingInfoView}/>}
+                                         fallbackView=""/>
+                            <ViewWrapper wasSearched={wasSearched}
+                                         results={results}
+                                         view={<ResultsPerPage view={ResultsPerPageView}/>}
+                                         fallbackView=""/>
                         </>
                     }
                     bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}

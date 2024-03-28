@@ -40,7 +40,7 @@ const TreeNode = props => {
     const {node, getChildNodes, level, onToggle, onSelect, onRemove} = props;
 
     return (
-        <React.Fragment>
+        <>
             <StyledTreeNode level={level} type={node.type}>
                 <NodeIcon role="button"
                           onClick={e => {
@@ -78,7 +78,7 @@ const TreeNode = props => {
                     level={level + 1}
                 />
             ))}
-        </React.Fragment>
+        </>
     );
 };
 
