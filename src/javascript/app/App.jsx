@@ -4,6 +4,7 @@ import '@elastic/react-search-ui-views/lib/styles/styles.css';
 import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-connector';
 import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
+import {useTranslation} from 'react-i18next';
 
 let fields = [
     new Field(FieldType.HIT, 'link'),
@@ -13,10 +14,12 @@ let fields = [
     new Field(FieldType.HIT, 'lastModified'),
     new Field(FieldType.HIT, 'lastModifiedBy'),
     new Field(FieldType.HIT, 'createdBy'),
-    new Field(FieldType.HIT, 'created')
+    new Field(FieldType.HIT, 'created'),
+    new Field(FieldType.HIT, 'nodeType'),
+    new Field(FieldType.HIT, 'mimeType')
 ];
 
-function configureConnector(dxContext) {
+function configureConnector(dxContext, t) {
     let connector = new JahiaSearchAPIConnector({
         apiToken: 'none',
         baseURL: dxContext.baseURL + dxContext.ctx,
@@ -57,27 +60,27 @@ function configureConnector(dxContext) {
                         {
                             from: 'now-1w',
                             to: 'now',
-                            name: 'Last Week'
+                            name: t('facet.range.lastWeek')
                         },
                         {
                             from: 'now-1M',
                             to: 'now-1w',
-                            name: 'Last month'
+                            name: t('facet.range.lastMonth')
                         },
                         {
                             from: 'now-6M',
                             to: 'now-1M',
-                            name: 'Last 6 months'
+                            name: t('facet.range.last6Months')
                         },
                         {
                             from: 'now-1y',
                             to: 'now-6M',
-                            name: 'Last year'
+                            name: t('facet.range.lastYear')
                         },
                         {
                             from: 'now-5y',
                             to: 'now-1y',
-                            name: 'Last 5 years'
+                            name: t('facet.range.last5Years')
                         }
                     ]
                 }
@@ -100,8 +103,9 @@ function configureConnector(dxContext) {
 }
 
 const App = ({dxContext}) => {
+    const {t} = useTranslation();
     return (
-        <SearchProvider config={configureConnector(dxContext)}>
+        <SearchProvider config={configureConnector(dxContext, t)}>
             <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
                 {SearchView}
             </WithSearch>

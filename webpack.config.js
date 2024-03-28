@@ -23,23 +23,40 @@ module.exports = (env, argv) => {
         },
         resolve: {
             mainFields: ['module', 'main'],
-            extensions: ['.mjs', '.js', '.jsx', 'json']
+            extensions: ['.mjs', '.js', '.jsx', '.json']
         },
         module: {
             rules: [
                 {
-                    test: /\.mjs$/,
+                    test: /\.m?js$/,
                     include: /node_modules/,
                     type: "javascript/auto"
                 },
                 {
+                    test: /\.m?js$/,
+                    resolve: {
+                        fullySpecified: false,
+                    },
+                },
+                {
                     test: /\.jsx?$/,
-                    include: [path.join(__dirname, "src")],
-                    loader: 'babel-loader',
-                    query: {
-                        plugins: [
-                            '@babel/plugin-transform-classes'
-                        ]
+                    include: [path.join(__dirname, 'src')],
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [
+                                ['@babel/preset-env', {
+                                    modules: false,
+                                    targets: {chrome: '60', edge: '44', firefox: '54', safari: '12'}
+                                }],
+                                '@babel/preset-react'
+                            ],
+                            plugins: [
+                                'lodash',
+                                '@babel/plugin-syntax-dynamic-import'
+                            ]
+                        }
                     }
                 },
                 {
@@ -48,13 +65,8 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'fonts/'
-                        }
-                    }]
+                    type: 'asset/resource',
+                    dependency: { not: ['url'] }
                 }
             ]
         },
