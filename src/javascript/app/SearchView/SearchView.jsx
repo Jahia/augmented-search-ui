@@ -18,6 +18,7 @@ import {useTranslation} from 'react-i18next';
 import SearchInputView from './Override/SearchInput';
 import PagingInfoView from './Override/PagingInfo';
 import ResultsPerPageView from './Override/ResultsPerPage';
+import {BsTagsFill} from 'react-icons/bs';
 
 const getSortOptions = t => [
     {
@@ -156,6 +157,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                 field="jgql:categories_path"
                                 label={t('facet.categories')}
                                 view={TreeFacet}
+                                icon={BsTagsFill}
                                 show={50}
                                 filterType="any"
                                 treeField="jgql:categories_path"

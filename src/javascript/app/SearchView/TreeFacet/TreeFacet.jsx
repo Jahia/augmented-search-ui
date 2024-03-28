@@ -8,6 +8,7 @@ import Tree from './Tree/Tree';
 const TreeFacet = ({
     className,
     label,
+    icon,
     onMoreClick,
     onSelect,
     onRemove,
@@ -15,9 +16,13 @@ const TreeFacet = ({
     showMore,
     treeField
 }) => {
+    const Icon = icon;
     return (
         <fieldset className={appendClassName('sui-facet', className)}>
-            <legend className="sui-facet__title">{label}</legend>
+            <legend className="sui-facet__title">
+                <Icon/>
+                {label}
+            </legend>
             <div className="sui-multi-checkbox-facet">
                 {options.length < 1 && <div>No matching options</div>}
                 <Tree options={options} field={treeField} onSelect={onSelect} onRemove={onRemove}/>
@@ -39,6 +44,7 @@ const TreeFacet = ({
 
 TreeFacet.propTypes = {
     label: PropTypes.string.isRequired,
+    icon: PropTypes.elementType,
     treeField: PropTypes.string.isRequired,
     onMoreClick: PropTypes.func.isRequired,
     // Options: PropTypes.arrayOf(FacetValue).isRequired,
