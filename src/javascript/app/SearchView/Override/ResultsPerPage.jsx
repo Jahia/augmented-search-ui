@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select, {components} from 'react-select';
@@ -53,6 +54,7 @@ const ResultsPerPage = ({
             {...rest}
         >
             <div className="sui-results-per-page__label">{t('search.ui.show')}</div>
+
             <Select
                 className="sui-select sui-select--inline"
                 classNamePrefix="sui-select"
@@ -62,6 +64,7 @@ const ResultsPerPage = ({
                 styles={setDefaultStyle}
                 components={{
                     Option: props => {
+                        // eslint-disable-next-line react/prop-types
                         props.innerProps['data-transaction-name'] = 'results per page';
                         return Option(props);
                     }
