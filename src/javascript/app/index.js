@@ -1,9 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import App from './App';
+import i18n from './i18n/i18n';
+import moment from 'moment';
+import 'moment/locale/fr';
 
 const bootstrap = function (target, context) {
-    ReactDOM.render(<App dxContext={context}/>, document.getElementById(target));
+    i18n.changeLanguage(context.language);
+    moment().locale(context.language);
+    const root = createRoot(document.getElementById(target));
+    root.render(
+        <App dxContext={context}/>
+    );
 };
 
 window.augmentedSearchUIApp = bootstrap;
