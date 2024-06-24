@@ -61,6 +61,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.10.6",
     "@date-io/moment": "^3.0.0",
     "@elastic/react-search-ui": "^1.21.1",
     "@elastic/react-search-ui-views": "^1.21.1",
