@@ -1,7 +1,7 @@
-import {ApolloClient, createHttpLink, InMemoryCache} from "@apollo/client";
-import {setContext} from "@apollo/client/link/context";
+import {ApolloClient, createHttpLink, InMemoryCache} from '@apollo/client';
+import {setContext} from '@apollo/client/link/context';
 
-const httpLink = (endpoint) => createHttpLink({
+const httpLink = endpoint => createHttpLink({
     uri: endpoint || process.env.REACT_APP_GQL_ENDPOINT
 });
 
@@ -12,16 +12,17 @@ const authLink = setContext((_, {headers}) => {
     if (token) {
         props.Authorization = `APIToken ${token}`;
     }
+
     return {
         headers: {
             ...headers,
-            ...props,
-            // origin: process.env.NEXT_PUBLIC_JAHIA_BASE_URL
+            ...props
+            // Origin: process.env.NEXT_PUBLIC_JAHIA_BASE_URL
         }
     };
 });
 
-// export const getClient = (gqlEndpoint) => new ApolloClient({
+// Export const getClient = (gqlEndpoint) => new ApolloClient({
 //     link: authLink.concat(httpLink(gqlEndpoint)),
 //     cache: new InMemoryCache(),
 // });
@@ -58,7 +59,7 @@ function getNodeKey(uuid, workspace) {
     return 'JCRNode:' + JSON.stringify({uuid, workspace});
 }
 
-export const getClient = (gqlEndpoint) => {
+export const getClient = gqlEndpoint => {
     console.log('Creating apollo client');
 
     // Map of path/uuid to be able to resolve cache key when we only have the path during cache resolving
@@ -85,11 +86,11 @@ export const getClient = (gqlEndpoint) => {
                 nodeById: (existingData, {args, toReference}) =>
                     existingData || toReference(getNodeKey(args.uuid, currentWs)),
                 nodesById: (existingData, {args, toReference}) =>
-                    existingData || args.uuids.map((uuid) => toReference(getNodeKey(uuid, currentWs))),
+                    existingData || args.uuids.map(uuid => toReference(getNodeKey(uuid, currentWs))),
                 nodeByPath: (existingData, {args, toReference}) =>
                     existingData || (idByPath[args.path] && toReference(getNodeKey(idByPath[args.path], currentWs))),
                 nodesByPath: (existingData, {args, toReference}) =>
-                    existingData || (args.paths.every((path) => idByPath[path]) && args.paths.map((path) => toReference(getNodeKey(idByPath[path], currentWs))))
+                    existingData || (args.paths.every(path => idByPath[path]) && args.paths.map(path => toReference(getNodeKey(idByPath[path], currentWs))))
             }
         }
     };
@@ -108,7 +109,7 @@ export const getClient = (gqlEndpoint) => {
                 return type + ':' + JSON.stringify(keyFields.reduce((v, keyField) => ({
                     ...v,
                     [keyField]: data[keyField]
-            }), {}));
+                }), {}));
             }
 
             console.error('Missing fields ' + keyFields + ' while extracting key from ' + data.__typename + ', data:', data, 'context:', context);
@@ -123,9 +124,8 @@ export const getClient = (gqlEndpoint) => {
         typePolicies
     };
 
-
     return new ApolloClient({
         link: authLink.concat(httpLink(gqlEndpoint)),
         cache: new InMemoryCache(config)
     });
-}
+};
