@@ -64,7 +64,7 @@ const buildAndFireSearchEvent = searchTerm => {
 
     searchEvent.properties = {
         originForm: 'augmentedSearchForm',
-        language: window.contextJsParameters.lang,
+        language: window.digitalData.page.pageInfo.language,
         keyword: searchTerm,
         origin: location.pathname
     };
