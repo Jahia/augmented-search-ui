@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './ResultView.css';
 import {useTranslation} from 'react-i18next';
 import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeKey, getRaw, getURLStream} from './utils';
 import {DateComponent} from './DateComponent';
-
-export const ResultView = ({id, titleField, urlField, result}) => {
+import {JahiaCtx} from '../../context';
+import {useQuery} from '@apollo/client';
+import {getImage} from '../../waGraphQL';
+export const ResultViewIllustrated = ({id, titleField, urlField, result}) => {
     const {t, i18n} = useTranslation();
+    const {workspace, language} = React.useContext(JahiaCtx);
 
     const fields = getEscapedFields(result);
     const title = getRaw(result, titleField);
@@ -14,6 +17,39 @@ export const ResultView = ({id, titleField, urlField, result}) => {
     const url = getRaw(result, urlField);
     const nodeType = getRaw(result, 'nodeType');
     const mimeType = getRaw(result, 'mimeType');
+    const imageId = getRaw(result, 'image');
+    const [imageURL, setImageURL] = useState('');
+
+    const {data, loading, error} = useQuery(getImage, {
+        variables: {
+            workspace,
+            language,
+            id: imageId
+        },
+        skip: !imageId
+    });
+
+    useEffect(() => {
+        if (!error && !loading && data?.jcr?.result) {
+            console.log(data.jcr.result);
+            const tmpImageURL = 'url';
+            setImageURL(tmpImageURL);
+        }
+    }, [imageURL, data, error, loading]);
+
+    if (error) {
+        // Const message = t(
+        //     'jcontent:label.jcontent.error.queryingContent',
+        //     {details: error.message ? error.message : ''}
+        // );
+
+        // console.warn(message);
+        console.warn('error todo');
+    }
+
+    if (loading) {
+        return null;// Note return default image path
+    }
 
     return (
         <div key={id}
@@ -21,7 +57,7 @@ export const ResultView = ({id, titleField, urlField, result}) => {
         >
             <a href={url || '#'} style={{color: getNodeTypeColor(nodeType)}}>
                 <br/>
-                <h3>{title}</h3>
+                <h3>### {title}</h3>
                 <div className="excerpt">
                     <DateComponent {...{result, t}}/>
                     <span dangerouslySetInnerHTML={{__html: fields.excerpt}}/>
@@ -47,7 +83,7 @@ export const ResultView = ({id, titleField, urlField, result}) => {
     );
 };
 
-ResultView.propTypes = {
+ResultViewIllustrated.propTypes = {
     id: PropTypes.string,
     titleField: PropTypes.string,
     urlField: PropTypes.string,

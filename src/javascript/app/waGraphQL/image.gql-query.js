@@ -1,18 +1,15 @@
 import {gql} from '@apollo/client';
 import {CORE_NODE_FIELDS} from './fragments';
 
-export const GetImage = gql`
+export const getImage = gql`
     ${CORE_NODE_FIELDS}
     query getImage($workspace: Workspace!, $id: String!, $language: String!) {
-        response: jcr(workspace: $workspace) {
+        jcr(workspace: $workspace) {
             workspace
-            content: nodeById(uuid: $id) {
+            image: nodeById(uuid: $id) {
                 ...CoreNodeFields
-                image : property(name:"image",){ node: refNode {
-                    ...CoreNodeFields
-                    title:displayName(language:$language)
-                    ajaxRenderUrl
-                } }
+                title:displayName(language:$language)
+                ajaxRenderUrl
             }
         }
     }`;

@@ -5,6 +5,9 @@ import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-
 import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 import {useTranslation} from 'react-i18next';
+import {JahiaCtxProvider} from './context';
+import {ApolloProvider} from '@apollo/client';
+import {getClient} from './waGraphQL';
 
 let fields = [
     new Field(FieldType.HIT, 'link'),
@@ -16,7 +19,8 @@ let fields = [
     new Field(FieldType.HIT, 'createdBy'),
     new Field(FieldType.HIT, 'created'),
     new Field(FieldType.HIT, 'nodeType'),
-    new Field(FieldType.HIT, 'mimeType')
+    new Field(FieldType.HIT, 'mimeType'),
+    new Field(FieldType.REFERENCE_AS_VALUE, 'image')
 ];
 
 function configureConnector(dxContext, t) {
@@ -104,12 +108,21 @@ function configureConnector(dxContext, t) {
 
 const App = ({dxContext}) => {
     const {t} = useTranslation();
+    const client = getClient(dxContext.gqlServerUrl);
     return (
-        <SearchProvider config={configureConnector(dxContext, t)}>
-            <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
-                {SearchView}
-            </WithSearch>
-        </SearchProvider>
+        <JahiaCtxProvider value={{
+            language: dxContext.language,
+            workspace: dxContext.workspace === 'default' ? 'EDIT' : 'LIVE'
+        }}
+        >
+            <ApolloProvider client={client}>
+                <SearchProvider config={configureConnector(dxContext, t)}>
+                    <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
+                        {SearchView}
+                    </WithSearch>
+                </SearchProvider>
+            </ApolloProvider>
+        </JahiaCtxProvider>
     );
 };
 

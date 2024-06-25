@@ -27,6 +27,7 @@
 <div id="${appId}">Loading...</div>
 <script>
     (function () {
+        var host = window.location.protocol + '//' + window.location.host;
         var context = {
             ctx: "${url.context}",
             language: "${currentResource.locale}",
@@ -35,7 +36,8 @@
             siteName: "${renderContext.site.name}",
             siteKey: "${renderContext.site.siteKey}",
             workspace: "${renderContext.workspace}",
-            baseURL: window.location.protocol + '//' + window.location.host
+            baseURL: host,
+            gqlServerUrl:host+"/modules/graphql"
         };
         window.augmentedSearchUIApp("${appId}", context);
     })();
