@@ -5,22 +5,22 @@ import i18n from './i18n/i18n';
 import moment from 'moment';
 import 'moment/locale/fr';
 import {JahiaCtxProvider} from './context';
-import {ApolloClient, ApolloProvider, createHttpLink, InMemoryCache} from '@apollo/client';
-// Import {getClient} from './waGraphQL';
+import {ApolloProvider/* , ApolloClient, createHttpLink, InMemoryCache */} from '@apollo/client';
+import {getClient} from './waGraphQL';
 const bootstrap = function (target, context) {
     i18n.changeLanguage(context.language);
     moment().locale(context.language);
     const root = createRoot(document.getElementById(target));
-    // Const client = getClient(context.gqlServerUrl);
-    const httpLink = createHttpLink({
-        uri: '/modules/graphql'
-    });
-
-    // 3
-    const client = new ApolloClient({
-        link: httpLink,
-        cache: new InMemoryCache()
-    });
+    const client = getClient(context.gqlServerUrl);
+    // Const httpLink = createHttpLink({
+    //     uri: '/modules/graphql'
+    // });
+    //
+    // // 3
+    // const client = new ApolloClient({
+    //     link: httpLink,
+    //     cache: new InMemoryCache()
+    // });
 
     root.render(
         <JahiaCtxProvider value={{

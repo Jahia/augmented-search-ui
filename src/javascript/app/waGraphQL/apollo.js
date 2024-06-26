@@ -2,16 +2,16 @@ import {ApolloClient, createHttpLink, InMemoryCache} from '@apollo/client';
 import {setContext} from '@apollo/client/link/context';
 
 const httpLink = endpoint => createHttpLink({
-    uri: endpoint || process.env.REACT_APP_GQL_ENDPOINT
+    uri: endpoint
 });
 
 const authLink = setContext((_, {headers}) => {
-    const token = process.env.REACT_APP_GQL_API_TOKEN;
+    // Const token = process.env.REACT_APP_GQL_API_TOKEN;
     const props = {};
 
-    if (token) {
-        props.Authorization = `APIToken ${token}`;
-    }
+    // If (token) {
+    //     props.Authorization = `APIToken ${token}`;
+    // }
 
     return {
         headers: {
@@ -21,11 +21,6 @@ const authLink = setContext((_, {headers}) => {
         }
     };
 });
-
-// Export const getClient = (gqlEndpoint) => new ApolloClient({
-//     link: authLink.concat(httpLink(gqlEndpoint)),
-//     cache: new InMemoryCache(),
-// });
 
 const possibleTypes = {
     JCRNode: ['JCRNode', 'GenericJCRNode', 'JCRSite', 'VanityUrl'],
