@@ -7,7 +7,8 @@ const {CycloneDxWebpackPlugin} = require('@cyclonedx/webpack-plugin');
 const cycloneDxWebpackPluginOptions = {
     specVersion: '1.4',
     rootComponentType: 'library',
-    outputLocation: './bom'
+    outputLocation: './bom',
+    validateResults: false
 };
 
 module.exports = (env, argv) => {
@@ -94,7 +95,7 @@ module.exports = (env, argv) => {
             }
         },
         plugins: [
-            // new CycloneDxWebpackPlugin(cycloneDxWebpackPluginOptions)
+            new CycloneDxWebpackPlugin(cycloneDxWebpackPluginOptions)
         ],
         mode: 'development'
     };
