@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './ResultView.css';
+import './ResultViewIllustrated.css';
 import {useTranslation} from 'react-i18next';
 import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeKey, getRaw, getURLStream} from './utils';
 import {DateComponent} from './DateComponent';
 import {JahiaCtx} from '../../context';
 import {useQuery} from '@apollo/client';
 import {getImage} from '../../waGraphQL';
+import placeholder from '../../assets/placeholder.webp';
 export const ResultViewIllustrated = ({id, titleField, urlField, result}) => {
     const {t, i18n} = useTranslation();
     const {workspace, language} = React.useContext(JahiaCtx);
@@ -18,7 +20,7 @@ export const ResultViewIllustrated = ({id, titleField, urlField, result}) => {
     const nodeType = getRaw(result, 'nodeType');
     const mimeType = getRaw(result, 'mimeType');
     const imageId = getRaw(result, 'image');
-    const [imageURL, setImageURL] = useState('');
+    const [imageProps, setImageProps] = useState({src: placeholder, alt: 'placeholder'});
 
     const {data, loading, error} = useQuery(getImage, {
         variables: {
@@ -30,12 +32,13 @@ export const ResultViewIllustrated = ({id, titleField, urlField, result}) => {
     });
 
     useEffect(() => {
-        if (!error && !loading && data?.jcr?.result) {
-            console.log(data.jcr.result);
-            const tmpImageURL = 'url';
-            setImageURL(tmpImageURL);
+        if (!error && !loading && data?.jcr?.image) {
+            setImageProps({
+                src: data.jcr.image.ajaxRenderUrl.replace(/\.ajax$/, ''),
+                alt: data.jcr.image.title
+            });
         }
-    }, [imageURL, data, error, loading]);
+    }, [data, error, loading]);
 
     if (error) {
         // Const message = t(
@@ -56,25 +59,34 @@ export const ResultViewIllustrated = ({id, titleField, urlField, result}) => {
              className="result"
         >
             <a href={url || '#'} style={{color: getNodeTypeColor(nodeType)}}>
-                <br/>
-                <h3>### {title}</h3>
-                <div className="excerpt">
-                    <DateComponent {...{result, t}}/>
-                    <span dangerouslySetInnerHTML={{__html: fields.excerpt}}/>
-                </div>
-                <div className="header">
-                    <span>
+                <div className="flex-b">
+                    <div className="block-img">
                         <div>
-                            {getIcon(nodeType, mimeType)}
+                            <img src={imageProps.src} alt={imageProps.alt}/>
                         </div>
-                    </span>
-                    <div className="content">
-                        <span>{t(getNodeTypeKey(nodeType, mimeType, i18n))}</span>
-                        <div className="element">
-                            <cite>
-                                {/* {window.location.origin} */}
-                                <span>{getURLStream(url)}</span>
-                            </cite>
+                    </div>
+                    <div className="block-txt">
+                        <br/>
+                        <h3>{title}</h3>
+                        <div className="excerpt">
+                            <DateComponent {...{result, t}}/>
+                            <span dangerouslySetInnerHTML={{__html: fields.excerpt}}/>
+                        </div>
+                        <div className="header">
+                            <span>
+                                <div>
+                                    {getIcon(nodeType, mimeType)}
+                                </div>
+                            </span>
+                            <div className="content">
+                                <span>{t(getNodeTypeKey(nodeType, mimeType, i18n))}</span>
+                                <div className="element">
+                                    <cite>
+                                        {/* {window.location.origin} */}
+                                        <span>{getURLStream(url)}</span>
+                                    </cite>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

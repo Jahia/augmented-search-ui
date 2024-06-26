@@ -67,7 +67,19 @@ module.exports = (env, argv) => {
                     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                     type: 'asset/resource',
                     dependency: { not: ['url'] }
-                }
+                },
+                {
+                    test: /\.(png|jpe?g|gif|webp)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]',
+                                outputPath: 'assets/images/', // Adjust the output path as necessary
+                            },
+                        },
+                    ],
+                },
             ]
         },
         optimization: {
@@ -82,7 +94,7 @@ module.exports = (env, argv) => {
             }
         },
         plugins: [
-            new CycloneDxWebpackPlugin(cycloneDxWebpackPluginOptions)
+            // new CycloneDxWebpackPlugin(cycloneDxWebpackPluginOptions)
         ],
         mode: 'development'
     };
