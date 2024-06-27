@@ -1,14 +1,6 @@
 import React from 'react';
-import {mimeTypes, nodeTypes, nodeTypesColor} from '../../config';
-import {
-    BsBank2,
-    BsBodyText, BsCalendar2Week,
-    BsFileEarmarkPdf,
-    BsFileEarmarkText,
-    BsFillQuestionDiamondFill,
-    BsLayoutTextWindowReverse
-} from 'react-icons/bs';
 import * as _ from 'lodash';
+import * as Icons from 'react-icons/bs';
 
 export const getFieldType = (result, field, type) => {
     if (result[field]) {
@@ -51,35 +43,36 @@ export const getEscapedFields = result => {
     }, {});
 };
 
-export const getFileIcon = mimeType => {
-    switch (mimeType) {
-        case mimeTypes.PDF: return <BsFileEarmarkPdf/>;
-        default: return <BsFileEarmarkText/>;
+const getIconName = ({nodeTypesMap, nodeType, mimeType}) => {
+    const nodeTypeMap = nodeTypesMap[nodeType];
+    if (!nodeTypeMap) {
+        return 'BsFileEarmarkText';
     }
+
+    if (typeof nodeTypeMap.icon === 'function') {
+        return nodeTypeMap.icon(mimeType);
+    }
+
+    return nodeTypeMap.icon;
 };
 
-export const getIcon = (nodeType, mimeType) => {
-    const nt = nodeTypes();
-    switch (nodeType) {
-        case nt.ARTICLE: return <BsBodyText/>;
-        case nt.QUIZ: return <BsFillQuestionDiamondFill/>;
-        case nt.PAGE: return <BsLayoutTextWindowReverse/>;
-        case nt.TRAINING: return <BsBank2/>;
-        case nt.EVENT: return <BsCalendar2Week/>;
-        case nt.FILE: return getFileIcon(mimeType);
-        default: return <BsFileEarmarkText/>;
-    }
+export const getIcon = ({nodeTypesMap, nodeType, mimeType}) => {
+    const Cmp = Icons[getIconName({nodeTypesMap, nodeType, mimeType})];
+    return <Cmp/>;
 };
 
-export const getNodeTypeKey = (nodeType, mimeType, i18n) => {
-    const nt = nodeTypes('J2S');
-    const key = nt[nodeType] || 'DEFAULT';
+export const getNodeTypeLabel = ({nodeTypesMap, nodeType, mimeType, i18n, language}) => {
+    const nodeTypeMap = nodeTypesMap[nodeType];
 
-    if (key === 'FILE' && i18n.exists(`config.mimeTypes.${mimeType}`)) {
+    if (!nodeTypeMap) {
+        return 'config.nodeTypes.DEFAULT';
+    }
+
+    if (nodeType === 'jnt:file' && i18n.exists(`config.mimeTypes.${mimeType}`)) {
         return `config.mimeTypes.${mimeType}`;
     }
 
-    return `config.nodeTypes.${key}`;
+    return nodeTypeMap.label[language] || nodeTypeMap.label.t;
 };
 
 export const getURLStream = url => {
@@ -96,6 +89,7 @@ export const getURLStream = url => {
     }, '');
 };
 
-export const getNodeTypeColor = nodeType => {
-    return nodeTypesColor[nodeType] || 'var(--color-default)';
+export const getNodeTypeColor = ({nodeTypesMap, nodeType}) => {
+    const nodeTypeMap = nodeTypesMap[nodeType];
+    return nodeTypeMap?.color || 'var(--color-default)';
 };

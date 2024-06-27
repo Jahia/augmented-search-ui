@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './ResultView.css';
 import {useTranslation} from 'react-i18next';
-import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeKey, getRaw, getURLStream} from './utils';
+import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeLabel, getRaw, getURLStream} from './utils';
 import {DateComponent} from './DateComponent';
+import {JahiaCtx} from '../../context';
 
 export const ResultView = ({id, titleField, urlField, result}) => {
     const {t, i18n} = useTranslation();
+    const {nodeTypesMap, language} = React.useContext(JahiaCtx);
 
     const fields = getEscapedFields(result);
     const title = getRaw(result, titleField);
@@ -19,7 +21,7 @@ export const ResultView = ({id, titleField, urlField, result}) => {
         <div key={id}
              className="result"
         >
-            <a href={url || '#'} style={{color: getNodeTypeColor(nodeType)}}>
+            <a href={url || '#'} style={{color: getNodeTypeColor({nodeTypesMap, nodeType})}}>
                 <br/>
                 <h3>{title}</h3>
                 <div className="excerpt">
@@ -29,11 +31,11 @@ export const ResultView = ({id, titleField, urlField, result}) => {
                 <div className="header">
                     <span>
                         <div>
-                            {getIcon(nodeType, mimeType)}
+                            {getIcon({nodeTypesMap, nodeType, mimeType})}
                         </div>
                     </span>
                     <div className="content">
-                        <span>{t(getNodeTypeKey(nodeType, mimeType, i18n))}</span>
+                        <span>{t(getNodeTypeLabel({nodeTypesMap, nodeType, mimeType, i18n, language}))}</span>
                         <div className="element">
                             <cite>
                                 {/* {window.location.origin} */}

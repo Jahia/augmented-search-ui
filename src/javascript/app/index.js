@@ -7,25 +7,19 @@ import 'moment/locale/fr';
 import {JahiaCtxProvider} from './context';
 import {ApolloProvider/* , ApolloClient, createHttpLink, InMemoryCache */} from '@apollo/client';
 import {getClient} from './waGraphQL';
+import {nodeTypesMap} from './config';
 const bootstrap = function (target, context) {
     i18n.changeLanguage(context.language);
     moment().locale(context.language);
     const root = createRoot(document.getElementById(target));
     const client = getClient(context.gqlServerUrl);
-    // Const httpLink = createHttpLink({
-    //     uri: '/modules/graphql'
-    // });
-    //
-    // // 3
-    // const client = new ApolloClient({
-    //     link: httpLink,
-    //     cache: new InMemoryCache()
-    // });
+    // Note faire le mapping type ici et le mettre dans le context
 
     root.render(
         <JahiaCtxProvider value={{
             language: context.language,
-            workspace: context.workspace === 'default' ? 'EDIT' : 'LIVE'
+            workspace: context.workspace === 'default' ? 'EDIT' : 'LIVE',
+            nodeTypesMap: {...nodeTypesMap/* , ...context.nodeTypesMap */}
         }}
         >
             <ApolloProvider client={client}>
