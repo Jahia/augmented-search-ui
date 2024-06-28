@@ -13,13 +13,13 @@ const bootstrap = function (target, context) {
     moment().locale(context.language);
     const root = createRoot(document.getElementById(target));
     const client = getClient(context.gqlServerUrl);
-    // Note faire le mapping type ici et le mettre dans le context
 
+    // Note should do a try,catch to ensure that content of context.nodeTypesMap is a JSON format
     root.render(
         <JahiaCtxProvider value={{
             language: context.language,
             workspace: context.workspace === 'default' ? 'EDIT' : 'LIVE',
-            nodeTypesMap: {...nodeTypesMap/* , ...context.nodeTypesMap */}
+            nodeTypesMap: {...nodeTypesMap, ...context.nodeTypesMap.reduce((obj, map) => ({...obj, ...map}), {})}
         }}
         >
             <ApolloProvider client={client}>
