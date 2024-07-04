@@ -128,7 +128,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                               results={results}
                                               fallbackView="Nothing was found"
                                               view={results.map(result => {
-                                                  const Cmp = result.image.raw ? ResultViewIllustrated : ResultView;
+                                                  const Cmp = result.image?.raw ? ResultViewIllustrated : ResultView;
                                                   return (
                                                       <Result key={result.id.raw}
                                                               id={result.id.raw}
