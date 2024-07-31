@@ -2,7 +2,7 @@ import moment from 'moment/moment';
 import {BsDashLg} from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {getEscapedField} from './utils';
+import {getEscapedField} from '../utils';
 export const DateComponent = ({result, t}) => {
     const lastModifiedBy = getEscapedField(result, 'lastModifiedBy');
     const lastModifiedDate = getEscapedField(result, 'lastModified');

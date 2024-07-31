@@ -1,0 +1,20 @@
+:root{
+    --color-quiz:var(--pink);
+    --color-industrial-content:var(--cyan);
+    --color-content:var(--green);
+    --color-page:var(--yellow);
+    --color-file:var(--red);
+    --color-training:var(--purple);
+    --color-event:var(--orange);
+    --color-default:#1a0dab;
+}
+
+.result-row{
+    display: flex;
+    flex-wrap: wrap;
+}
+.result-card{
+    flex: 0 0 33.33333%;
+    padding-right: 15px;
+    padding-left: 15px;
+}

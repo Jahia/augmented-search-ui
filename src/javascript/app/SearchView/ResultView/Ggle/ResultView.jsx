@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './ResultView.css';
 import {useTranslation} from 'react-i18next';
-import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeLabel, getRaw, getURLStream} from './utils';
+import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeLabel, getRaw, getURLStream} from '../utils';
 import {DateComponent} from './DateComponent';
-import {JahiaCtx} from '../../context';
+import {JahiaCtx} from '../../../context';
 
 export const ResultView = ({id, titleField, urlField, result}) => {
     const {t, i18n} = useTranslation();

@@ -5,20 +5,19 @@ import {
     Facet,
     Paging,
     PagingInfo,
-    Result,
     ResultsPerPage,
     SearchBox,
     Sorting
 } from '@elastic/react-search-ui/lib/esm/containers';
 import {Layout} from '@elastic/react-search-ui-views/lib/esm/layouts';
 import ViewWrapper from './ViewWrapper';
-import {ResultView, ResultViewIllustrated} from './ResultView';
 import TreeFacet from './TreeFacet/TreeFacet';
 import {useTranslation} from 'react-i18next';
 import SearchInputView from './Override/SearchInput';
 import PagingInfoView from './Override/PagingInfo';
 import ResultsPerPageView from './Override/ResultsPerPage';
 import {JahiaCtx} from '../context';
+import * as ResultView from './ResultView';
 
 const getSortOptions = t => [
     {
@@ -77,7 +76,8 @@ const buildAndFireSearchEvent = searchTerm => {
 
 const SearchView = ({wasSearched, results, searchTerm}) => {
     const {t} = useTranslation();
-    const {resultsPerPage} = React.useContext(JahiaCtx);
+    const {resultsPerPage, resultsView} = React.useContext(JahiaCtx);
+    const ResultViewCmp = ResultView[resultsView];
     // If searchTerm is already populated
     React.useEffect(() => {
         // Console.debug('[useEffect] searchTerm : ', searchTerm);
@@ -134,22 +134,9 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                             debounceLength={0}
                         />
                     }
-                    bodyContent={<ViewWrapper wasSearched={wasSearched}
-                                              results={results}
-                                              fallbackView="Nothing was found"
-                                              view={results.map(result => {
-                                                  const Cmp = result.image?.raw ? ResultViewIllustrated : ResultView;
-                                                  return (
-                                                      <Result key={result.id.raw}
-                                                              id={result.id.raw}
-                                                              view={Cmp}
-                                                              result={result}
-                                                              titleField="title"
-                                                              urlField="link"
-                                                      />
-                                                  );
-}
-                                              )}/>}
+                    bodyContent={<ResultViewCmp wasSearched={wasSearched}
+                                                results={results}
+                                             />}
                     bodyHeader={
                         <>
                             <ViewWrapper wasSearched={wasSearched}

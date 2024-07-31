@@ -34,7 +34,8 @@
             webapp:{
                 nodeTypesMap:${moduleMap.nodeTypesMap},
                 searchProvider:${moduleMap.searchProvider},
-                resultsPerPage:${moduleMap.resultsPerPage}
+                resultsPerPage:${moduleMap.resultsPerPage},
+                resultsView:"Ggle"
             }
         };
         window.augmentedSearchUIApp("${moduleMap.appId}", context_${moduleMap.appId});

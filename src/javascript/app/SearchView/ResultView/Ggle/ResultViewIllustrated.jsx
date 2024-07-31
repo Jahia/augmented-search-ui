@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import './ResultView.css';
 import './ResultViewIllustrated.css';
 import {useTranslation} from 'react-i18next';
-import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeLabel, getRaw, getURLStream} from './utils';
+import {getEscapedFields, getIcon, getNodeTypeColor, getNodeTypeLabel, getRaw, getURLStream} from '../utils';
 import {DateComponent} from './DateComponent';
-import {JahiaCtx} from '../../context';
+import {JahiaCtx} from '../../../context';
 import {useQuery} from '@apollo/client';
-import {getImage} from '../../waGraphQL';
-import placeholder from '../../assets/placeholder.webp';
+import {getImage} from '../../../waGraphQL';
+import placeholder from '../../../assets/placeholder.webp';
 export const ResultViewIllustrated = ({id, titleField, urlField, result}) => {
     const {t, i18n} = useTranslation();
     const {workspace, language, nodeTypesMap} = React.useContext(JahiaCtx);
