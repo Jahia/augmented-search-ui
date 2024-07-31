@@ -99,7 +99,8 @@ function configureConnector(dxContext, t) {
         },
         apiConnector: connector,
         hasA11yNotifications: true,
-        alwaysSearchOnInitialLoad: true
+        alwaysSearchOnInitialLoad: true,
+        ...dxContext.webapp.searchProvider
     };
 }
 

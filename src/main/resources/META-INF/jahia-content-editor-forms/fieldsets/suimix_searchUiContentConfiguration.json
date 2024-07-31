@@ -1,0 +1,12 @@
+{
+  "name": "suimix:searchUiContentConfiguration",
+  "fields": [
+    {
+      "name": "nodeTypesMap",
+      "selectorType": "CodeMirror",
+      "selectorOptionsMap": {
+        "mode": "javascript"
+      }
+    }
+  ]
+}

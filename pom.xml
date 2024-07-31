@@ -53,7 +53,7 @@
     </parent>
     <artifactId>augmented-search-ui</artifactId>
     <name>Augmented Search UI</name>
-    <version>3.1.1-SNAPSHOT</version>
+    <version>3.1.2-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This module provides integration with ES Search UI</description>
 
@@ -76,7 +76,7 @@
 
     <properties>
         <jahia-module-signature>MCwCFBGMW03aJzh+On6g2wtpist+PBjKAhRDrlgfGd6F1AC/A9io3BmIuOkmvg==</jahia-module-signature>
-        <jahia-depends>augmented-search</jahia-depends>
+        <jahia-depends>augmented-search,codemirror-editor</jahia-depends>
         <sonar.sources>src/javascript</sonar.sources>
     </properties>
 

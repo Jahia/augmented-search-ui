@@ -14,12 +14,14 @@ const bootstrap = function (target, context) {
     const root = createRoot(document.getElementById(target));
     const client = getClient(context.gqlServerUrl);
 
-    // Note should do a try,catch to ensure that content of context.nodeTypesMap is a JSON format
+    context.webapp = context.webapp || {};
+
     root.render(
         <JahiaCtxProvider value={{
             language: context.language,
             workspace: context.workspace === 'default' ? 'EDIT' : 'LIVE',
-            nodeTypesMap: {...nodeTypesMap, ...context.nodeTypesMap.reduce((obj, map) => ({...obj, ...map}), {})}
+            nodeTypesMap: {...nodeTypesMap, ...context.webapp.nodeTypesMap.reduce((obj, map) => ({...obj, ...map}), {})},
+            resultsPerPage: context.webapp.resultsPerPage
         }}
         >
             <ApolloProvider client={client}>

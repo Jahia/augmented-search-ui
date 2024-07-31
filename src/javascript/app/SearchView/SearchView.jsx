@@ -18,6 +18,7 @@ import {useTranslation} from 'react-i18next';
 import SearchInputView from './Override/SearchInput';
 import PagingInfoView from './Override/PagingInfo';
 import ResultsPerPageView from './Override/ResultsPerPage';
+import {JahiaCtx} from '../context';
 
 const getSortOptions = t => [
     {
@@ -76,6 +77,7 @@ const buildAndFireSearchEvent = searchTerm => {
 
 const SearchView = ({wasSearched, results, searchTerm}) => {
     const {t} = useTranslation();
+    const {resultsPerPage} = React.useContext(JahiaCtx);
     // If searchTerm is already populated
     React.useEffect(() => {
         // Console.debug('[useEffect] searchTerm : ', searchTerm);
@@ -96,6 +98,14 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
         if (searchTerm && searchTerm.length >= searchTermLength) {
             typingTimer = setTimeout(() => buildAndFireSearchEvent(searchTerm), doneTypingInterval);
         }
+    };
+
+    const getResultPerPage = () => {
+        if (resultsPerPage) {
+            return <ResultsPerPage view={ResultsPerPageView} options={resultsPerPage}/>;
+        }
+
+        return <ResultsPerPage view={ResultsPerPageView}/>;
     };
 
     return (
@@ -148,7 +158,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                          fallbackView=""/>
                             <ViewWrapper wasSearched={wasSearched}
                                          results={results}
-                                         view={<ResultsPerPage view={ResultsPerPageView}/>}
+                                         view={getResultPerPage()}
                                          fallbackView=""/>
                         </>
                     }

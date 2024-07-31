@@ -1,0 +1,19 @@
+{
+  "name": "suimix:searchUiSearchWebappConfiguration",
+  "fields": [
+    {
+      "name": "searchProvider",
+      "selectorType": "CodeMirror",
+      "selectorOptionsMap": {
+        "mode": "javascript"
+      }
+    },
+    {
+      "name": "resultsPerPage",
+      "selectorType": "CodeMirror",
+      "selectorOptionsMap": {
+        "mode": "javascript"
+      }
+    }
+  ]
+}
