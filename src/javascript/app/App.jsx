@@ -17,6 +17,7 @@ let fields = [
     new Field(FieldType.HIT, 'created'),
     new Field(FieldType.HIT, 'nodeType'),
     new Field(FieldType.HIT, 'mimeType'),
+    new Field(FieldType.REFERENCE_AS_VALUE, 'jgql:categories'),
     new Field(FieldType.REFERENCE_AS_VALUE, 'image')
 ];
 

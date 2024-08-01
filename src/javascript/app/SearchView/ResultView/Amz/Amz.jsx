@@ -1,10 +1,10 @@
-import ViewWrapper from '../../ViewWrapper';
-import {ResultViewIllustrated} from '../Ggle/ResultViewIllustrated';
-import {ResultView} from '../Ggle/ResultView';
-import {Result} from '@elastic/react-search-ui/lib/esm/containers';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
+import ViewWrapper from '../../ViewWrapper';
+import {Result} from '@elastic/react-search-ui/lib/esm/containers';
 import './Amz.css';
+import {ResultCard} from './ResultCard';
+import {ResultCardIllustrated} from './ResultCardIllustrated';
 export const Amz = ({wasSearched, results}) => {
     return (
         <div className="result-row">
@@ -12,9 +12,9 @@ export const Amz = ({wasSearched, results}) => {
                          results={results}
                          fallbackView="Nothing was found"
                          view={results.map(result => {
-                             const Cmp = result.image?.raw ? ResultViewIllustrated : ResultView;
+                             const Cmp = result.image?.raw ? ResultCardIllustrated : ResultCard;
                              return (
-                                 <div key={result.id.raw} className="result-card">
+                                 <div key={result.id.raw} className="result-col-md-4">
                                      <Result
                                              id={result.id.raw}
                                              view={Cmp}
