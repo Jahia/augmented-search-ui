@@ -18,7 +18,8 @@ import PagingInfoView from './Override/PagingInfo';
 import ResultsPerPageView from './Override/ResultsPerPage';
 import {JahiaCtx} from '../context';
 import * as ResultView from './ResultView';
-
+import clsx from 'clsx';
+import './SearchView.css';
 const getSortOptions = t => [
     {
         name: t('facet.sortOptions.created'),
@@ -76,7 +77,7 @@ const buildAndFireSearchEvent = searchTerm => {
 
 const SearchView = ({wasSearched, results, searchTerm}) => {
     const {t} = useTranslation();
-    const {resultsPerPage, resultsView} = React.useContext(JahiaCtx);
+    const {resultsPerPage, resultsView, isFacetDisabled, isPagingDisabled} = React.useContext(JahiaCtx);
     const ResultViewCmp = ResultView[resultsView];
     // If searchTerm is already populated
     React.useEffect(() => {
@@ -112,6 +113,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
         <div>
             <ErrorBoundary>
                 <Layout
+                    className={clsx({'sidebar-hidden': isFacetDisabled})}
                     header={
                         <SearchBox
                             searchAsYouType
@@ -137,7 +139,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                     bodyContent={<ResultViewCmp wasSearched={wasSearched}
                                                 results={results}
                                              />}
-                    bodyHeader={
+                    bodyHeader={!isPagingDisabled &&
                         <>
                             <ViewWrapper wasSearched={wasSearched}
                                          results={results}
@@ -147,10 +149,9 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                          results={results}
                                          view={getResultPerPage()}
                                          fallbackView=""/>
-                        </>
-                    }
-                    bodyFooter={<ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
-                    sideContent={
+                        </>}
+                    bodyFooter={!isPagingDisabled && <ViewWrapper wasSearched={wasSearched} results={results} view={<Paging/>} fallbackView=""/>}
+                    sideContent={!isFacetDisabled &&
                         <>
                             <Sorting label={t('facet.sortBy')} sortOptions={getSortOptions(t)}/>
                             <Facet
@@ -177,8 +178,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                 field="jcr:lastModified"
                                 label={t('facet.lastModified')}
                             />
-                        </>
-                    }
+                        </>}
                 />
             </ErrorBoundary>
         </div>

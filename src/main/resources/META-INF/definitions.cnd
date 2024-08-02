@@ -7,6 +7,9 @@
  extends = sui:augmentedSearch
  - searchProvider (string) = resourceBundle('sample.searchProvider') indexed=no
  - resultsPerPage (string) = resourceBundle('sample.resultsPerPage') indexed=no
+ - isFacetDisabled (boolean) = false
+ - isPagingDisabled (boolean) = false
+ - isSearchBoxDisabled (boolean) = false
 
 [suimix:searchUiContentConfiguration] mixin
  extends = sui:augmentedSearch

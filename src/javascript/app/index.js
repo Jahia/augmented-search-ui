@@ -22,7 +22,9 @@ const bootstrap = function (target, context) {
             workspace: context.workspace === 'default' ? 'EDIT' : 'LIVE',
             nodeTypesMap: {...nodeTypesMap, ...context.webapp.nodeTypesMap.reduce((obj, map) => ({...obj, ...map}), {})},
             resultsPerPage: context.webapp.resultsPerPage,
-            resultsView: context.webapp.resultsView || 'Ggle'
+            resultsView: context.webapp.resultsView || 'Ggle',
+            isFacetDisabled: context.webapp.isFacetDisabled,
+            isPagingDisabled: context.webapp.isPagingDisabled
         }}
         >
             <ApolloProvider client={client}>

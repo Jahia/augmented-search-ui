@@ -20,21 +20,10 @@
 <div id="${moduleMap.appId}">Loading...</div>
 <script>
     (function () {
-        const host_${moduleMap.appId} = window.location.protocol + '//' + window.location.host;
-        const context_${moduleMap.appId} = {
-            ctx: "${url.context}",
-            language: "${currentResource.locale}",
-            uiLanguage: "${renderContext.UILocale.language}",
-            siteUUID: "${renderContext.site.identifier}",
-            siteName: "${renderContext.site.name}",
-            siteKey: "${renderContext.site.siteKey}",
-            workspace: "${renderContext.workspace}",
-            baseURL: host_${moduleMap.appId},
-            gqlServerUrl:host_${moduleMap.appId}+"/modules/graphql",
+        context_${moduleMap.appId} = {
+            ...context_${moduleMap.appId},
             webapp:{
-                nodeTypesMap:${moduleMap.nodeTypesMap},
-                searchProvider:${moduleMap.searchProvider},
-                resultsPerPage:${moduleMap.resultsPerPage},
+                ...context_${moduleMap.appId}.webapp,
                 resultsView:"Amz"
             }
         };

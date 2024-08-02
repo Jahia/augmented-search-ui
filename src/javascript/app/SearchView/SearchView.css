@@ -1,0 +1,30 @@
+:root{
+    --color-quiz:var(--pink);
+    --color-industrial-content:var(--cyan);
+    --color-content:var(--green);
+    --color-page:var(--yellow);
+    --color-file:var(--red);
+    --color-training:var(--purple);
+    --color-event:var(--orange);
+    --color-default:#1a0dab;
+}
+
+.sidebar-hidden .sui-layout-sidebar{
+    display: none;
+}
+
+.sidebar-hidden .sui-layout-main{
+    width: 100%;
+    padding: 32px 0;
+}
+
+.sui-layout-header{
+    padding: 32px 0;
+}
+
+.sui-layout-header__inner{
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 10%;
+}

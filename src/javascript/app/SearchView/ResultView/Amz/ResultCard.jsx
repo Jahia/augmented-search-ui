@@ -10,24 +10,33 @@ export const ResultCard = ({titleField, urlField, result}) => {
     const url = getRaw(result, urlField);
     const nodeType = getRaw(result, 'nodeType');
     const mimeType = getRaw(result, 'mimeType');
-    const categories = new Set(getRaw(result, 'jgql_categories'));
+    const categoriesSet = new Set(JSON.parse(getRaw(result, 'jgql_categories')));
+    const categories = [...categoriesSet];
+    const tags = getRaw(result, 'tags') || [];
 
     return (
-        <div className="result-card">
-            <a href={url || '#'} style={{color: getNodeTypeColor({nodeTypesMap, nodeType})}}>
-                {getIcon({nodeTypesMap, nodeType, mimeType})}
-                {/* <img className="card-img-top" src="${imageURL}" alt="${title}"/> */}
-                <div className="card-banner">
-                    {/* <div className="col-4 text-center list-date"> */}
-                    {/*    <div className="list-label">${until}</div> */}
-                    {/*    <div className="list-month font-weight-bold d-block">${formatedDateMonth}</div> */}
-                    {/*    <div className="list-year">${formatedDateYear}</div> */}
+        <div className="amz-result-card-wrapper">
+            <a href={url || '#'}>
+                <div className="amz-result-card">
+                    <div className="amz-card-icon" style={{background: getNodeTypeColor({nodeTypesMap, nodeType})}}>
+                        {getIcon({nodeTypesMap, nodeType, mimeType})}
+                    </div>
+                    <div className="amz-card-body">
+                        <h3 className="amz-card-title">{title}</h3>
+                        <div dangerouslySetInnerHTML={{__html: fields.excerpt.substring(0, 100)}} className="excerpt"/>
+                        <ul>
+                            {categories.map(category => (<li key={category}><span className="badge category"> {category} </span></li>))}
+                            {tags.map(tag => (<li key={tag}><span className="badge tag"> {tag} </span></li>))}
+                        </ul>
+                    </div>
+                    {/* <div className="amz-card-footer"> */}
+                    {/*    /!* <div className="col-4 text-center list-date"> *!/ */}
+                    {/*    /!*    <div className="list-label">${until}</div> *!/ */}
+                    {/*    /!*    <div className="list-month font-weight-bold d-block">${formatedDateMonth}</div> *!/ */}
+                    {/*    /!*    <div className="list-year">${formatedDateYear}</div> *!/ */}
+                    {/*    /!* </div> *!/ */}
+                    {/*    <div className="col">{categories}</div> */}
                     {/* </div> */}
-                    <div className="col">{categories}</div>
-                </div>
-                <div className="card-body">
-                    <h5 className="card-title">{title}</h5>
-                    <div dangerouslySetInnerHTML={{__html: fields.excerpt}} className="card-text"/>
                 </div>
             </a>
         </div>
