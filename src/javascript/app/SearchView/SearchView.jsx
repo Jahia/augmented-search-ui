@@ -77,7 +77,7 @@ const buildAndFireSearchEvent = searchTerm => {
 
 const SearchView = ({wasSearched, results, searchTerm}) => {
     const {t} = useTranslation();
-    const {resultsPerPage, resultsView, isFacetDisabled, isPagingDisabled} = React.useContext(JahiaCtx);
+    const {resultsPerPage, resultsView, isFacetDisabled, isPagingDisabled, isSearchBoxDisabled} = React.useContext(JahiaCtx);
     const ResultViewCmp = ResultView[resultsView];
     // If searchTerm is already populated
     React.useEffect(() => {
@@ -114,7 +114,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
             <ErrorBoundary>
                 <Layout
                     className={clsx({'sidebar-hidden': isFacetDisabled})}
-                    header={
+                    header={!isSearchBoxDisabled &&
                         <SearchBox
                             searchAsYouType
                             inputProps={{
@@ -134,8 +134,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                             autocompleteSuggestions={false}
                             autocompleteMinimumCharacters={1}
                             debounceLength={0}
-                        />
-                    }
+                        />}
                     bodyContent={<ResultViewCmp wasSearched={wasSearched}
                                                 results={results}
                                              />}

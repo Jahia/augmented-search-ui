@@ -34,7 +34,7 @@
     <c:set var="isPagingDisabled" value="false"/>
 </c:if>
 
-<c:if test="${empty isPagingDisabled}">
+<c:if test="${empty isSearchBoxDisabled}">
     <c:set var="isSearchBoxDisabled" value="false"/>
 </c:if>
 
@@ -56,7 +56,8 @@
             searchProvider:${searchProvider},
             resultsPerPage:${resultsPerPage},
             isFacetDisabled:(/true/i).test(${isFacetDisabled}),
-            isPagingDisabled:(/true/i).test(${isPagingDisabled})
+            isPagingDisabled:(/true/i).test(${isPagingDisabled}),
+            isSearchBoxDisabled:(/true/i).test(${isSearchBoxDisabled})
         }
     }
 </script>
