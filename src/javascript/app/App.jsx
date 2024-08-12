@@ -19,7 +19,9 @@ let fields = [
     new Field(FieldType.HIT, 'mimeType'),
     new Field(FieldType.HIT, 'tags'),
     new Field(FieldType.REFERENCE_AS_VALUE, 'jgql:categories'),
-    new Field(FieldType.REFERENCE_AS_VALUE, 'image')
+    new Field(FieldType.REFERENCE_AS_VALUE, 'image'),
+    new Field(FieldType.NODE, 'price'),
+    new Field(FieldType.NODE, 'currency')
 ];
 
 function configureConnector(dxContext, t) {
@@ -86,10 +88,33 @@ function configureConnector(dxContext, t) {
                             name: t('facet.range.last5Years')
                         }
                     ]
+                },
+                price: {
+                    type: 'range',
+                    minDoc: 1,
+                    // Disjunctive: false,
+                    ranges: [
+                        {
+                            from: 1.0,
+                            to: 500.0,
+                            name: 'moins de 500'// T('facet.range.lastWeek')
+                        },
+                        {
+                            from: 501.0,
+                            to: 1000.0,
+                            name: 'de 500 à 1000'// T('facet.range.lastMonth')
+                        },
+                        {
+                            from: 1001.0,
+                            to: 50000.0,
+                            name: 'plus de 1000'// T('facet.range.last6Months')
+                        }
+                    ]
                 }
             },
             conditionalFacets: {
                 'jcr:lastModifiedBy': filters => filters.filters.some(filter => filter.field === 'jcr:lastModified')
+                // Price: filters => filters.filters.some(filter => filter.field === 'price')
             }
         },
         autocompleteQuery: {

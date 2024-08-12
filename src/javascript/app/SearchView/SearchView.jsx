@@ -177,6 +177,10 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                                 field="jcr:lastModified"
                                 label={t('facet.lastModified')}
                             />
+                            <Facet
+                                field="price"
+                                label="Price"// {t('facet.lastModified')}
+                             />
                         </>}
                 />
             </ErrorBoundary>
