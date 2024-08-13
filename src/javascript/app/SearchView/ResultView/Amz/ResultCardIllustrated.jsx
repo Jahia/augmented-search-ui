@@ -40,7 +40,7 @@ export const ResultCardIllustrated = ({titleField, urlField, result}) => {
     useEffect(() => {
         if (!error && !loading && data?.jcr?.image) {
             setImageProps({
-                src: data.jcr.image.ajaxRenderUrl.replace(/\.ajax$/, ''),
+                src: data.jcr.image.url,
                 alt: data.jcr.image.title
             });
         }
@@ -71,7 +71,7 @@ export const ResultCardIllustrated = ({titleField, urlField, result}) => {
                         {Boolean(prices.length) &&
                             <p className="price" style={{fontSize: '24px'}}>
                                 <strong>{prices[0]}</strong>
-                                <sup>{prices[1]}&nbsp;{currency}</sup>
+                                <sup>{prices[1].length === 1 ? `${prices[1]}0` : prices[1]}&nbsp;{currency}</sup>
                             </p>}
 
                         <ul>

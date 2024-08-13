@@ -9,7 +9,7 @@ export const getImage = gql`
             image: nodeById(uuid: $id) {
                 ...CoreNodeFields
                 title:displayName(language:$language)
-                ajaxRenderUrl
+                url
             }
         }
     }`;
