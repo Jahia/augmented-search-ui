@@ -1,6 +1,7 @@
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="utility" uri="http://www.jahia.org/tags/utilityLib" %>
 
 <template:addResources type="javascript" resources="app/augmented-search-ui-polyfills.js"/>
 <template:addResources type="javascript" resources="app/augmented-search-ui-vendors.js"/>
@@ -13,6 +14,16 @@
 <c:set var="isFacetDisabled" value="${currentNode.properties.isFacetDisabled.string}"/>
 <c:set var="isPagingDisabled" value="${currentNode.properties.isPagingDisabled.string}"/>
 <c:set var="isSearchBoxDisabled" value="${currentNode.properties.isSearchBoxDisabled.string}"/>
+
+<c:set var="SHOPPING_CART_MODULE" value="shopping-cart"/>
+<c:set var="installedModules" value="${renderContext.site.properties['j:installedModules']}"/>
+<c:set var="isProductEnabled" value="false"/>
+
+<c:forEach var="module" items="${installedModules}">
+    <c:if test="${SHOPPING_CART_MODULE eq module}">
+        <c:set var="isProductEnabled" value="true" />
+    </c:if>
+</c:forEach>
 
 <c:if test="${empty nodeTypesMap}">
     <c:set var="nodeTypesMap" value="[]"/>
@@ -57,7 +68,8 @@
             resultsPerPage:${resultsPerPage},
             isFacetDisabled:(/true/i).test(${isFacetDisabled}),
             isPagingDisabled:(/true/i).test(${isPagingDisabled}),
-            isSearchBoxDisabled:(/true/i).test(${isSearchBoxDisabled})
+            isSearchBoxDisabled:(/true/i).test(${isSearchBoxDisabled}),
+            isProductEnabled: (/true/i).test(${isProductEnabled})
         }
     }
 </script>

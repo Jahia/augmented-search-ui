@@ -5,6 +5,7 @@ import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-
 import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 import {useTranslation} from 'react-i18next';
+import {JahiaCtx} from './context';
 
 let fields = [
     new Field(FieldType.HIT, 'link'),
@@ -24,7 +25,7 @@ let fields = [
     new Field(FieldType.NODE, 'currency')
 ];
 
-function configureConnector(dxContext, t) {
+function configureConnector({dxContext, isProductEnabled, t}) {
     let connector = new JahiaSearchAPIConnector({
         apiToken: 'none',
         baseURL: dxContext.baseURL + dxContext.ctx,
@@ -32,6 +33,33 @@ function configureConnector(dxContext, t) {
         language: dxContext.language,
         workspace: dxContext.workspace === 'default' ? 'EDIT' : 'LIVE'
     });
+
+    const conditionalFacets = {};
+    if (isProductEnabled) {
+        conditionalFacets.price = {
+            type: 'range',
+            minDoc: 1,
+            disjunctive: false,
+            ranges: [
+                {
+                    from: 1.0,
+                    to: 500.0,
+                    name: 'moins de 500'// T('facet.range.lastWeek')
+                },
+                {
+                    from: 501.0,
+                    to: 1000.0,
+                    name: 'de 500 à 1000'// T('facet.range.lastMonth')
+                },
+                {
+                    from: 1001.0,
+                    to: 50000.0,
+                    name: 'plus de 1000'// T('facet.range.last6Months')
+                }
+            ]
+        };
+    }
+
     return {
         searchQuery: {
             // eslint-disable-next-line camelcase
@@ -89,28 +117,7 @@ function configureConnector(dxContext, t) {
                         }
                     ]
                 },
-                price: {
-                    type: 'range',
-                    minDoc: 1,
-                    // Disjunctive: false,
-                    ranges: [
-                        {
-                            from: 1.0,
-                            to: 500.0,
-                            name: 'moins de 500'// T('facet.range.lastWeek')
-                        },
-                        {
-                            from: 501.0,
-                            to: 1000.0,
-                            name: 'de 500 à 1000'// T('facet.range.lastMonth')
-                        },
-                        {
-                            from: 1001.0,
-                            to: 50000.0,
-                            name: 'plus de 1000'// T('facet.range.last6Months')
-                        }
-                    ]
-                }
+                ...conditionalFacets
             },
             conditionalFacets: {
                 'jcr:lastModifiedBy': filters => filters.filters.some(filter => filter.field === 'jcr:lastModified')
@@ -133,9 +140,10 @@ function configureConnector(dxContext, t) {
 
 const App = ({dxContext}) => {
     const {t} = useTranslation();
+    const {isProductEnabled} = React.useContext(JahiaCtx);
 
     return (
-        <SearchProvider config={configureConnector(dxContext, t)}>
+        <SearchProvider config={configureConnector({dxContext, isProductEnabled, t})}>
             <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
                 {SearchView}
             </WithSearch>

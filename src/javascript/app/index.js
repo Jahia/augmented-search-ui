@@ -25,7 +25,8 @@ const bootstrap = function (target, context) {
             resultsView: context.webapp.resultsView || 'Ggle',
             isFacetDisabled: context.webapp.isFacetDisabled,
             isPagingDisabled: context.webapp.isPagingDisabled,
-            isSearchBoxDisabled: context.webapp.isSearchBoxDisabled
+            isSearchBoxDisabled: context.webapp.isSearchBoxDisabled,
+            isProductEnabled: context.webapp.isProductEnabled
         }}
         >
             <ApolloProvider client={client}>

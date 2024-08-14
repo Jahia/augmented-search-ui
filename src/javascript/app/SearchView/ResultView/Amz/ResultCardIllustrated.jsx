@@ -16,7 +16,9 @@ export const ResultCardIllustrated = ({titleField, urlField, result}) => {
     const title = getRaw(result, titleField);
     // Const title = getEscapedField(result, titleField);
     const url = getRaw(result, urlField);
-    const price = getRaw(result, 'price');
+    // Const price = getRaw(result, 'price');
+    const rawPrice = Number.parseFloat(getRaw(result, 'price'));
+    const price = isNaN(rawPrice) ? null : rawPrice.toFixed(2).toString();
     const prices = price ? price.split('.') : [];
     const currency = getRaw(result, 'currency');
 
@@ -71,7 +73,7 @@ export const ResultCardIllustrated = ({titleField, urlField, result}) => {
                         {Boolean(prices.length) &&
                             <p className="price" style={{fontSize: '24px'}}>
                                 <strong>{prices[0]}</strong>
-                                <sup>{prices[1].length === 1 ? `${prices[1]}0` : prices[1]}&nbsp;{currency}</sup>
+                                <sup>{prices[1]}&nbsp;{currency}</sup>
                             </p>}
 
                         <ul>
