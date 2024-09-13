@@ -34,7 +34,7 @@ export const ResultViewIllustrated = ({id, titleField, urlField, result}) => {
     useEffect(() => {
         if (!error && !loading && data?.jcr?.image) {
             setImageProps({
-                src: data.jcr.image.ajaxRenderUrl.replace(/\.ajax$/, ''),
+                src: data.jcr.image.url.replace(/\.ajax$/, ''),
                 alt: data.jcr.image.title
             });
         }
