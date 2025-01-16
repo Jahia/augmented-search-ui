@@ -23,10 +23,12 @@
 <template:addResources type="javascript" resources="app/augmentedSearchUIApp.js"/>
 
 <c:set var="appId" value="augmentedSearchUIApp_${currentNode.identifier}"/>
+<c:set var="nodeTypesMap" value="${functions:getConfigValue('org.jahia.se.modules.augmented_search_ui','nodeTypesMap')}"/>
 
 <div id="${appId}">Loading...</div>
 <script>
     (function () {
+        var host = window.location.protocol + '//' + window.location.host;
         var context = {
             ctx: "${url.context}",
             language: "${currentResource.locale}",
@@ -35,7 +37,9 @@
             siteName: "${renderContext.site.name}",
             siteKey: "${renderContext.site.siteKey}",
             workspace: "${renderContext.workspace}",
-            baseURL: window.location.protocol + '//' + window.location.host
+            baseURL: host,
+            gqlServerUrl:host+"/modules/graphql",
+            nodeTypesMap:[${nodeTypesMap}]
         };
         window.augmentedSearchUIApp("${appId}", context);
     })();

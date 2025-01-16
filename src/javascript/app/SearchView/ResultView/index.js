@@ -1,1 +1,2 @@
-export {default} from './ResultView';
+export * from './ResultView';
+export * from './ResultViewIllustrated';
