@@ -28,7 +28,7 @@ jobs:
         with:
           auditci_level: critical
           yarn_version: 4.6.0
-          yarn_tests_version: 4.6.0
+          yarn_test_version: 4.6.0
 
   build:
     name: Build Module

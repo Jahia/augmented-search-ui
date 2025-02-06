@@ -9,12 +9,12 @@
     }
   },
   "scripts": {
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && yarn lint:fix && webpack",
-    "build:nolint": "export NODE_OPTIONS=--openssl-legacy-provider && webpack",
+    "build": "yarn lint:fix && webpack",
+    "build:nolint": "webpack",
     "build:analyze": "yarn build --analyze",
     "build:production": "yarn build -p",
     "build:production-analyze": "yarn build -p --analyze",
-    "dev": "export NODE_OPTIONS=--openssl-legacy-provider && yarn webpack --watch",
+    "dev": "yarn webpack --watch",
     "clean": "rimraf *.log src/main/resources/javascript/app",
     "clean:all": "yarn clean && rimraf node_modules node",
     "test": "jest",
