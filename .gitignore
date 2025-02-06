@@ -13,3 +13,11 @@ src/main/resources/javascript/app
 yarn-error.log
 /.env
 /yalc.lock
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
