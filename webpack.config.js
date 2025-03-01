@@ -7,7 +7,8 @@ const {CycloneDxWebpackPlugin} = require('@cyclonedx/webpack-plugin');
 const cycloneDxWebpackPluginOptions = {
     specVersion: '1.4',
     rootComponentType: 'library',
-    outputLocation: './bom'
+    outputLocation: './bom',
+    validateResults: false
 };
 
 module.exports = (env, argv) => {
@@ -67,7 +68,19 @@ module.exports = (env, argv) => {
                     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
                     type: 'asset/resource',
                     dependency: { not: ['url'] }
-                }
+                },
+                {
+                    test: /\.(png|jpe?g|gif|webp)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]',
+                                outputPath: 'assets/images/', // Adjust the output path as necessary
+                            },
+                        },
+                    ],
+                },
             ]
         },
         optimization: {

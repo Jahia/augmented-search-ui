@@ -12,7 +12,7 @@ import {
 } from '@elastic/react-search-ui/lib/esm/containers';
 import {Layout} from '@elastic/react-search-ui-views/lib/esm/layouts';
 import ViewWrapper from './ViewWrapper';
-import ResultView from './ResultView';
+import {ResultView, ResultViewIllustrated} from './ResultView';
 import TreeFacet from './TreeFacet/TreeFacet';
 import {useTranslation} from 'react-i18next';
 import SearchInputView from './Override/SearchInput';
@@ -127,15 +127,19 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                     bodyContent={<ViewWrapper wasSearched={wasSearched}
                                               results={results}
                                               fallbackView="Nothing was found"
-                                              view={results.map(result => (
-                                                  <Result key={result.id.raw}
-                                                          id={result.id.raw}
-                                                          view={ResultView}
-                                                          result={result}
-                                                          titleField="title"
-                                                          urlField="link"
-                                                  />
-                                              ))}/>}
+                                              view={results.map(result => {
+                                                  const Cmp = result.image?.raw ? ResultViewIllustrated : ResultView;
+                                                  return (
+                                                      <Result key={result.id.raw}
+                                                              id={result.id.raw}
+                                                              view={Cmp}
+                                                              result={result}
+                                                              titleField="title"
+                                                              urlField="link"
+                                                      />
+                                                  );
+}
+                                              )}/>}
                     bodyHeader={
                         <>
                             <ViewWrapper wasSearched={wasSearched}

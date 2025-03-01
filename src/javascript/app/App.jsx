@@ -16,7 +16,8 @@ let fields = [
     new Field(FieldType.HIT, 'createdBy'),
     new Field(FieldType.HIT, 'created'),
     new Field(FieldType.HIT, 'nodeType'),
-    new Field(FieldType.HIT, 'mimeType')
+    new Field(FieldType.HIT, 'mimeType'),
+    new Field(FieldType.REFERENCE_AS_VALUE, 'image')
 ];
 
 function configureConnector(dxContext, t) {
@@ -104,6 +105,7 @@ function configureConnector(dxContext, t) {
 
 const App = ({dxContext}) => {
     const {t} = useTranslation();
+
     return (
         <SearchProvider config={configureConnector(dxContext, t)}>
             <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>

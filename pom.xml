@@ -53,7 +53,7 @@
     </parent>
     <artifactId>augmented-search-ui</artifactId>
     <name>Augmented Search UI</name>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.1.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This module provides integration with ES Search UI</description>
 
@@ -146,7 +146,7 @@
                         </goals>
                         <configuration>
                             <nodeVersion>v18.19.0</nodeVersion>
-                            <yarnVersion>v1.22.11</yarnVersion>
+                            <yarnVersion>v1.22.19</yarnVersion>
                         </configuration>
                     </execution>
                     <execution>
