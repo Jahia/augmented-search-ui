@@ -6,6 +6,7 @@ import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 import {useTranslation} from 'react-i18next';
 import {JahiaCtx} from './context';
+import {Store} from './store/Store';
 
 let fields = [
     new Field(FieldType.HIT, 'link'),
@@ -25,12 +26,13 @@ let fields = [
     new Field(FieldType.NODE, 'currency')
 ];
 
-function configureConnector({dxContext, isProductEnabled, t}) {
+function configureConnector({dxContext, searchLanguage, isProductEnabled, t}) {
+    // Instead of DxContext.language I am using the searchLanguage,
     let connector = new JahiaSearchAPIConnector({
         apiToken: 'none',
         baseURL: dxContext.baseURL + dxContext.ctx,
         siteKey: dxContext.siteKey,
-        language: dxContext.language,
+        language: searchLanguage,
         workspace: dxContext.workspace === 'default' ? 'EDIT' : 'LIVE'
     });
 
@@ -62,9 +64,15 @@ function configureConnector({dxContext, isProductEnabled, t}) {
 
     return {
         searchQuery: {
-            // eslint-disable-next-line camelcase
+
             result_fields: fields,
             facets: {
+                // Not working
+                // 'jgql:nodeType': {
+                //     type: 'value',
+                //     size: 2,
+                //     include: '^(shopnt:product|seaddonsnt:recipe)$'
+                // },
                 'jgql:categories_path': {
                     type: 'value',
                     disjunctive: true,
@@ -127,7 +135,7 @@ function configureConnector({dxContext, isProductEnabled, t}) {
         autocompleteQuery: {
             results: {
                 resultsPerPage: 10,
-                // eslint-disable-next-line camelcase
+
                 result_fields: fields
             }
         },
@@ -141,13 +149,15 @@ function configureConnector({dxContext, isProductEnabled, t}) {
 const App = ({dxContext}) => {
     const {t} = useTranslation();
     const {isProductEnabled} = React.useContext(JahiaCtx);
-
+    const searchLanguage = localStorage.getItem('searchLanguage') || dxContext.language;
     return (
-        <SearchProvider config={configureConnector({dxContext, isProductEnabled, t})}>
-            <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
-                {SearchView}
-            </WithSearch>
-        </SearchProvider>
+        <Store searchLanguage={searchLanguage} languages={dxContext.languages} currentSiteLanguage={dxContext.language}>
+            <SearchProvider config={configureConnector({dxContext, searchLanguage, isProductEnabled, t})}>
+                <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
+                    {SearchView}
+                </WithSearch>
+            </SearchProvider>
+        </Store>
     );
 };
 

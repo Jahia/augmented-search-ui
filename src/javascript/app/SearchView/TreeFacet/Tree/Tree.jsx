@@ -63,7 +63,7 @@ const Tree = ({options, onSelect, onRemove, field}) => {
         };
         const queryConfig = {
             ...context.driver.searchQuery,
-            // eslint-disable-next-line camelcase
+
             result_fields: [],
             facets: filterFacets(
                 context.driver.searchQuery.facets,

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="utility" uri="http://www.jahia.org/tags/utilityLib" %>
+<%@ taglib prefix="ui" uri="http://www.jahia.org/tags/uiComponentsLib" %>
 
 <template:addResources type="javascript" resources="app/augmented-search-ui-polyfills.js"/>
 <template:addResources type="javascript" resources="app/augmented-search-ui-vendors.js"/>
@@ -18,6 +19,14 @@
 <c:set var="SHOPPING_CART_MODULE" value="shopping-cart"/>
 <c:set var="installedModules" value="${renderContext.site.properties['j:installedModules']}"/>
 <c:set var="isProductEnabled" value="false"/>
+
+<c:catch var="errorLanguages">
+    <ui:initLangBarAttributes activeLanguagesOnly="${renderContext.liveMode}"/>
+    <c:set var="languageCodes" value="${requestScope.languageCodes}"/>
+</c:catch>
+<c:if test = "${errorLanguages != null}">
+    <utility:logger level="info" value="*** errorLanguages : ${errorLanguages}"/>
+</c:if>
 
 <c:forEach var="module" items="${installedModules}">
     <c:if test="${SHOPPING_CART_MODULE eq module}">
@@ -49,6 +58,8 @@
     <c:set var="isSearchBoxDisabled" value="false"/>
 </c:if>
 
+
+
 <c:set target="${moduleMap}" property="appId" value="AS_UI_WebApp_${fn:replace(_uuid_,'-','_')}" />
 <script>
     const host_${moduleMap.appId} = window.location.protocol + '//' + window.location.host;
@@ -70,6 +81,13 @@
             isPagingDisabled:(/true/i).test(${isPagingDisabled}),
             isSearchBoxDisabled:(/true/i).test(${isSearchBoxDisabled}),
             isProductEnabled: (/true/i).test(${isProductEnabled})
-        }
+        },
+        languages : [
+            <c:forEach var="languageCode" items="${languageCodes}" varStatus="status">
+<%--                <c:if test="${! empty languageCode && ! fn:contains(invalidLanguages, languageCode) && languageCode != renderContext.mainResourceLocale.language}">--%>
+                "${languageCode}"<c:if test="${!status.last}">, </c:if>
+<%--                </c:if>--%>
+            </c:forEach>
+        ]
     }
 </script>

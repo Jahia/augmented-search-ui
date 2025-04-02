@@ -2,6 +2,7 @@
     "extends": "@jahia",
     "rules": {
         "react/no-danger": "off",
-        "react/boolean-prop-naming": "off"
+        "react/boolean-prop-naming": "off",
+        "camelcase": "off"
     }
 }
