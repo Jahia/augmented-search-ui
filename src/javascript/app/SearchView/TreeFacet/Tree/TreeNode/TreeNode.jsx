@@ -2,6 +2,9 @@ import React from 'react';
 import {FaChevronDown, FaChevronRight} from 'react-icons/fa';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import {useQuery} from '@apollo/client';
+import {getCategoryTranslation} from '../../../../waGraphQL';
+import {JahiaCtx, StoreCtx} from '../../../../context';
 
 const getPaddingLeft = level => level * 20;
 
@@ -38,6 +41,43 @@ const TitleSpan = styled.span`
 
 const TreeNode = props => {
     const {node, getChildNodes, level, onToggle, onSelect, onRemove} = props;
+    const {workspace, language} = React.useContext(JahiaCtx);
+    const {state: {searchLanguage}} = React.useContext(StoreCtx);
+
+    const {data, loading, error, refetch} = useQuery(getCategoryTranslation, {
+        variables: {
+            workspace,
+            language,
+            path: `/sites/systemsite/categories${node.rootPath}`
+        },
+        skip: searchLanguage === language || !Object.prototype.hasOwnProperty.call(node, 'key')
+    });
+
+    React.useEffect(() => {
+        if (searchLanguage !== language && Object.prototype.hasOwnProperty.call(node, 'key')) {
+            refetch({
+                path: `/sites/systemsite/categories${node.rootPath}`
+            });
+        }
+    }, [language, refetch, node, searchLanguage]);
+
+    if (error) {
+    // Const message = t(
+    //     'jcontent:label.jcontent.error.queryingContent',
+    //     {details: error.message ? error.message : ''}
+    // );
+
+        // console.warn(message);
+        console.warn('error todo');
+    }
+
+    if (loading) {
+        return null;// Note return default results ?
+    }
+
+    if (data?.jcr?.node?.title) {
+        node.value = data.jcr.node.title;
+    }
 
     return (
         <>

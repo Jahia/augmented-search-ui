@@ -5,8 +5,7 @@ import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-
 import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 import {useTranslation} from 'react-i18next';
-import {JahiaCtx} from './context';
-import {Store} from './store/Store';
+import {JahiaCtx, StoreCtx} from './context';
 
 let fields = [
     new Field(FieldType.HIT, 'link'),
@@ -45,18 +44,18 @@ function configureConnector({dxContext, searchLanguage, isProductEnabled, t}) {
             ranges: [
                 {
                     from: 1.0,
-                    to: 500.0,
-                    name: 'moins de 500'// T('facet.range.lastWeek')
+                    to: 6.0,
+                    name: t('facet.price.range.min500')
                 },
                 {
-                    from: 501.0,
-                    to: 1000.0,
-                    name: 'de 500 à 1000'// T('facet.range.lastMonth')
+                    from: 6.01,
+                    to: 7.0,
+                    name: t('facet.price.range.bet500_1000')
                 },
                 {
-                    from: 1001.0,
+                    from: 7.01,
                     to: 50000.0,
-                    name: 'plus de 1000'// T('facet.range.last6Months')
+                    name: t('facet.price.range.more1000')
                 }
             ]
         };
@@ -79,58 +78,58 @@ function configureConnector({dxContext, searchLanguage, isProductEnabled, t}) {
                     max: 50,
                     hierarchical: true,
                     rootPath: ''
-                },
-                'jcr:lastModifiedBy': {
-                    type: 'value',
-                    disjunctive: true
-                }, // Term Facet
-                'jcr:tags': {
-                    type: 'value',
-                    disjunctive: true
-                },
+                }
+                // 'jcr:lastModifiedBy': {
+                //     type: 'value',
+                //     disjunctive: true
+                // }, // Term Facet
+                // 'jcr:tags': {
+                //     type: 'value',
+                //     disjunctive: true
+                // }
                 // Term Facet
-                'jcr:keywords': {
-                    type: 'value',
-                    disjunctive: true
-                },
+                // 'jcr:keywords': {
+                //     type: 'value',
+                //     disjunctive: true
+                // },
                 // Date Range Facet
-                'jcr:lastModified': {
-                    type: 'date_range',
-                    disjunctive: false,
-                    ranges: [
-                        {
-                            from: 'now-1w',
-                            to: 'now',
-                            name: t('facet.range.lastWeek')
-                        },
-                        {
-                            from: 'now-1M',
-                            to: 'now-1w',
-                            name: t('facet.range.lastMonth')
-                        },
-                        {
-                            from: 'now-6M',
-                            to: 'now-1M',
-                            name: t('facet.range.last6Months')
-                        },
-                        {
-                            from: 'now-1y',
-                            to: 'now-6M',
-                            name: t('facet.range.lastYear')
-                        },
-                        {
-                            from: 'now-5y',
-                            to: 'now-1y',
-                            name: t('facet.range.last5Years')
-                        }
-                    ]
-                },
-                ...conditionalFacets
-            },
-            conditionalFacets: {
-                'jcr:lastModifiedBy': filters => filters.filters.some(filter => filter.field === 'jcr:lastModified')
-                // Price: filters => filters.filters.some(filter => filter.field === 'price')
+                // 'jcr:lastModified': {
+                //     type: 'date_range',
+                //     disjunctive: false,
+                //     ranges: [
+                //         {
+                //             from: 'now-1w',
+                //             to: 'now',
+                //             name: t('facet.range.lastWeek')
+                //         },
+                //         {
+                //             from: 'now-1M',
+                //             to: 'now-1w',
+                //             name: t('facet.range.lastMonth')
+                //         },
+                //         {
+                //             from: 'now-6M',
+                //             to: 'now-1M',
+                //             name: t('facet.range.last6Months')
+                //         },
+                //         {
+                //             from: 'now-1y',
+                //             to: 'now-6M',
+                //             name: t('facet.range.lastYear')
+                //         },
+                //         {
+                //             from: 'now-5y',
+                //             to: 'now-1y',
+                //             name: t('facet.range.last5Years')
+                //         }
+                //     ]
+                // },
+                // ...conditionalFacets
             }
+            // ConditionalFacets: {
+            //     'jcr:lastModifiedBy': filters => filters.filters.some(filter => filter.field === 'jcr:lastModified')
+            //     // Price: filters => filters.filters.some(filter => filter.field === 'price')
+            // }
         },
         autocompleteQuery: {
             results: {
@@ -149,15 +148,15 @@ function configureConnector({dxContext, searchLanguage, isProductEnabled, t}) {
 const App = ({dxContext}) => {
     const {t} = useTranslation();
     const {isProductEnabled} = React.useContext(JahiaCtx);
-    const searchLanguage = localStorage.getItem('searchLanguage') || dxContext.language;
+    const {state: {searchLanguage}} = React.useContext(StoreCtx);
+    const config = configureConnector({dxContext, searchLanguage, isProductEnabled, t});
+
     return (
-        <Store searchLanguage={searchLanguage} languages={dxContext.languages} currentSiteLanguage={dxContext.language}>
-            <SearchProvider config={configureConnector({dxContext, searchLanguage, isProductEnabled, t})}>
-                <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
-                    {SearchView}
-                </WithSearch>
-            </SearchProvider>
-        </Store>
+        <SearchProvider key={searchLanguage} config={config}>
+            <WithSearch mapContextToProps={({wasSearched, results, searchTerm}) => ({wasSearched, results, searchTerm})}>
+                {SearchView}
+            </WithSearch>
+        </SearchProvider>
     );
 };
 

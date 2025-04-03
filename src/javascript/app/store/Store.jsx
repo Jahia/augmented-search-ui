@@ -45,7 +45,7 @@ export const Store = ({searchLanguage, languages, currentSiteLanguage, children}
 
 Store.propTypes = {
     searchLanguage: PropTypes.string,
-    languages: PropTypes.string,
+    languages: PropTypes.arrayOf(PropTypes.string),
     currentSiteLanguage: PropTypes.string,
     children: PropTypes.node
 };

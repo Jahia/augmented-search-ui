@@ -16,11 +16,11 @@ export const ResultCardIllustrated = ({titleField, urlField, result}) => {
     const title = getRaw(result, titleField);
     // Const title = getEscapedField(result, titleField);
     const url = getRaw(result, urlField);
-    // Const price = getRaw(result, 'price');
-    const rawPrice = Number.parseFloat(getRaw(result, 'price'));
-    const price = isNaN(rawPrice) ? null : rawPrice.toFixed(2).toString();
-    const prices = price ? price.split('.') : [];
-    const currency = getRaw(result, 'currency');
+
+    // Const rawPrice = Number.parseFloat(getRaw(result, 'price'));
+    // const price = isNaN(rawPrice) ? null : rawPrice.toFixed(2).toString();
+    // const prices = price ? price.split('.') : [];
+    // const currency = getRaw(result, 'currency');
 
     // Const mimeType = getRaw(result, 'mimeType');
     const categoriesSet = new Set(JSON.parse(getRaw(result, 'jgql_categories')));
@@ -70,11 +70,11 @@ export const ResultCardIllustrated = ({titleField, urlField, result}) => {
                     <div className="amz-card-body">
                         <h3 className="amz-card-title">{title}</h3>
                         <div dangerouslySetInnerHTML={{__html: fields.excerpt.substring(0, 100)}} className="excerpt"/>
-                        {Boolean(prices.length) &&
-                            <p className="price" style={{fontSize: '24px'}}>
-                                <strong>{prices[0]}</strong>
-                                <sup>{prices[1]}&nbsp;{currency}</sup>
-                            </p>}
+                        {/* {Boolean(prices.length) && */}
+                        {/*    <p className="price" style={{fontSize: '24px'}}> */}
+                        {/*        <strong>{prices[0]}</strong> */}
+                        {/*        <sup>{prices[1]}&nbsp;{currency}</sup> */}
+                        {/*    </p>} */}
 
                         <ul>
                             {categories.map(category => (<li key={category}><span className="badge category"> {category} </span></li>))}

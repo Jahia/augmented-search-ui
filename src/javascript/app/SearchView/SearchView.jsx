@@ -179,7 +179,7 @@ const SearchView = ({wasSearched, results, searchTerm}) => {
                             />
                             <Facet
                                 field="price"
-                                label="Price"// {t('facet.lastModified')}
+                                label={t('facet.price.label')}
                              />
                         </>}
                 />

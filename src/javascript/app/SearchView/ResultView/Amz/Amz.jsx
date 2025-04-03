@@ -10,12 +10,13 @@ import {ResultCardIllustrated} from './ResultCardIllustrated';
 import {JahiaCtx, StoreCtx} from '../../../context';
 import {useQuery} from '@apollo/client';
 import {getResultsTranslation} from '../../../waGraphQL';
+
 export const Amz = ({wasSearched, results}) => {
     // Const {isFacetDisabled} = React.useContext(JahiaCtx);
     const {workspace, language} = React.useContext(JahiaCtx);
     const {state: {searchLanguage}} = React.useContext(StoreCtx);
 
-    const {data, loading, error} = useQuery(getResultsTranslation, {
+    const {data, loading, error, refetch} = useQuery(getResultsTranslation, {
         variables: {
             workspace,
             language,
@@ -24,11 +25,19 @@ export const Amz = ({wasSearched, results}) => {
         skip: searchLanguage === language || results.length === 0
     });
 
+    React.useEffect(() => {
+        if (searchLanguage !== language && results.length > 0) {
+            refetch({
+                nodes: results.map(result => result.id.raw)
+            });
+        }
+    }, [language, refetch, results, searchLanguage]);
+
     if (error) {
-        // Const message = t(
-        //     'jcontent:label.jcontent.error.queryingContent',
-        //     {details: error.message ? error.message : ''}
-        // );
+    // Const message = t(
+    //     'jcontent:label.jcontent.error.queryingContent',
+    //     {details: error.message ? error.message : ''}
+    // );
 
         // console.warn(message);
         console.warn('error todo');
@@ -44,37 +53,36 @@ export const Amz = ({wasSearched, results}) => {
                          results={results}
                          fallbackView="Nothing was found"
                          view={results.map(result => {
-                             const Cmp = result.image?.raw ? ResultCardIllustrated : ResultCard;
+                       const Cmp = result.image?.raw ? ResultCardIllustrated : ResultCard;
 
-                             const translatedNode = data?.jcr?.nodes?.find(({uuid}) => uuid === result.id.raw);
+                       const translatedNode = data?.jcr?.nodes?.find(({uuid}) => uuid === result.id.raw);
 
-                             const formatedResult = {
-                                 ...result,
-                                 title: {raw: translatedNode?.title || result.title.raw},
-                                 excerpt: {snippet: translatedNode?.description?.value || result.excerpt.snippet},
-                                link: {raw: translatedNode?.url?.replace(/null/, language) || result.link.raw},
-                                jgql_categories: {raw: JSON.stringify(translatedNode?.categories?.nodes?.map(node => node.title)) || result.jgql_categories.raw}
-                             };
+                       const formatedResult = {
+                         ...result,
+                         title: {raw: translatedNode?.title || result.title.raw},
+                         excerpt: {snippet: translatedNode?.description?.value || result.excerpt.snippet},
+                         link: {raw: translatedNode?.url?.replace(/null/, language) || result.link.raw},
+                         jgql_categories: {raw: JSON.stringify(translatedNode?.categories?.nodes?.map(node => node.title)) || result.jgql_categories.raw}
+                       };
+                       if (translatedNode?.title && !translatedNode?.description?.value) {
+                         formatedResult.excerpt.snippet = null;
+                       }
 
-                             return (
-                                 <div key={result.id.raw}
-                                      className="result-col-md-4"
-                                 //      ClassName={clsx({
-                                 //     'result-col-md-4': isFacetDisabled,
-                                 //     'result-col-md-6': !isFacetDisabled
-                                 // })}
-                                 >
-                                     <Result
-                                             id={result.id.raw}
-                                             view={Cmp}
-                                             result={formatedResult}
-                                             titleField="title"
-                                             urlField="link"
-                                    />
-                                 </div>
-                             );
-                         }
-                     )}/>
+                       return (
+                           <div key={result.id.raw}
+                                className="result-col-md-4"
+                           >
+                               <Result
+                             id={result.id.raw}
+                             view={Cmp}
+                             result={formatedResult}
+                             titleField="title"
+                             urlField="link"
+                           />
+                           </div>
+                       );
+                     }
+                   )}/>
         </div>
     );
 };

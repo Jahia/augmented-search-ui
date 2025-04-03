@@ -1,0 +1,64 @@
+{
+  "config": {
+    "mimeTypes": {
+      "application/pdf": "PDF 文件"
+    },
+    "nodeTypes": {
+      "ARTICLE": "文章",
+      "QUIZ": "测验",
+      "PAGE": "网页",
+      "FILE": "文件",
+      "TRAINING": "培训",
+      "EVENT": "活动",
+      "DEFAULT": "内容"
+    }
+  },
+  "facet": {
+    "sortBy": "排序方式",
+    "categories": "类别",
+    "lastModifiedBy": "作者",
+    "tags": "标签",
+    "keywords": "关键字",
+    "lastModified": "最后修改",
+    "eventType": "活动类型",
+    "range": {
+      "lastWeek": "上周",
+      "lastMonth": "上个月",
+      "last6Months": "最近6个月",
+      "lastYear": "去年",
+      "last5Years": "过去5年"
+    },
+    "sortOptions": {
+      "created": "创建日期",
+      "modified": "更新日期",
+      "relevance": "相关性",
+      "title": "标题"
+    },
+    "price": {
+      "label": "价格",
+      "range": {
+        "min500": "小于6",
+        "bet500_1000": "6到7",
+        "more1000": "大于7"
+      }
+    }
+  },
+  "result": {
+    "updatedAt": "更新于",
+    "createdAt": "创建于"
+  },
+  "search": {
+    "ui": {
+      "inputPlaceholder": "搜索",
+      "btn": "搜索",
+      "showing": "显示",
+      "outOf": "共",
+      "for": "关于",
+      "show": "显示",
+      "btn": {
+        "search": "搜索"
+      }
+    },
+    "fallbackMsg": "未找到任何内容"
+  }
+}

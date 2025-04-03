@@ -8,11 +8,13 @@ import {JahiaCtxProvider} from './context';
 import {ApolloProvider/* , ApolloClient, createHttpLink, InMemoryCache */} from '@apollo/client';
 import {getClient} from './waGraphQL';
 import {nodeTypesMap} from './config';
+import {Store} from './store/Store';
 const bootstrap = function (target, context) {
     i18n.changeLanguage(context.language);
     moment().locale(context.language);
     const root = createRoot(document.getElementById(target));
     const client = getClient(context.gqlServerUrl);
+    const searchLanguage = localStorage.getItem('searchLanguage') || context.language;
 
     context.webapp = context.webapp || {};
 
@@ -30,7 +32,9 @@ const bootstrap = function (target, context) {
         }}
         >
             <ApolloProvider client={client}>
-                <App dxContext={context}/>
+                <Store searchLanguage={searchLanguage} languages={context.languages} currentSiteLanguage={context.language}>
+                    <App dxContext={context}/>
+                </Store>
             </ApolloProvider>
         </JahiaCtxProvider>
     );

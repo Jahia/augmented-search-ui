@@ -33,6 +33,14 @@
       "modified" : "Date de mise à jour",
       "relevance" : "Pertinence",
       "title" : "Titre"
+    },
+    "price": {
+      "label": "Prix",
+      "range": {
+        "min500": "moins de 6",
+        "bet500_1000": "de 6 à 7",
+        "more1000": "plus de 7"
+      }
     }
   },
   "result": {
