@@ -55,7 +55,7 @@
     "rimraf": "^5.0.5",
     "style-loader": "2.0.0",
     "sync-pom-version-to-package": "^1.6.1",
-    "webpack": "^5.91.0",
+    "webpack": "^5.94.0",
     "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^5.1.4",
     "webpack-node-externals": "^3.0.0"
