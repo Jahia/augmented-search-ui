@@ -9,9 +9,7 @@ const bootstrap = function (target, context) {
     i18n.changeLanguage(context.language);
     moment().locale(context.language);
     const root = createRoot(document.getElementById(target));
-    root.render(
-        <App dxContext={context}/>
-    );
+    root.render(<App dxContext={context}/>);
 };
 
 window.augmentedSearchUIApp = bootstrap;

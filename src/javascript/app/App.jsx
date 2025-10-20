@@ -6,7 +6,7 @@ import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 import {useTranslation} from 'react-i18next';
 
-let fields = [
+const fields = [
     new Field(FieldType.HIT, 'link'),
     new Field(FieldType.HIT, 'displayableName', 'title'),
     new Field(FieldType.HIT, 'excerpt', null, true),
@@ -20,7 +20,7 @@ let fields = [
 ];
 
 function configureConnector(dxContext, t) {
-    let connector = new JahiaSearchAPIConnector({
+    const connector = new JahiaSearchAPIConnector({
         apiToken: 'none',
         baseURL: dxContext.baseURL + dxContext.ctx,
         siteKey: dxContext.siteKey,

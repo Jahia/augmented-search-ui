@@ -54,7 +54,6 @@ module.exports = (env, argv) => {
                             ],
                             plugins: [
                                 'lodash',
-                                '@babel/plugin-syntax-dynamic-import'
                             ]
                         }
                     }

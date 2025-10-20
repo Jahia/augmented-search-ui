@@ -35,7 +35,7 @@ const Tree = ({options, onSelect, onRemove, field}) => {
             const correspondingOptionFromState = optionsState.find(option => option.key === currentOption.key);
 
             function getSelected() {
-                let filteredField = context.driver.state.filters.find(filter => filter.field === field);
+                const filteredField = context.driver.state.filters.find(filter => filter.field === field);
                 return Boolean(filteredField && filteredField.values.find(value => value === correspondingOptionFromState.filter));
             }
 
@@ -75,7 +75,7 @@ const Tree = ({options, onSelect, onRemove, field}) => {
             node.children = response.facets[field][0].data;
             node.isOpen = !node.isOpen;
 
-            let filteredField = context.driver.state.filters.find(filter => filter.field === field);
+            const filteredField = context.driver.state.filters.find(filter => filter.field === field);
             node.children.forEach(children => {
                 children.selected = Boolean(filteredField && filteredField.values.find(value => value === children.filter));
             });

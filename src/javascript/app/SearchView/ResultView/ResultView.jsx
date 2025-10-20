@@ -48,9 +48,7 @@ function getEscapedField(result, field) {
 }
 
 function getEscapedFields(result) {
-    return Object.keys(result).reduce((acc, field) => {
-        return {...acc, [field]: getEscapedField(result, field)};
-    }, {});
+    return Object.keys(result).reduce((acc, field) => ({...acc, [field]: getEscapedField(result, field)}), {});
 }
 
 // Inner date component
@@ -69,8 +67,7 @@ const DateComponent = ({result, t}) => {
                 <span>
                     {moment(date).format('lll')}
                     {' '}
-                    {lastModifiedDate &&
-                        <small>{`(${t('result.createdAt')} ${moment(createdDate).format('ll')})`}</small>}
+                    {lastModifiedDate ? <small>{`(${t('result.createdAt')} ${moment(createdDate).format('ll')})`}</small> : null}
                 </span>
                 {' '}
                 <BsDashLg/>
@@ -123,23 +120,19 @@ const getNodeTypeKey = (nodeType, mimeType, i18n) => {
     return `config.nodeTypes.${key}`;
 };
 
-const getURLStream = url => {
-    return url.replace('.html', '').split('/').reduce((string, item, index) => {
-        if (!item) {
-            return string;
-        }
+const getURLStream = url => url.replace('.html', '').split('/').reduce((string, item, index) => {
+    if (!item) {
+        return string;
+    }
 
-        if (index === 1) {
-            return item;
-        }
+    if (index === 1) {
+        return item;
+    }
 
-        return `${string} > ${item} `;
-    }, '');
-};
+    return `${string} > ${item} `;
+}, '');
 
-const getNodeTypeColor = nodeType => {
-    return nodeTypesColor[nodeType] || 'var(--color-default)';
-};
+const getNodeTypeColor = nodeType => nodeTypesColor[nodeType] || 'var(--color-default)';
 
 const ResultView = ({id, titleField, urlField, result}) => {
     const {t, i18n} = useTranslation();
