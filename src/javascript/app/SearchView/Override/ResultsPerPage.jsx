@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select, {components} from 'react-select';
-import {appendClassName} from '@elastic/react-search-ui-views/lib/esm/view-helpers';
+import {ViewHelpers} from '@elastic/react-search-ui-views';
 import {useTranslation} from 'react-i18next';
 
 const setDefaultStyle = {
@@ -10,7 +10,7 @@ const setDefaultStyle = {
     control: () => ({}),
     dropdownIndicator: () => ({}),
     indicatorSeparator: () => ({}),
-    singleValue: provided => {
+    singleValue(provided) {
         // Pulling out CSS that we don't want
         // ***eslint-disable-next-line @typescript-eslint/no-unused-vars***
         const {position, top, transform, maxWidth, ...rest} = provided;
@@ -21,9 +21,7 @@ const setDefaultStyle = {
 
 const wrapOption = option => ({label: option, value: option});
 
-const Option = props => {
-    return <components.Option {...props}>{props.data.label}</components.Option>;
-};
+const Option = props => <components.Option {...props}>{props.data.label}</components.Option>;
 
 Option.propTypes = {
     data: PropTypes.object
@@ -50,20 +48,20 @@ const ResultsPerPage = ({
 
     return (
         <div
-            className={appendClassName('sui-results-per-page', className)}
+            className={ViewHelpers.appendClassName('sui-results-per-page', className)}
             {...rest}
         >
-            <div className="sui-results-per-page__label">{t('search.ui.show')}</div>
+            <div className='sui-results-per-page__label'>{t('search.ui.show')}</div>
 
             <Select
-                className="sui-select sui-select--inline"
-                classNamePrefix="sui-select"
+                className='sui-select sui-select--inline'
+                classNamePrefix='sui-select'
                 value={selectedOption}
                 options={options.map(wrapOption)}
                 isSearchable={false}
                 styles={setDefaultStyle}
                 components={{
-                    Option: props => {
+                    Option(props) {
                         // eslint-disable-next-line react/prop-types
                         props.innerProps['data-transaction-name'] = 'results per page';
                         return Option(props);

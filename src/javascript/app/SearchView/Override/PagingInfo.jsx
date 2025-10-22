@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {appendClassName} from '@elastic/react-search-ui-views/lib/esm/view-helpers';
+import {ViewHelpers} from '@elastic/react-search-ui-views';
 import {useTranslation} from 'react-i18next';
 
 const PagingInfo = ({
@@ -13,18 +13,18 @@ const PagingInfo = ({
 }) => {
     const {t} = useTranslation();
     return (
-        <div className={appendClassName('sui-paging-info', className)} {...rest}>
+        <div className={ViewHelpers.appendClassName('sui-paging-info', className)} {...rest}>
             {t('search.ui.showing') + ' '}
             <strong>
                 {start} - {end}
             </strong>{' '}
             {t('search.ui.outOf')} <strong>{totalResults}</strong>
-            {searchTerm && (
-                <>
-                    {' '}
-                    {t('search.ui.for')}: <em>{searchTerm}</em>
-                </>
-            )}
+            {searchTerm ?
+<>
+    {' '}
+    {t('search.ui.for')}: <em>{searchTerm}</em>
+  </> :
+null}
         </div>
     );
 };

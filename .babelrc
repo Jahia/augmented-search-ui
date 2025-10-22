@@ -1,14 +1,10 @@
 {
   "plugins": [
     "@babel/plugin-transform-classes",
-    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-class-properties",
     "lodash",
-    "@babel/plugin-syntax-dynamic-import",
     [
-      "@babel/plugin-transform-runtime",
-      {
-        "regenerator": true
-      }
+      "@babel/plugin-transform-runtime"
     ]
   ],
   "presets": [

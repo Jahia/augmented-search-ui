@@ -9,8 +9,8 @@ import {
     ResultsPerPage,
     SearchBox,
     Sorting
-} from '@elastic/react-search-ui/lib/esm/containers';
-import {Layout} from '@elastic/react-search-ui-views/lib/esm/layouts';
+} from '@elastic/react-search-ui';
+import {Layout} from '@elastic/react-search-ui-views';
 import ViewWrapper from './ViewWrapper';
 import ResultView from './ResultView';
 import TreeFacet from './TreeFacet/TreeFacet';
@@ -57,7 +57,8 @@ const buildAndFireSearchEvent = searchTerm => {
         return;
     }
 
-    const searchEvent = window.wem.buildEvent('search',
+    const searchEvent = window.wem.buildEvent(
+        'search',
         window.wem.buildTarget('augmentedSearchForm', 'form'),
         window.wem.buildSourcePage()
     );
@@ -68,7 +69,8 @@ const buildAndFireSearchEvent = searchTerm => {
         keyword: searchTerm,
         origin: location.pathname
     };
-    window.wem.collectEvent(searchEvent,
+    window.wem.collectEvent(
+        searchEvent,
         () => console.debug('[buildAndFireSearchEvent] search formEvent sent'),
         () => console.debug('[buildAndFireSearchEvent] oups search formEvent was not handled properly')
     );
