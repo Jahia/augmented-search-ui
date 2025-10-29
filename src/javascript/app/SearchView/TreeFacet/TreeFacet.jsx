@@ -3,7 +3,7 @@ import React from 'react';
 
 // Import {FacetValue} from '@elastic/search-ui/lib/esm/types';
 import Tree from './Tree/Tree';
-import {appendClassName} from "@elastic/react-search-ui-views";
+import {ViewHelpers} from "@elastic/react-search-ui-views";
 
 const TreeFacet = ({
     className,
@@ -15,7 +15,7 @@ const TreeFacet = ({
     showMore,
     treeField
 }) => (
-    <fieldset className={appendClassName('sui-facet', className)}>
+    <fieldset className={ViewHelpers.appendClassName('sui-facet', className)}>
         <legend className='sui-facet__title'>{label}</legend>
         <div className='sui-multi-checkbox-facet'>
             {options.length < 1 && <div>No matching options</div>}
