@@ -150,18 +150,14 @@ const ResultView = ({id, titleField, urlField, result}) => {
         >
             <a href={url || '#'} style={{color: getNodeTypeColor(nodeType)}}>
                 <br/>
-                <h3>{title}</h3>
-                <div className="excerpt">
-                    <DateComponent {...{result, t}}/>
-                    <span dangerouslySetInnerHTML={{__html: fields.excerpt}}/>
-                </div>
+                <h3 className="title">{title}</h3>
                 <div className="header">
                     <span>
                         <div>
                             {getIcon(nodeType, mimeType)}
                         </div>
                     </span>
-                    <div className="content">
+                    <div className="search-content">
                         <span>{t(getNodeTypeKey(nodeType, mimeType, i18n))}</span>
                         <div className="element">
                             <cite>
@@ -170,6 +166,10 @@ const ResultView = ({id, titleField, urlField, result}) => {
                             </cite>
                         </div>
                     </div>
+                </div>
+                <div className="excerpt">
+                    <DateComponent {...{result, t}}/>
+                    <span dangerouslySetInnerHTML={{__html: fields.excerpt}}/>
                 </div>
             </a>
         </div>
