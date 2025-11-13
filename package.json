@@ -1,6 +1,6 @@
 {
   "name": "augmented-search-ui",
-  "version": "3.1.0-SNAPSHOT",
+  "version": "4.0.0",
   "description": "Jahia module that provides integration with ES Search UI on top of Jahia Augmented Search API",
   "main": "main.js",
   "husky": {
