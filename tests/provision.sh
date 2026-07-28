@@ -20,16 +20,27 @@ COMPONENT_PATH="/sites/${SITE_KEY}/home/landing/augmented-search"
 # like a permissions problem but is a missing header. Basic auth itself is fine.
 AUTH=(-u "root:${SUPER_USER_PASSWORD}" -H "Origin: ${JAHIA_URL}")
 
-log() { echo "$(date +'%H:%M:%S') [provision] $*"; }
-die() { echo "$(date +'%H:%M:%S') [provision] FATAL: $*" >&2; exit 1; }
+log() {
+    echo "$(date +'%H:%M:%S') [provision] $*"
+    return 0
+}
+
+die() {
+    echo "$(date +'%H:%M:%S') [provision] FATAL: $*" >&2
+    exit 1
+}
 
 graphql() {
+    local query="$1"
     curl -sS --max-time 120 "${AUTH[@]}" -H 'Content-Type: application/json' \
-        -X POST "${JAHIA_URL}/modules/graphql" --data "$(jq -nc --arg q "$1" '{query: $q}')"
+        -X POST "${JAHIA_URL}/modules/graphql" --data "$(jq -nc --arg q "${query}" '{query: $q}')"
+    return $?
 }
 
 wait_for() { # wait_for <description> <seconds> <command...>
-    local what="$1" timeout="$2"; shift 2
+    local what="$1"
+    local timeout="$2"
+    shift 2
     local deadline=$(( SECONDS + timeout ))
     log "waiting for ${what} (timeout ${timeout}s)…"
     until "$@" >/dev/null 2>&1; do
@@ -37,6 +48,7 @@ wait_for() { # wait_for <description> <seconds> <command...>
         sleep 5
     done
     log "${what} ✓"
+    return 0
 }
 
 # --- 1. Jahia up ------------------------------------------------------------------------------
@@ -57,8 +69,16 @@ grep -qiE '"?error|exception|failure' <<<"${response}" && die "provisioning repo
 # Prefer the jar CI just built (mounted at /artifacts); fall back to the released version so the
 # environment is usable standalone by anyone who just wants to see the module run.
 # /artifacts is ../target — the Maven output locally, and where CI puts the build job's jar.
+#
+# Excluding -sources/-javadoc matters: the Maven build (and so the CI artifact) contains
+# augmented-search-ui-<version>-sources.jar alongside the module jar, and picking the newest match
+# blindly can deploy the sources jar.
 jar="${MODULE_JAR:-}"
-[[ -z "${jar}" ]] && jar=$(ls -t /artifacts/augmented-search-ui-*.jar 2>/dev/null | head -1 || true)
+if [[ -z "${jar}" ]]; then
+    jar=$(find /artifacts -maxdepth 1 -name 'augmented-search-ui-*.jar' \
+            ! -name '*-sources.jar' ! -name '*-javadoc.jar' -printf '%T@ %p\n' 2>/dev/null \
+          | sort -rn | head -1 | cut -d' ' -f2-)
+fi
 if [[ -n "${jar}" && -f "${jar}" ]]; then
     log "deploying $(basename "${jar}")…"
     deploy=$(curl -sS --max-time 600 "${AUTH[@]}" -X POST "${JAHIA_URL}/modules/api/provisioning" \
@@ -100,7 +120,8 @@ indexed() {
     local docs
     docs=$(curl -sf "${ELASTICSEARCH_URL}/_cat/indices/jahia_as*?h=docs.count" 2>/dev/null \
            | tr -d ' ' | grep -vE '^0?$' | head -1)
-    [[ -n "${docs}" ]]
+    [[ -n "${docs}" ]] && return 0
+    return 1
 }
 wait_for "Augmented Search indices to hold documents" 900 indexed
 curl -sf "${ELASTICSEARCH_URL}/_cat/indices/jahia_as*?v&h=index,docs.count" || true
