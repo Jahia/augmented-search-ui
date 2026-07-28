@@ -117,7 +117,7 @@ graphql "mutation { jcr(workspace: EDIT) { mutateNode(pathOrId: \"${COMPONENT_PA
 
 # --- 6. Indexation actually finished -----------------------------------------------------------
 # Indexation is asynchronous and its mutation reports success even when the job later fails, so the
-# only trustworthy check is that non-empty indices exist.
+# only trustworthy check is the end state.
 indexed() {
     local docs
     docs=$(curl -sf "${ELASTICSEARCH_URL}/_cat/indices/jahia_as*?h=docs.count" 2>/dev/null \
@@ -126,6 +126,30 @@ indexed() {
     return 1
 }
 wait_for "Augmented Search indices to hold documents" 900 indexed
+
+# Non-empty is not the same as finished. The tests assert exact result totals, so wait until the
+# count STOPS CHANGING - otherwise the suite races a still-running indexation and the totals differ
+# between runs. Two consecutive identical readings is enough in practice.
+total_hits() {
+    graphql 'query { search(q: "", workspace: LIVE) { results(size: 1) { totalHits } } }' 2>/dev/null \
+        | jq -r '.data.search.results.totalHits // empty'
+}
+log "waiting for indexation to settle…"
+settle_deadline=$(( SECONDS + 900 ))
+previous=""
+stable=0
+while (( stable < 2 )); do
+    current=$(total_hits)
+    if [[ -n "${current}" && "${current}" != "0" && "${current}" == "${previous}" ]]; then
+        stable=$(( stable + 1 ))
+    else
+        stable=0
+    fi
+    previous="${current}"
+    (( SECONDS < settle_deadline )) || die "indexation did not settle (last count: ${current:-none})"
+    sleep 10
+done
+log "indexation settled at ${previous} documents (LIVE, default language) ✓"
 curl -sf "${ELASTICSEARCH_URL}/_cat/indices/jahia_as*?v&h=index,docs.count" || true
 
 log "environment ready — handing over to the tests"

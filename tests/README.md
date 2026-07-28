@@ -57,9 +57,59 @@ standalone.
 | `elasticsearch/Dockerfile` | Elasticsearch **plus the analysis plugins Augmented Search needs**. |
 | `provisioning-manifest-stable.yml` | The platform: Digitall, Augmented Search, the JS-modules engine, ES configuration. |
 | `index-digitall.graphql` | Registers Digitall with Augmented Search and starts indexation. |
-| `provision.sh` | Waits for Jahia, applies the manifest, deploys/enables the module, places the component, waits for indices — then runs the tests. |
-| `e2e/` | Playwright specs. |
+| `provision.sh` | Waits for Jahia, applies the manifest, deploys/enables the module, places the component, waits for indexation to settle — then runs the tests. |
+| `e2e/` | Playwright specs (see below). |
+| `support/` | `expected.ts` (the values the suite asserts) and `search-page.ts` (all DOM knowledge). |
 | `results/` | Reports, traces, screenshots (git-ignored). |
+
+## What the suite covers
+
+75 tests, written as a **characterisation suite**: they record what the module does *today*, so the
+migration to a Jahia JavaScript module can be verified rather than hoped for.
+
+| Spec | Covers |
+|---|---|
+| `smoke.spec.ts` | The environment is wired up: component mounts, a search returns results, the API answers. |
+| `search.spec.ts` | Search on initial load, free-text queries, search-as-you-type, the empty state and recovery from it, special characters. |
+| `results.spec.ts` | The custom ResultView: link, title, node-type label, path breadcrumb, icon, type colour, date/author line, highlighted HTML excerpt. |
+| `facets.spec.ts` | Tags facet (values, counts, filtering, URL, deselection, checkbox state), the conditional Author facet, the absent Keywords facet, the date-range facet, and filters combined with a query. |
+| `tree-facet.spec.ts` | The bespoke Categories tree: rendering, counts, select/deselect, URL filter shape, the underline-only selection state, leaf nodes, the "+ More" threshold. |
+| `sorting-and-paging.spec.ts` | Four sort options and their URL parameters, PagingInfo wording, page navigation, disjoint pages, results-per-page. |
+| `i18n.spec.ts` | English and French chrome, results following the page language — **and three known bugs** (below). |
+| `url-state.spec.ts` | Query state in the URL and restoration from deep links: term, page, page size, sorting, facet filters, a full round-trip and back-navigation. |
+| `api.spec.ts` | The Augmented Search GraphQL API directly: guest LIVE, relevance ordering, EDIT for guests vs editors, and the `Origin` requirement. |
+
+### Three bugs are pinned as current behaviour
+
+The suite asserts these **as they are**, so the migration cannot change them by accident. When one is
+deliberately fixed, invert the matching assertion in the same commit so the change shows up in review.
+
+1. **German chrome is English.** `i18n/resources.js` registers only `en` and `fr`; `i18n/de.json`
+   exists and is complete but is never loaded, so i18next falls back to English.
+2. **Dates are always French.** `app/index.js` does `import 'moment/locale/fr'`, which makes French
+   moment's global default; the intended `moment().locale(lang)` sets the locale on a throwaway
+   instance rather than globally (`moment.locale(...)`).
+3. **The empty-results message is never translated.** `SearchView` passes a literal
+   `fallbackView="Nothing was found"` instead of the `search.fallbackMsg` key, which exists in all
+   three bundles.
+
+### Writing more tests
+
+Put DOM knowledge in `support/search-page.ts`, not in specs — the suite may move to Cypress later.
+Four traps, all of which cost a debugging cycle here:
+
+- **Don't select `input[type="text"]`.** Elastic's SearchBox renders its field with no `type`
+  attribute, so an attribute selector cannot match it. Use the textbox role.
+- **Don't select on the tree facet's classes.** They are styled-components hashes that change per
+  build.
+- **Don't put a comma-separated CSS list inside a chained locator.** Playwright splits it at the top
+  level and the second alternative escapes the container scope.
+- **Percent-encode `filters[0][field]=jcr:tags` style deep links.** Raw brackets and colons stop Jahia
+  serving the page, and the component then never mounts — which looks like a broken test.
+
+Assertions about content live in `support/expected.ts` and are deliberately exact. A fuzzy assertion
+detects no regression. If one fails after a version bump, confirm the behaviour really changed before
+editing the number.
 
 ## Running the tests from your host
 
