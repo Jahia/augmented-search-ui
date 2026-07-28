@@ -13,3 +13,8 @@ src/main/resources/javascript/app
 yarn-error.log
 /.env
 /yalc.lock
+
+# tests environment
+tests/node_modules/
+tests/results/
+tests/package-lock.json

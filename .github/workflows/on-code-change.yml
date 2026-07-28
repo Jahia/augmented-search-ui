@@ -56,3 +56,25 @@ jobs:
           github_pr_id: ${{github.event.number}}
           sonar_url: ${{ secrets.SONAR_URL }}
           sonar_token: ${{ secrets.SONAR_TOKEN }}
+
+  integration-tests:
+    name: Integration Tests
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jahia/jahia-modules-action/integration-tests@v2
+        with:
+          module_id: augmented-search-ui
+          # Pinned stable Jahia: this environment doubles as the one customers run, so it must not
+          # depend on a snapshot. See tests/README.md.
+          jahia_image: jahia/jahia-ee:8.2
+          # Elasticsearch is BUILT by tests/docker-compose.yml (stock ES + the analysis plugins
+          # augmented-search needs), so no elasticsearch_image is passed here.
+          tests_manifest: provisioning-manifest-stable.yml
+          tests_container_name: playwright
+          tests_report_path: results
+          tests_report_type: xml
+          jahia_license: ${{ secrets.JAHIA_LICENSE }}
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
