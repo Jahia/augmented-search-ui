@@ -27,6 +27,8 @@ log() {
 
 die() {
     echo "$(date +'%H:%M:%S') [provision] FATAL: $*" >&2
+    # NOSONAR (S7682: no explicit return) - this function deliberately terminates the script, so a
+    # trailing `return` would be unreachable dead code.
     exit 1
 }
 
