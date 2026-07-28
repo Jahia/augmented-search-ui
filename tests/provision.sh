@@ -56,11 +56,9 @@ grep -qiE '"?error|exception|failure' <<<"${response}" && die "provisioning repo
 # --- 3. The module under test ------------------------------------------------------------------
 # Prefer the jar CI just built (mounted at /artifacts); fall back to the released version so the
 # environment is usable standalone by anyone who just wants to see the module run.
-# /artifacts is the local Maven output (../target); /artifacts-ci is where the CI action drops the
-# jar it built in an earlier job. Whichever is present and newest wins.
+# /artifacts is ../target — the Maven output locally, and where CI puts the build job's jar.
 jar="${MODULE_JAR:-}"
-[[ -z "${jar}" ]] && jar=$(ls -t /artifacts/augmented-search-ui-*.jar /artifacts-ci/augmented-search-ui-*.jar \
-                              2>/dev/null | head -1 || true)
+[[ -z "${jar}" ]] && jar=$(ls -t /artifacts/augmented-search-ui-*.jar 2>/dev/null | head -1 || true)
 if [[ -n "${jar}" && -f "${jar}" ]]; then
     log "deploying $(basename "${jar}")…"
     deploy=$(curl -sS --max-time 600 "${AUTH[@]}" -X POST "${JAHIA_URL}/modules/api/provisioning" \

@@ -25,7 +25,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: Jahia/jahia-modules-action/static-analysis@v2
         with:
-          node_version: 18
+          # 18 can no longer install this repo's devDependencies: @babel/cli@8.0.0-beta.2 requires
+          # node ^20.19.0 || >=22.12.0, so `yarn` fails before linting even starts. This was already
+          # broken on main — recent merges were all [skip ci] chore syncs, so nothing surfaced it.
+          node_version: 22
           auditci_level: critical
 
   build:
@@ -57,24 +60,56 @@ jobs:
           sonar_url: ${{ secrets.SONAR_URL }}
           sonar_token: ${{ secrets.SONAR_TOKEN }}
 
+  # Deliberately NOT jahia-modules-action/integration-tests: that action drives the environment
+  # through `docker-compose` (Compose v1), which is no longer present on ubuntu-latest, and it
+  # discards the underlying error ("There was an issue processing the command") so failures are
+  # undiagnosable. Everything it did for us is a handful of plain `docker compose` calls, and
+  # tests/docker-compose.yml + tests/provision.sh are exactly what we run locally.
   integration-tests:
     name: Integration Tests
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      COMPOSE: docker compose -f tests/docker-compose.yml
+      JAHIA_LICENSE: ${{ secrets.JAHIA_LICENSE }}
     steps:
       - uses: actions/checkout@v4
-      - uses: jahia/jahia-modules-action/integration-tests@v2
+
+      # The build job publishes the jar as `build-artifacts` with a `target/` prefix, which is
+      # where tests/docker-compose.yml expects it (mounted read-only at /artifacts).
+      - name: Download the module jar from the build job
+        uses: actions/download-artifact@v4
         with:
-          module_id: augmented-search-ui
-          # Pinned stable Jahia: this environment doubles as the one customers run, so it must not
-          # depend on a snapshot. See tests/README.md.
-          jahia_image: jahia/jahia-ee:8.2
-          # Elasticsearch is BUILT by tests/docker-compose.yml (stock ES + the analysis plugins
-          # augmented-search needs), so no elasticsearch_image is passed here.
-          tests_manifest: provisioning-manifest-stable.yml
-          tests_container_name: playwright
-          tests_report_path: results
-          tests_report_type: xml
-          jahia_license: ${{ secrets.JAHIA_LICENSE }}
-          nexus_username: ${{ secrets.NEXUS_USERNAME }}
-          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+          name: build-artifacts
+          path: .
+
+      - name: Show what will be deployed
+        run: ls -l target/*.jar
+
+      - name: Start Jahia, Elasticsearch and the database
+        run: |
+          mkdir -p tests/results
+          $COMPOSE up -d --build elasticsearch jahia
+
+      # provision.sh (inside the tests container) waits for Jahia, applies the manifest, deploys the
+      # module, places the component and waits for real indices before Playwright starts.
+      - name: Provision the environment and run the tests
+        run: $COMPOSE up --build --abort-on-container-exit --exit-code-from playwright playwright
+
+      - name: Collect container logs
+        if: always()
+        run: $COMPOSE logs --no-color --timestamps --tail=all > tests/results/containers.log 2>&1 || true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: tests/results
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Tear down
+        if: always()
+        run: $COMPOSE down -v --remove-orphans || true

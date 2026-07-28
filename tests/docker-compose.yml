@@ -123,12 +123,10 @@ services:
       SUPER_USER_PASSWORD: ${SUPER_USER_PASSWORD:-root1234}
       MODULE_JAR: ${MODULE_JAR:-}
     volumes:
-      # The freshly built module jar, so the tests deploy exactly what was just built.
-      # ../target is the local Maven output; ../artifacts is where CI drops the jar from the build
-      # job. provision.sh takes whichever is present and newest, and falls back to the released
-      # version if neither is.
+      # The freshly built module jar, so the tests deploy exactly what was just built. ../target is
+      # the Maven output locally, and CI downloads the build job's artifact to the same place.
+      # provision.sh falls back to the released version when it's absent.
       - ../target:/artifacts:ro
-      - ../artifacts:/artifacts-ci:ro
       - ./results:/home/jahians/results
 
 networks:
