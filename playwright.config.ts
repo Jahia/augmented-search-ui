@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { existsSync } from 'node:fs';
 
-process.loadEnvFile();
+if (existsSync('.env')) process.loadEnvFile();
 
 const jahiaUrl = process.env.JAHIA_URL ?? `http://localhost:${process.env.JAHIA_PORT ?? '8080'}`;
 
