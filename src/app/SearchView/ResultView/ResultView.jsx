@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
-import moment from 'moment';
 import {
     BsBodyText,
     BsLayoutTextWindowReverse,
@@ -51,8 +50,34 @@ function getEscapedFields(result) {
     return Object.keys(result).reduce((acc, field) => ({...acc, [field]: getEscapedField(result, field)}), {});
 }
 
+// Dates are rendered with the platform's own Intl, which reproduces the module's previous moment
+// `lll` (date + time) and `ll` (date) formats exactly, while covering every site language — a date
+// library only knows the locales the bundle happens to import, and silently formats any other
+// language with the wrong one.
+const DATE_PARTS = {day: 'numeric', month: 'short', year: 'numeric'};
+const TIME_PARTS = {hour: '2-digit', minute: '2-digit'};
+
+const toDate = value => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+};
+
+const formatDate = (value, language) => {
+    const date = toDate(value);
+    return date ? new Intl.DateTimeFormat(language, DATE_PARTS).format(date) : '';
+};
+
+const formatDateTime = (value, language) => {
+    const date = toDate(value);
+    if (!date) {
+        return '';
+    }
+
+    return `${new Intl.DateTimeFormat(language, DATE_PARTS).format(date)} ${new Intl.DateTimeFormat(language, TIME_PARTS).format(date)}`;
+};
+
 // Inner date component
-const DateComponent = ({result, t}) => {
+const DateComponent = ({result, t, language}) => {
     const lastModifiedBy = getEscapedField(result, 'lastModifiedBy');
     const lastModifiedDate = getEscapedField(result, 'lastModified');
     const createdBy = getEscapedField(result, 'createdBy');
@@ -65,9 +90,9 @@ const DateComponent = ({result, t}) => {
         return (
             <>
                 <span>
-                    {moment(date).format('lll')}
+                    {formatDateTime(date, language)}
                     {' '}
-                    {lastModifiedDate ? <small>{`(${t('result.createdAt')} ${moment(createdDate).format('ll')})`}</small> : null}
+                    {lastModifiedDate ? <small>{`(${t('result.createdAt')} ${formatDate(createdDate, language)})`}</small> : null}
                 </span>
                 {' '}
                 <BsDashLg/>
@@ -86,7 +111,8 @@ const DateComponent = ({result, t}) => {
 
 DateComponent.propTypes = {
     result: PropTypes.object,
-    t: PropTypes.func
+    t: PropTypes.func,
+    language: PropTypes.string
 };
 
 const getFileIcon = mimeType => {
@@ -168,7 +194,7 @@ const ResultView = ({id, titleField, urlField, result}) => {
                     </div>
                 </div>
                 <div className="excerpt">
-                    <DateComponent {...{result, t}}/>
+                    <DateComponent {...{result, t, language: i18n.language}}/>
                     <span dangerouslySetInnerHTML={{__html: fields.excerpt}}/>
                 </div>
             </a>
