@@ -1,5 +1,0 @@
-/node
-/node_modules
-target
-src/main/resources
-webpack.config.js
