@@ -1,0 +1,95 @@
+name: augmented-search-ui
+
+services:
+  mariadb:
+    image: mariadb:10-focal
+    mem_limit: 1gb
+    command: >-
+      --max_allowed_packet=134217728
+      --transaction-isolation=READ-UNCOMMITTED
+      --innodb-lock-wait-timeout=10
+    environment:
+      MARIADB_ROOT_PASSWORD: mariadbP@55
+      MARIADB_DATABASE: jahia
+      MARIADB_USER: jahia
+      MARIADB_PASSWORD: jahia
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'MYSQL_PWD="$$MARIADB_ROOT_PASSWORD" healthcheck.sh --connect --innodb_initialized',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  elasticsearch:
+    build: # Built from a local image for extensions
+      context: ./dev/elasticsearch
+      args:
+        ES_BASE_IMAGE: ${ES_BASE_IMAGE:-docker.elastic.co/elasticsearch/elasticsearch:9.1.3}
+    image: ${ELASTICSEARCH_IMAGE:-augmented-search-ui-elasticsearch:9.1.3}
+    mem_limit: 2gb
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      xpack.security.http.ssl.enabled: "false"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ports:
+      - "127.0.0.1:${ELASTICSEARCH_PORT:-9200}:9200"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -sf http://localhost:9200/_cluster/health || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  jahia:
+    # Stable release by default. CI may override JAHIA_IMAGE to test against a snapshot.
+    image: ${JAHIA_IMAGE:-jahia/jahia-ee:8.2}
+    restart: "no"
+    mem_limit: 4gb
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    extra_hosts:
+      - jahia:127.0.0.1
+    environment:
+      DB_VENDOR: mariadb
+      DB_HOST: mariadb
+      DB_NAME: jahia
+      DB_USER: jahia
+      DB_PASS: jahia
+      OPERATING_MODE: development
+      PROCESSING_SERVER: "true"
+      MAX_RAM_PERCENTAGE: 95
+      jahia_cfg_karaf_remoteShellHost: 0.0.0.0
+      # Base64-encoded license content; you provide it in .env.
+      JAHIA_LICENSE: ${JAHIA_LICENSE}
+      SUPER_USER_PASSWORD: ${JAHIA_PASSWORD:-root1234}
+      CLUSTER_ENABLED: ${JAHIA_CLUSTER_ENABLED:-false}
+      JPDA: ${JAHIA_DEBUG:-false}
+    ports:
+      - "${JAHIA_PORT:-8080}:8080"
+      - "${JAHIA_KARAF_PORT:-8101}:8101"
+      - "${JAHIA_JPDA_PORT:-8000}:8000"
+    volumes:
+      - jahia-data:/var/jahia
+
+volumes:
+  db-data:
+  jahia-data:
+  es-data:
