@@ -73,8 +73,9 @@ export class SearchPage {
   }
 
   /**
-   * The JSP renders `<div id=…>Loading...</div>` and the bundle replaces it, so the container exists
-   * long before the app does. The search field is the first thing that proves React has mounted.
+   * The view renders `<div id=…>Loading...</div>` and the client bundle replaces the placeholder, so
+   * the container exists long before the app does. The search field is the first thing that proves
+   * React has mounted.
    */
   async waitUntilMounted(): Promise<void> {
     await expect(this.app).toBeAttached();

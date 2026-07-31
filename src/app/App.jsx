@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '@elastic/react-search-ui-views/lib/styles/styles.css';
-import JahiaSearchAPIConnector, {Field, FieldType} from '@jahia/search-ui-jahia-connector';
+import searchUiJahiaConnector, {Field, FieldType} from '@jahia/search-ui-jahia-connector';
 import {SearchProvider, WithSearch} from '@elastic/react-search-ui';
 import SearchView from './SearchView';
 import {useTranslation} from 'react-i18next';
+
+// Package is CJS, we need to do a little dance
+const JahiaSearchAPIConnector = searchUiJahiaConnector.default;
 
 const fields = [
     new Field(FieldType.HIT, 'link'),
@@ -118,4 +121,3 @@ App.propTypes = {
 };
 
 export default App;
-
