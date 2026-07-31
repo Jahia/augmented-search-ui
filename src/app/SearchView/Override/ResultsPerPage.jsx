@@ -11,9 +11,9 @@ const setDefaultStyle = {
     dropdownIndicator: () => ({}),
     indicatorSeparator: () => ({}),
     singleValue(provided) {
-        // Pulling out CSS that we don't want
-        // ***eslint-disable-next-line @typescript-eslint/no-unused-vars***
-        const {position, top, transform, maxWidth, ...rest} = provided;
+        // Pulling out CSS that we don't want: these keys must still be destructured away so they do
+        // not reach `rest`; the `_` aliases just mark the bindings as deliberately unused.
+        const {position: _position, top: _top, transform: _transform, maxWidth: _maxWidth, ...rest} = provided;
         return {...rest, lineHeight: 1, marginRight: 0};
     },
     valueContainer: provided => ({...provided, paddingRight: 0})
