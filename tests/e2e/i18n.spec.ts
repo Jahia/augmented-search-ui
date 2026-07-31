@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { SearchPage } from '../support/search-page.js';
 import {
+  GERMAN_ONLY_QUERY,
   LABELS,
   NO_RESULTS_MESSAGE,
   NO_MATCH_QUERY,
@@ -53,8 +54,12 @@ test.describe('i18n', () => {
     const german = await search.resultTitles.allInnerTexts();
 
     expect(german).not.toEqual(english);
-    // Digitall's German home page article.
-    expect(german.join(' | ')).toContain('Digitall wurde gegründet');
+
+    // Then a real query, which scores its hits and so has a deterministic order. Asserting a specific
+    // article is on page 1 of the EMPTY query does not work: all 61 results tie on relevance, so which
+    // 20 appear is arbitrary per index build.
+    await search.search(GERMAN_ONLY_QUERY.term);
+    await expect(search.resultTitles.first()).toContainText(GERMAN_ONLY_QUERY.firstTitle);
   });
 
   test('every language indexes the same number of documents', async ({ page }) => {

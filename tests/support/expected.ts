@@ -114,6 +114,20 @@ export const LABELS = {
  */
 export const NO_RESULTS_MESSAGE = 'Nothing was found';
 
-/** A title that is first when sorting ascending by title, and one that is first by creation date. */
-export const FIRST_BY_TITLE = 'Hegebottom';
+/**
+ * First result when sorting by creation date, descending. Safe to pin because jcr:created is unique,
+ * so that sort is a total order — unlike sorting by title, where every person has an empty title and
+ * the leading tied group is ordered arbitrarily per index build.
+ */
 export const FIRST_BY_CREATED = 'Search Results';
+
+/**
+ * A term that exists only in the German content, with the result it ranks first. A real query scores
+ * its hits, so the order is deterministic — the empty query's 61 results all tie, which makes page 1
+ * vary between index builds.
+ */
+export const GERMAN_ONLY_QUERY = {
+  term: 'gegründet',
+  firstTitle: 'Digitall wurde gegründet',
+  hits: 6,
+} as const;

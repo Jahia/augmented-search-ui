@@ -30,17 +30,14 @@ run = "yarn dev"
 
 [tasks.test]
 description = "Run the Playwright suite against the running stack"
-depends = ["test:setup"]
 run = "yarn test"
 
 [tasks."test:ui"]
 description = "Run the suite in Playwright's interactive UI"
-depends = ["test:setup"]
 run = "yarn test --ui"
 
 [tasks."test:headed"]
 description = "Run the suite in a visible browser"
-depends = ["test:setup"]
 run = "yarn test --headed"
 
 [tasks.report]
