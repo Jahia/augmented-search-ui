@@ -55,7 +55,7 @@ jobs:
       - uses: jdx/mise-action@v4
 
       - name: Install Chromium for Playwright
-        run: yarn playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Build, start and provision the environment
         run: mise start
