@@ -6,50 +6,21 @@ name: On merge to main
 on:
   push:
     branches:
-      - 'main'
+      - "main"
     tags-ignore:
-      - '**'
+      - "**"
 
 jobs:
-  update-signature:
-    name: Update module signature
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: jahia/jahia-modules-action/update-signature@v2
-        with:
-          nexus_username: ${{ secrets.NEXUS_USERNAME }}
-          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-
   build:
     name: Build Module
-    needs: update-signature
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/jahia/jahia-docker-mvn-cache:8-jdk-noble-mvn-loaded
-      credentials:
-        username: ${{ secrets.GH_PACKAGES_USERNAME }}
-        password: ${{ secrets.GH_PACKAGES_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: jahia/jahia-modules-action/build@v2
-        with:
-          nexus_username: ${{ secrets.NEXUS_USERNAME }}
-          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4
+      - run: mise build
 
-  sbom:
-    name: SBOM processing
-    needs: build
-    runs-on: ubuntu-latest
-    container:
-      image: cyclonedx/cyclonedx-cli:0.24.2   
-    steps:
-      - uses: jahia/jahia-modules-action/sbom-processing@v2
-        with:
-          dependencytrack_hostname: ${{ vars.DEPENDENCYTRACK_HOSTNAME }}
-          dependencytrack_apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          sbom_artifacts: 'build-artifacts'
-
+  # Publishes target/augmented-search-ui-v<version>.tgz to the Nexus repository declared in
+  # package.json under jahia.maven.distributionManagement.
   publish:
     name: Publish module
     needs: build
@@ -61,8 +32,11 @@ jobs:
         username: ${{ secrets.GH_PACKAGES_USERNAME }}
         password: ${{ secrets.GH_PACKAGES_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: jahia/jahia-modules-action/publish@v2
+      - uses: actions/checkout@v7
+      # publish-javascript builds the package itself and calls actions/setup-node internally, so mise
+      # cannot drive it: node_version is pinned to the same major as mise.toml instead.
+      - uses: jahia/jahia-modules-action/publish-javascript@v2
         with:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+          node_version: 26

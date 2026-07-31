@@ -1,5 +1,5 @@
 # This workflow is triggered when someone create a new release in GitHub
-# and checks the "This is a pre-relase" box.
+# and checks the "This is a pre-release" box.
 name: Trigger Release creation
 
 on:
@@ -8,7 +8,36 @@ on:
 
 jobs:
   release-module:
-    uses: Jahia/jahia-modules-action/.github/workflows/reusable-release-module.yml@v2
-    secrets: inherit 
-    with:
-      primary_release_branch: "main"
+    name: Release Module
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/jahia/jahia-docker-mvn-cache:8-jdk-noble-mvn-loaded
+      credentials:
+        username: ${{ secrets.GH_PACKAGES_USERNAME }}
+        password: ${{ secrets.GH_PACKAGES_TOKEN }}
+    steps:
+      - name: Add safe directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      # The SSH key of a user in an admin group is required to push the version bumps back to a
+      # protected branch.
+      - uses: actions/checkout@v7
+        with:
+          ssh-key: ${{ secrets.GH_SSH_PRIVATE_KEY_JAHIACI }}
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.GH_SSH_PRIVATE_KEY_JAHIACI }}
+
+      # release-javascript builds the package itself and calls actions/setup-node internally, so
+      # mise cannot drive it: node_version is pinned to the same major as mise.toml instead.
+      - uses: jahia/jahia-modules-action/release-javascript@v2
+        with:
+          primary_release_branch: main
+          node_version: 26
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+          github_slug: ${{ github.repository }}
+          release_id: ${{ github.event.release.id }}
+          release_version: ${{ github.event.release.tag_name }}
+          github_api_token: ${{ secrets.GH_API_TOKEN }}
+          slack-webhook-qa: ${{ secrets.SLACK_WEBHOOK_URL_RC_FOR_QA }}
