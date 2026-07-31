@@ -6,7 +6,7 @@
  * module, and a fuzzy assertion detects nothing.
  *
  * They are stable because the environment pins everything: Digitall 3.0.0, augmented-search 4.1.0,
- * and `provision.sh` waits for indexation to *settle* before the suite starts.
+ * and `dev/provision.sh` waits for indexation to *settle* before the suite starts.
  *
  * If one of these fails after a content or version bump, the value is what needs updating — but
  * check first that the behaviour genuinely changed rather than reflexively editing the number.
@@ -76,14 +76,7 @@ export const KNOWN_QUERY = { term: 'movies', hits: 20 } as const;
 /** A term that matches nothing, for the empty-state path. */
 export const NO_MATCH_QUERY = 'zzzzqqqqnothingmatchesthis';
 
-/**
- * UI strings per language.
- *
- * ⚠ `de` deliberately holds the ENGLISH strings. `i18n/resources.js` registers only `en` and `fr`,
- * so although `i18n/de.json` exists it is never loaded and i18next falls back to `en`
- * (`fallbackLng: 'en'`). That is a bug in the module; this suite records the behaviour as it is so
- * the migration cannot change it unnoticed. See the note in i18n.spec.ts.
- */
+/** UI strings per language. */
 export const LABELS = {
   en: {
     placeholder: 'Search',
@@ -104,14 +97,13 @@ export const LABELS = {
     createdAt: 'créé le',
   },
   de: {
-    // English on purpose — see the warning above.
-    placeholder: 'Search',
-    submit: 'Search',
-    sortBy: 'Sort by',
-    show: 'Show',
-    facetTitles: ['Categories', 'Tags', 'Last modified'],
-    pagingInfoAll: `Showing 1 - ${DEFAULT_PAGE_SIZE} out of ${TOTAL_RESULTS}`,
-    createdAt: 'created at',
+    placeholder: 'Suchen',
+    submit: 'Suchen',
+    sortBy: 'Sortieren nach',
+    show: 'Zeigen',
+    facetTitles: ['Kategorien', 'Tags', 'Zuletzt geändert'],
+    pagingInfoAll: `Anzeigen 1 - ${DEFAULT_PAGE_SIZE} von ${TOTAL_RESULTS}`,
+    createdAt: 'erstellt am',
   },
 } as const;
 

@@ -45,3 +45,5 @@ mise start
 mise dev
 mise test
 ```
+
+You'll find more details about the local stack and troobleshooting in [`dev/README.md`](dev/README.md).

@@ -5,23 +5,21 @@ import {
   NO_RESULTS_MESSAGE,
   NO_MATCH_QUERY,
   PAGES,
-  TOTAL_RESULTS,
   type Language,
 } from '../support/expected.js';
 
 /**
  * Internationalisation, as it actually behaves.
  *
- * The JSP hands the app `language` (the content locale) and the app calls
- * `i18n.changeLanguage(context.language)`, so the UI chrome is supposed to follow the page language.
+ * The bundles live in `settings/locales/<lang>.json` and the JavaScript-modules engine loads them for
+ * the page language, server-side and in the island alike — no provider, no `changeLanguage` call.
  *
- * ⚠ THREE KNOWN BUGS ARE PINNED HERE ON PURPOSE. They are current behaviour, and the point of this
- * suite is that the migration must not change behaviour silently — including broken behaviour. Each
- * is marked BUG below. When one is deliberately fixed, the corresponding assertion should be
- * inverted in the same commit, so the change is visible in review.
+ * ⚠ ONE KNOWN BUG IS PINNED HERE ON PURPOSE, marked BUG below: a refactor must not change behaviour
+ * silently, including broken behaviour. When it is deliberately fixed, invert the assertion in the
+ * same commit so the change is visible in review.
  */
 test.describe('i18n', () => {
-  for (const language of ['en', 'fr'] as Language[]) {
+  for (const language of ['en', 'fr', 'de'] as Language[]) {
     test(`translates the UI chrome into ${language}`, async ({ page }) => {
       const search = new SearchPage(page);
       await search.goto(language);
@@ -38,38 +36,20 @@ test.describe('i18n', () => {
     });
   }
 
-  test('BUG: the German page shows English chrome, because de.json is never registered', async ({
-    page,
-  }) => {
-    // i18n/resources.js imports only en and fr. i18n/de.json exists and is complete ("Kategorien",
-    // "Sortieren nach", "Zeigen", …) but is never added to the bundle, so i18next falls back to en
-    // (fallbackLng: 'en'). Fixing it is a one-line change to resources.js.
-    const search = new SearchPage(page);
-    await search.goto('de');
+  // `de` was pinned as its own BUG test (English chrome) until the bundles moved to settings/locales/.
 
-    await expect(search.input).toHaveAttribute('placeholder', 'Search');
-    await expect(search.sortLabel).toHaveText(/^Sort by$/i);
-    await expect(search.pageSizeLabel).toHaveText('Show');
-    await expect(search.facetTitles).toHaveText([/^Categories$/i, /^Tags$/i, /^Last modified$/i]);
-
-    // Explicitly NOT the German strings that de.json already provides.
-    await expect(search.sortLabel).not.toHaveText(/Sortieren nach/i);
-    await expect(search.facetTitles.first()).not.toHaveText(/Kategorien/i);
-  });
-
-  test('search results follow the page language, even when the chrome does not', async ({
-    page,
-  }) => {
-    // The content side is wired correctly: the connector passes the content locale, so German pages
-    // return German documents. Only the UI chrome falls back.
+  test('search results follow the page language', async ({ page }) => {
+    // The connector passes the content locale, so German pages return German documents.
     const search = new SearchPage(page);
 
     await search.goto('en');
-    await expect(search.pagingInfo).toContainText(`out of ${TOTAL_RESULTS}`);
+    await expect(search.pagingInfo).toHaveText(LABELS.en.pagingInfoAll);
     const english = await search.resultTitles.allInnerTexts();
 
     await search.goto('de');
-    await expect(search.pagingInfo).toContainText(`out of ${TOTAL_RESULTS}`);
+    // The German phrasing: asserting the English "out of 61" here only passed while the chrome fell
+    // back to English.
+    await expect(search.pagingInfo).toHaveText(LABELS.de.pagingInfoAll);
     const german = await search.resultTitles.allInnerTexts();
 
     expect(german).not.toEqual(english);
@@ -87,22 +67,30 @@ test.describe('i18n', () => {
     }
   });
 
-  test('BUG: dates are always formatted in French, whatever the page language', async ({ page }) => {
-    // app/index.js does `import 'moment/locale/fr'`, which registers the locale AND makes it moment's
-    // global default. The intended correction, `moment().locale(context.language)`, sets the locale on
-    // a throwaway instance instead of globally (that would be `moment.locale(...)`), so every date
-    // renders with French month names regardless of language.
+  // Was "BUG: dates are always formatted in French": the old bootstrap called `moment().locale(lang)`,
+  // setting the locale on a throwaway instance, so `import 'moment/locale/fr'` stayed moment's global
+  // default. ResultView now formats with Intl from `i18n.language`.
+  test('dates are formatted in the page language', async ({ page }) => {
     const search = new SearchPage(page);
-    await search.goto('en');
 
-    const excerpt = search.results.first().locator('.excerpt');
+    await search.goto('en');
+    const english = search.results.first().locator('.excerpt');
+    // English abbreviated months, e.g. "May 3, 2016 11:22 PM".
+    await expect(english).toContainText(
+      /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s\d{1,2},\s\d{4}/,
+    );
+    await expect(english).toContainText(LABELS.en.createdAt);
     // French abbreviated months: janv. févr. mars avr. mai juin juil. août sept. oct. nov. déc.
-    await expect(excerpt).toContainText(
+    await expect(english).not.toContainText(
+      /\d{1,2}\s(janv\.|févr\.|avr\.|juil\.|août|sept\.|déc\.)\s\d{4}/,
+    );
+
+    await search.goto('fr');
+    const french = search.results.first().locator('.excerpt');
+    await expect(french).toContainText(
       /\d{1,2}\s(janv\.|févr\.|mars|avr\.|mai|juin|juil\.|août|sept\.|oct\.|nov\.|déc\.)\s\d{4}/,
     );
-    // The surrounding label IS translated, which is what makes the mismatch visible: an English
-    // "created at" next to a French date.
-    await expect(excerpt).toContainText(LABELS.en.createdAt);
+    await expect(french).toContainText(LABELS.fr.createdAt);
   });
 
   test('BUG: the empty-results message is never translated', async ({ page }) => {

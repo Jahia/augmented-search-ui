@@ -80,9 +80,12 @@ test.describe('Augmented Search API', () => {
     // Send Authorization EXPLICITLY rather than via Playwright's `httpCredentials`. Those are only
     // sent in response to a 401 challenge, and Jahia's GraphQL endpoint never challenges — it answers
     // 200 with an empty result set — so the credentials would never leave the client.
+    // JAHIA_USER is the `user:password` pair the rest of the repo uses, loaded from .env by the config.
     const authorization =
       'Basic ' +
-      Buffer.from(`root:${process.env.SUPER_USER_PASSWORD ?? 'root1234'}`).toString('base64');
+      Buffer.from(
+        process.env.JAHIA_USER ?? `root:${process.env.JAHIA_PASSWORD ?? 'root1234'}`,
+      ).toString('base64');
 
     // A separate context so the guest tests above stay unauthenticated.
     const context = await playwright.request.newContext({ baseURL });
