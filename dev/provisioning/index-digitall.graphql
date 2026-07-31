@@ -1,0 +1,15 @@
+# Register the Digitall site with Augmented Search and start a full indexation
+#
+# Indexation is async: the mutation succeeds even when the job later fails
+mutation {
+    admin {
+        search {
+            addSite(siteKey: "digitall")
+            startIndex(siteKeys: ["digitall"]) {
+                jobs {
+                    id
+                }
+            }
+        }
+    }
+}
