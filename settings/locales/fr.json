@@ -42,7 +42,6 @@
   "search": {
     "ui": {
       "inputPlaceholder" : "Rechercher",
-      "btn" : "Rechercher",
       "showing" : "Affiche",
       "outOf": "sur",
       "for": "pour",
