@@ -1,0 +1,54 @@
+# Platform provisioning for reproducible dev and test env
+#
+# Scope: everything EXCEPT augmented-search-ui itself
+
+# Digitall demo site: the content to search
+- installBundle:
+    - 'mvn:org.jahia.modules/bookmarks/3.1.0'
+    - 'mvn:org.jahia.modules/bootstrap3-core/4.3.0'
+    - 'mvn:org.jahia.modules/bootstrap3-components/4.3.0'
+    - 'mvn:org.jahia.modules/calendar/3.2.0'
+    - 'mvn:org.jahia.modules/digitall/3.0.0'
+    - 'mvn:org.jahia.modules/dx-base-demo-components/3.0.0'
+    - 'mvn:org.jahia.modules/dx-base-demo-core/2.6.0'
+    - 'mvn:org.jahia.modules/dx-base-demo-templates/4.0.0'
+    - 'mvn:org.jahia.modules/event/4.0.1'
+    - 'mvn:org.jahia.modules/font-awesome/6.1.5'
+    - 'mvn:org.jahia.modules/location/3.2.0'
+    - 'mvn:org.jahia.modules/news/3.4.0'
+    - 'mvn:org.jahia.modules/person/3.2.0'
+    - 'mvn:org.jahia.modules/press/3.1.0'
+    - 'mvn:org.jahia.modules/rating/3.3.0'
+    - 'mvn:org.jahia.modules/topstories/3.0.0'
+    - 'mvn:org.jahia.modules/skins/8.2.0'
+    - 'mvn:org.jahia.modules/default-skins/8.2.0'
+    - 'mvn:org.jahia.modules/grid/8.1.0'
+    - 'mvn:org.jahia.modules/tabularList/8.2.0'
+  autoStart: true
+  uninstallPreviousVersion: true
+
+- import: "jar:mvn:org.jahia.modules/digitall/3.0.0/zip/import!/users.zip"
+- importSite: "jar:mvn:org.jahia.modules/digitall/3.0.0/zip/import!/Digitall.zip"
+
+# Register the public app store for Augmented Search
+- addMavenRepository: 'https://devtools.jahia.com/nexus/content/repositories/jahia-public-app-store@id=JahiaStore'
+
+- editConfiguration: "org.jahia.modules.elasticsearchConnector"
+  properties:
+    elasticsearchConnector.host: "elasticsearch"
+    elasticsearchConnector.port: "9200"
+    elasticsearchConnector.useXPackSecurity: "false"
+    elasticsearchConnector.useEncryption: "false"
+
+# Keep the engine version in step with @jahia/javascript-modules-library in package.json
+- installBundle:
+    - 'mvn:org.jahia.modules/elasticsearch-connector/4.1.0'
+    - 'mvn:org.jahia.modules/augmented-search/4.1.0'
+    - 'mvn:org.jahia.modules/javascript-modules-engine/1.2.0'
+  autoStart: true
+  uninstallPreviousVersion: true
+
+# Limit race conditions
+- sleep: 15000
+
+- executeScript: "index-digitall.graphql"

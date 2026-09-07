@@ -3,7 +3,6 @@ import { SearchPage } from '../support/search-page.js';
 import {
   DEFAULT_PAGE_SIZE,
   FIRST_BY_CREATED,
-  FIRST_BY_TITLE,
   LABELS,
   PAGE_SIZE_OPTIONS,
   SORT_OPTIONS,
@@ -36,12 +35,18 @@ test.describe('sorting', () => {
   });
 
   test('sorting by title reorders the results and records the field in the URL', async () => {
-    const firstBefore = await search.resultTitles.first().innerText();
+    const before = await search.resultTitles.allInnerTexts();
 
     await search.sortBy(SORT_OPTIONS.title.label);
 
-    await expect(search.resultTitles.first()).toHaveText(FIRST_BY_TITLE);
-    expect(await search.resultTitles.first().innerText()).not.toBe(firstBefore);
+    // Deliberately no exact first title: every person document has an EMPTY title, so an ascending
+    // sort leads with that whole tied group and which member comes first is Lucene's internal doc
+    // order — stable within an index build, arbitrary across them. Asserting one (it used to be
+    // "Hegebottom") only passes against the index it was captured on. The creation-date test below
+    // can pin a title because jcr:created is unique, so that sort is a total order.
+    await expect(async () => {
+      expect(await search.resultTitles.allInnerTexts()).not.toEqual(before);
+    }).toPass();
     await expect(async () => {
       const params = search.urlParams();
       expect(params.get('sort-field')).toBe(SORT_OPTIONS.title.field);

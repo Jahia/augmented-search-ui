@@ -34,10 +34,16 @@ test.describe('result cards', () => {
     // getNodeTypeKey maps the JCR node type through config/types.js to an i18n key, falling back to
     // DEFAULT -> "Content". Digitall's content is mostly jnt:news / jnt:page, none of which appear in
     // config/types.js, so "Content" is the expected label here.
-    const labels = await search.app.locator('.result .search-content > span').allInnerTexts();
-    expect(labels.length).toBeGreaterThan(0);
-    expect(labels.every((l) => l.trim().length > 0)).toBe(true);
-    expect(labels).toContain('Content');
+    // allInnerTexts() takes an immediate snapshot — it is one of the few Locator methods with no
+    // auto-waiting — so wait for the cards to mount first or it reads an empty DOM. Every other test
+    // here happens to wait through an `expect(locator)` assertion.
+    const labels = search.app.locator('.result .search-content > span');
+    await expect(labels.first()).toBeVisible();
+
+    const texts = await labels.allInnerTexts();
+    expect(texts.length).toBeGreaterThan(0);
+    expect(texts.every((l) => l.trim().length > 0)).toBe(true);
+    expect(texts).toContain('Content');
   });
 
   test('renders a breadcrumb derived from the content path', async () => {

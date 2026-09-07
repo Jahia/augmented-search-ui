@@ -1,0 +1,45 @@
+[tools]
+node = "26"
+yarn = "4.18.0"
+jq = "1.8" # Used by provision.sh
+
+[tasks.start]
+description = "Build the module, start the stack and provision it"
+depends = ["build"]
+run = ["docker compose up -d --build --wait", "dev/provision.sh"]
+
+[tasks.stop]
+description = "Stop the stack, preserving the data"
+run = "docker compose stop"
+
+[tasks.delete]
+description = "Remove the containers AND the data"
+run = "docker compose down -v --remove-orphans"
+
+# Module tasks
+
+[tasks.build]
+description = "Build the module and package it as dist/package.tgz"
+run = ["yarn install", "yarn build"]
+
+[tasks.dev]
+description = "Watch, rebuild and redeploy on every change"
+run = "yarn dev"
+
+# Testing tasks
+
+[tasks.test]
+description = "Run the Playwright suite against the running stack"
+run = "yarn test"
+
+[tasks."test:ui"]
+description = "Run the suite in Playwright's interactive UI"
+run = "yarn test --ui"
+
+[tasks."test:headed"]
+description = "Run the suite in a visible browser"
+run = "yarn test --headed"
+
+[tasks.report]
+description = "Open the last Playwright HTML report"
+run = "yarn playwright show-report tests/results/report"

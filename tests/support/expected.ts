@@ -6,7 +6,7 @@
  * module, and a fuzzy assertion detects nothing.
  *
  * They are stable because the environment pins everything: Digitall 3.0.0, augmented-search 4.1.0,
- * and `provision.sh` waits for indexation to *settle* before the suite starts.
+ * and `dev/provision.sh` waits for indexation to *settle* before the suite starts.
  *
  * If one of these fails after a content or version bump, the value is what needs updating — but
  * check first that the behaviour genuinely changed rather than reflexively editing the number.
@@ -76,14 +76,7 @@ export const KNOWN_QUERY = { term: 'movies', hits: 20 } as const;
 /** A term that matches nothing, for the empty-state path. */
 export const NO_MATCH_QUERY = 'zzzzqqqqnothingmatchesthis';
 
-/**
- * UI strings per language.
- *
- * ⚠ `de` deliberately holds the ENGLISH strings. `i18n/resources.js` registers only `en` and `fr`,
- * so although `i18n/de.json` exists it is never loaded and i18next falls back to `en`
- * (`fallbackLng: 'en'`). That is a bug in the module; this suite records the behaviour as it is so
- * the migration cannot change it unnoticed. See the note in i18n.spec.ts.
- */
+/** UI strings per language. */
 export const LABELS = {
   en: {
     placeholder: 'Search',
@@ -104,14 +97,13 @@ export const LABELS = {
     createdAt: 'créé le',
   },
   de: {
-    // English on purpose — see the warning above.
-    placeholder: 'Search',
-    submit: 'Search',
-    sortBy: 'Sort by',
-    show: 'Show',
-    facetTitles: ['Categories', 'Tags', 'Last modified'],
-    pagingInfoAll: `Showing 1 - ${DEFAULT_PAGE_SIZE} out of ${TOTAL_RESULTS}`,
-    createdAt: 'created at',
+    placeholder: 'Suchen',
+    submit: 'Suchen',
+    sortBy: 'Sortieren nach',
+    show: 'Zeigen',
+    facetTitles: ['Kategorien', 'Tags', 'Zuletzt geändert'],
+    pagingInfoAll: `Anzeigen 1 - ${DEFAULT_PAGE_SIZE} von ${TOTAL_RESULTS}`,
+    createdAt: 'erstellt am',
   },
 } as const;
 
@@ -122,6 +114,20 @@ export const LABELS = {
  */
 export const NO_RESULTS_MESSAGE = 'Nothing was found';
 
-/** A title that is first when sorting ascending by title, and one that is first by creation date. */
-export const FIRST_BY_TITLE = 'Hegebottom';
+/**
+ * First result when sorting by creation date, descending. Safe to pin because jcr:created is unique,
+ * so that sort is a total order — unlike sorting by title, where every person has an empty title and
+ * the leading tied group is ordered arbitrarily per index build.
+ */
 export const FIRST_BY_CREATED = 'Search Results';
+
+/**
+ * A term that exists only in the German content, with the result it ranks first. A real query scores
+ * its hits, so the order is deterministic — the empty query's 61 results all tie, which makes page 1
+ * vary between index builds.
+ */
+export const GERMAN_ONLY_QUERY = {
+  term: 'gegründet',
+  firstTitle: 'Digitall wurde gegründet',
+  hits: 6,
+} as const;

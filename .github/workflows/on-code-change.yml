@@ -1,4 +1,4 @@
-# This workflow is triggered every time a change is pushed to any branches 
+# This workflow is triggered every time a change is pushed to any branches
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
 name: On Code Change (PR)
 
@@ -8,102 +8,70 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  update-signature:
-    name: Update module signature
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: jahia/jahia-modules-action/update-signature@v2
-        with:
-          nexus_username: ${{ secrets.NEXUS_USERNAME }}
-          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-
   static-analysis:
     name: Static Analysis (linting, vulns)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: Jahia/jahia-modules-action/static-analysis@v2
-        with:
-          # 18 can no longer install this repo's devDependencies: @babel/cli@8.0.0-beta.2 requires
-          # node ^20.19.0 || >=22.12.0, so `yarn` fails before linting even starts. This was already
-          # broken on main — recent merges were all [skip ci] chore syncs, so nothing surfaced it.
-          node_version: 22
-          auditci_level: critical
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4
+      - run: yarn install
+      - run: yarn lint
+      - name: Scan javascript vulnerabilities
+        run: npx audit-ci --skip-dev --critical
 
   build:
     name: Build Module
-    needs: update-signature
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/jahia/jahia-docker-mvn-cache:8-jdk-noble-mvn-loaded
-      credentials:
-        username: ${{ secrets.GH_PACKAGES_USERNAME }}
-        password: ${{ secrets.GH_PACKAGES_TOKEN }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: jahia/jahia-modules-action/build@v2
-        with:
-          nexus_username: ${{ secrets.NEXUS_USERNAME }}
-          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-
-  sonar-analysis:
-    name: Sonar Analysis
-    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: jahia/jahia-modules-action/sonar-analysis@v2
-        with:
-          primary_release_branch: main
-          github_pr_id: ${{github.event.number}}
-          sonar_url: ${{ secrets.SONAR_URL }}
-          sonar_token: ${{ secrets.SONAR_TOKEN }}
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4
+      - run: mise build
 
-  # Deliberately NOT jahia-modules-action/integration-tests: that action drives the environment
-  # through `docker-compose` (Compose v1), which is no longer present on ubuntu-latest, and it
-  # discards the underlying error ("There was an issue processing the command") so failures are
-  # undiagnosable. Everything it did for us is a handful of plain `docker compose` calls, and
-  # tests/docker-compose.yml + tests/provision.sh are exactly what we run locally.
+      - name: Move the package to target/
+        run: |
+          name=$(jq -r .name package.json)
+          version=$(jq -r 'if (.jahia.snapshot == true) or (.version | endswith("-SNAPSHOT"))
+                           then (.version | sub("-SNAPSHOT$";"")) + "-SNAPSHOT"
+                           else .version end' package.json)
+          mkdir -p target
+          mv dist/package.tgz "target/${name}-v${version}.tgz"
+          ls -l target/
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: build-artifacts
+          path: target/*.tgz
+          retention-days: 2
+
   integration-tests:
     name: Integration Tests
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
-      COMPOSE: docker compose -f tests/docker-compose.yml
       JAHIA_LICENSE: ${{ secrets.JAHIA_LICENSE }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4
 
-      # The build job publishes the jar as `build-artifacts` with a `target/` prefix, which is
-      # where tests/docker-compose.yml expects it (mounted read-only at /artifacts).
-      - name: Download the module jar from the build job
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
-          path: .
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
 
-      - name: Show what will be deployed
-        run: ls -l target/*.jar
+      - name: Build, start and provision the environment
+        run: mise start
 
-      - name: Start Jahia, Elasticsearch and the database
-        run: |
-          mkdir -p tests/results
-          $COMPOSE up -d --build elasticsearch jahia
-
-      # provision.sh (inside the tests container) waits for Jahia, applies the manifest, deploys the
-      # module, places the component and waits for real indices before Playwright starts.
-      - name: Provision the environment and run the tests
-        run: $COMPOSE up --build --abort-on-container-exit --exit-code-from playwright playwright
+      - name: Run the Playwright suite
+        run: mise test
 
       - name: Collect container logs
         if: always()
-        run: $COMPOSE logs --no-color --timestamps --tail=all > tests/results/containers.log 2>&1 || true
+        run: |
+          mkdir -p tests/results
+          docker compose logs --no-color --timestamps --tail=all > tests/results/containers.log 2>&1 || true
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: integration-test-results
           path: tests/results
@@ -112,4 +80,4 @@ jobs:
 
       - name: Tear down
         if: always()
-        run: $COMPOSE down -v --remove-orphans || true
+        run: mise delete || true

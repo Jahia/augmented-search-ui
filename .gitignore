@@ -1,20 +1,28 @@
 /.classpath
 /.project
 /.settings
-/node_modules
-/node
+node_modules/
 /package
 .idea/
 *.iml
 *.ipr
-target
 report.*
-src/main/resources/javascript/app
 yarn-error.log
 /.env
 /yalc.lock
 
-# tests environment
-tests/node_modules/
+# build output: `dist/` is what vite produces, `target/` is where CI moves dist/package.tgz
+/dist
+/target
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 tests/results/
-tests/package-lock.json
+/playwright-report/
+/.playwright/
