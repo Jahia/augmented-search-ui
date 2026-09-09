@@ -77,7 +77,6 @@
     <properties>
         <jahia-module-signature>MCwCFD6jCxbysbo7LIjr+ldXM08ZNYv5AhRc1J2yjtyAmUWkPf4eLWP8KBtEQA==</jahia-module-signature>
         <jahia-depends>augmented-search</jahia-depends>
-        <sonar.sources>src/javascript</sonar.sources>
     </properties>
 
     <repositories>
