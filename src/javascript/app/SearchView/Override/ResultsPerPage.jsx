@@ -51,11 +51,11 @@ const ResultsPerPage = ({
             className={ViewHelpers.appendClassName('sui-results-per-page', className)}
             {...rest}
         >
-            <div className='sui-results-per-page__label'>{t('search.ui.show')}</div>
+            <div className="sui-results-per-page__label">{t('search.ui.show')}</div>
 
             <Select
-                className='sui-select sui-select--inline'
-                classNamePrefix='sui-select'
+                className="sui-select sui-select--inline"
+                classNamePrefix="sui-select"
                 value={selectedOption}
                 options={options.map(wrapOption)}
                 isSearchable={false}

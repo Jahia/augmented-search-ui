@@ -28,7 +28,7 @@ function filterFacets(facets, node, field) {
 }
 
 const Tree = ({options, onSelect, onRemove, field}) => {
-    const [optionsState, setOptions] = useState(options);
+    const [optionsState, setOptionsState] = useState(options);
     const context = useContext(SearchContext);
     useEffect(() => {
         const mappedOptions = options.reduce((accumulator, currentOption) => {
@@ -50,7 +50,7 @@ const Tree = ({options, onSelect, onRemove, field}) => {
 
             return [...accumulator, {...currentOption, isOpen: false, selected: false}];
         }, []);
-        setOptions(mappedOptions);
+        setOptionsState(mappedOptions);
         // Invalid dependency, infinite loop, must be refactored
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options, context.driver.state.filters, field]);
@@ -79,7 +79,7 @@ const Tree = ({options, onSelect, onRemove, field}) => {
             node.children.forEach(children => {
                 children.selected = Boolean(filteredField && filteredField.values.find(value => value === children.filter));
             });
-            setOptions(toggledOptions);
+            setOptionsState(toggledOptions);
         });
     };
 
@@ -95,14 +95,14 @@ const Tree = ({options, onSelect, onRemove, field}) => {
         const selectedOptions = [...optionsState];
         onSelect(node.filter);
         node.selected = true;
-        setOptions(selectedOptions);
+        setOptionsState(selectedOptions);
     };
 
     const nodeOnRemove = node => {
         const selectedOptions = [...optionsState];
         onRemove(node.filter);
         node.selected = false;
-        setOptions(selectedOptions);
+        setOptionsState(selectedOptions);
     };
 
     return (

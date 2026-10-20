@@ -20,10 +20,10 @@ const PagingInfo = ({
             </strong>{' '}
             {t('search.ui.outOf')} <strong>{totalResults}</strong>
             {searchTerm ?
-<>
-    {' '}
-    {t('search.ui.for')}: <em>{searchTerm}</em>
-  </> :
+                <>
+                    {' '}
+                    {t('search.ui.for')}: <em>{searchTerm}</em>
+                </> :
 null}
         </div>
     );

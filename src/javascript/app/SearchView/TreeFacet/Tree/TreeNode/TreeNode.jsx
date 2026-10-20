@@ -42,7 +42,7 @@ const TreeNode = props => {
     return (
         <>
             <StyledTreeNode level={level} type={node.type}>
-                <NodeIcon role='button'
+                <NodeIcon role="button"
                           onClick={e => {
                     e.preventDefault();
                     onToggle(node);
@@ -52,7 +52,7 @@ const TreeNode = props => {
                 </NodeIcon>
 
                 <TitleSpan selected={node.selected}
-                           role='button'
+                           role="button"
                            onClick={e => {
                                e.preventDefault();
                                if (node.selected) {
@@ -71,15 +71,15 @@ const TreeNode = props => {
             </StyledTreeNode>
 
             {node.isOpen ?
-getChildNodes(node).map(childNode => (
-    <TreeNode
+                getChildNodes(node).map(childNode => (
+                    <TreeNode
                     key={childNode.key}
                     {...props}
                     node={childNode}
                     level={level + 1}
                 />
                 )) :
-null}
+                null}
         </>
     );
 };

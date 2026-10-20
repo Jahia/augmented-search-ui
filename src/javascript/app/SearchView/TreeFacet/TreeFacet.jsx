@@ -3,7 +3,7 @@ import React from 'react';
 
 // Import {FacetValue} from '@elastic/search-ui/lib/esm/types';
 import Tree from './Tree/Tree';
-import {ViewHelpers} from "@elastic/react-search-ui-views";
+import {ViewHelpers} from '@elastic/react-search-ui-views';
 
 const TreeFacet = ({
     className,
@@ -16,21 +16,21 @@ const TreeFacet = ({
     treeField
 }) => (
     <fieldset className={ViewHelpers.appendClassName('sui-facet', className)}>
-        <legend className='sui-facet__title'>{label}</legend>
-        <div className='sui-multi-checkbox-facet'>
+        <legend className="sui-facet__title">{label}</legend>
+        <div className="sui-multi-checkbox-facet">
             {options.length < 1 && <div>No matching options</div>}
             <Tree options={options} field={treeField} onSelect={onSelect} onRemove={onRemove}/>
         </div>
 
         {showMore ?
-<button
+            <button
                     type="button"
                     className="sui-facet-view-more"
                     aria-label="Show more options"
                     onClick={onMoreClick}
-  >
-                    + More
-  </button> :
+            >
+                + More
+            </button> :
 null}
     </fieldset>
 );

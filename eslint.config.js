@@ -11,7 +11,10 @@ export default defineConfig({
             allowImportExportEverywhere: true
         },
         globals: {
-            contextJsParameters: false
+            contextJsParameters: false,
+            window: 'readonly',
+            document: 'readonly',
+            location: 'readonly'
         }
     },
     extends: [xo, xoReact],
@@ -32,11 +35,12 @@ export default defineConfig({
                 SwitchCase: 1
             }
         ],
+        '@stylistic/indent-binary-ops': ['error', 4],
         'no-negated-condition': 'warn',
         'no-useless-escape': 'warn',
         'camelcase': 'error',
         '@stylistic/comma-dangle': ['error', 'never'],
-        'operator-linebreak': ['error', 'after'],
+        '@stylistic/operator-linebreak': ['error', 'after'],
         // React specific rules
         'react/jsx-fragments': 'off',
         'react/jsx-indent': ['error', 4],
@@ -57,7 +61,7 @@ export default defineConfig({
             }
         ],
         'react/jsx-no-useless-fragment': ['error', {allowExpressions: true}],
-        'jsx-quotes': [
+        '@stylistic/jsx-quotes': [
             'error',
             'prefer-double'
         ],
